@@ -5,3 +5,4 @@
 // init Structure
 
 // Reducer
+export default function reducer() {}
