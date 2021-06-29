@@ -1,3 +1,7 @@
-const navigation = () => {};
+// Action Type
 
-export default navigation;
+// Action Creator
+
+// init Structure
+
+// Reducer

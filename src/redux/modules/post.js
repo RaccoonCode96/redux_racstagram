@@ -1,3 +1,7 @@
-const post = () => {};
+// Action Type
 
-export default post;
+// Action Creator
+
+// init Structure
+
+// Reducer
