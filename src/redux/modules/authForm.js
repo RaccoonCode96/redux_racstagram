@@ -1,3 +1,8 @@
-const authForm = () => {};
+// Action Type
 
-export default authForm;
+// Action Creator
+
+// init Structure
+
+// Reducer
+export default function reducer() {}

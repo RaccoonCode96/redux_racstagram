@@ -1,3 +1,8 @@
-const modal = () => {};
+// Action Type
 
-export default modal;
+// Action Creator
+
+// init Structure
+
+// Reducer
+export default function reducer() {}

@@ -1,3 +1,8 @@
-const postForm = () => {};
+// Action Type
 
-export default postForm;
+// Action Creator
+
+// init Structure
+
+// Reducer
+export default function reducer() {}

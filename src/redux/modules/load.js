@@ -1,3 +1,8 @@
-const load = () => {};
+// Action Type
 
-export default load;
+// Action Creator
+
+// init Structure
+
+// Reducer
+export default function reducer() {}

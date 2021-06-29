@@ -1,3 +1,8 @@
-const profileForm = () => {};
+// Action Type
 
-export default profileForm;
+// Action Creator
+
+// init Structure
+
+// Reducer
+export default function reducer() {}
