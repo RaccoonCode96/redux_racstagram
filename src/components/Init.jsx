@@ -6,4 +6,3 @@ const Init = ({ init }) => {
 };
 
 export default Init;
-// 변경 테스트

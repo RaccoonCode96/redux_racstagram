@@ -1,41 +1,68 @@
-// Action Type
-const COMPLETE_INIT = 'redux-racstagram/init/COMPLETE_INIT';
-const SET_CURRENT_USER = 'redux-racstagram/init/SET_CURRENT_USER';
-
-// Action Creator
-export function completeInit() {
-	return {
-		type: COMPLETE_INIT,
-	};
-}
-
-export function getCurrentUserSuccess(user) {
-	return {
-		type: SET_CURRENT_USER,
-		currentUser: {
-			photoUrl: user.photoURL,
-			displayName: user.displayName,
-			uid: user.uid,
-		},
-	};
-}
+import { createActions, handleActions } from 'redux-actions';
 
 // init Structure
 const initialState = {
 	isInit: false,
 	currentUser: {
-		photoUrl: '',
+		loading: false,
+		photoURL: '',
 		displayName: '',
 		uid: '',
+		error: '',
 	},
 };
 
-// Reducer
-export default function reducer(state = initialState, action) {
-	if (action.type === COMPLETE_INIT) {
-		return {
+// Action Creator (by redux-actions)
+
+export const {
+	getCurrentUserSuccess,
+	getCurrentUserFail,
+	getCurrentUserStart,
+} = createActions(
+	{
+		GET_CURRENT_USER_SUCCESS: (user) => user,
+		GET_CURRENT_USER_FALE: (error) => error,
+	},
+	'GET_CURRENT_USER_START',
+	{
+		prefix: 'redux-racstagram/init',
+	}
+);
+
+export const { completeInit } = createActions('COMPLETE_INIT', {
+	prefix: 'redux-racstagram/init',
+});
+
+// Reducer (by redux-actions)
+const reducer = handleActions(
+	{
+		GET_CURRENT_USER_START: (state) => ({
+			...state,
+			currentUser: {
+				loading: true,
+			},
+		}),
+		GET_CURRENT_USER_SUCCESS: (state, action) => ({
+			...state,
+			currentUser: {
+				photoURL: action.payload.photoURL,
+				displayName: action.payload.displayName,
+				uid: action.payload.uid,
+			},
+		}),
+		GET_CURRENT_USER_FALE: (state, action) => ({
+			...state,
+			currentUser: {
+				error: action.payload,
+			},
+		}),
+		COMPLETE_INIT: (state, action) => ({
 			...state,
 			isInit: true,
-		};
-	}
-}
+		}),
+	},
+	initialState,
+	{ prefix: 'redux-racstagram/init' }
+);
+
+export default reducer;
