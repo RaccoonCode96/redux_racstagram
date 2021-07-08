@@ -1,0 +1,669 @@
+@import 'reset.css';
+@import url('https://fonts.googleapis.com/css2?family=Satisfy&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&display=swap');
+
+* {
+	box-sizing: border-box;
+	font-family: 'Roboto', Arial, Helvetica, sans-serif;
+	font-size: 14px;
+}
+
+body {
+	width: 100%;
+	height: 100%;
+	color: #262626;
+	background-color: #fafafa;
+}
+
+/* Loading */
+
+.load_container {
+	z-index: 5;
+	position: fixed;
+	animation: fadein 0.15s;
+	text-align: center;
+	width: 100%;
+	height: 100%;
+	position: fixed;
+	content: '';
+	background-color: rgba(0, 0, 0, 0.3);
+	top: 0;
+	left: 0;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	flex-direction: column;
+}
+
+.load_title {
+	color: #fafafa;
+	font-size: 4rem;
+	font-family: 'Satisfy', cursive;
+	margin-bottom: 30px;
+}
+
+.load_container > .icon_insta {
+	color: #fafafa;
+	width: 140px;
+}
+
+/* Navigation */
+.nav_block {
+	width: 100%;
+	height: 54px;
+	display: block;
+}
+
+.head_container {
+	display: block;
+	position: fixed;
+	background-color: #ffffff;
+	width: 100%;
+	height: 54px;
+	border-bottom: 1px #dbdbdb solid;
+	z-index: 2;
+}
+
+.nav_container {
+	animation: fadein 0.5s;
+	align-items: center;
+	padding: 0 20px;
+	max-width: 970px;
+	margin: 0 auto;
+	height: 100%;
+	display: flex;
+	justify-content: space-between;
+	align-items: center;
+}
+
+.head_logo {
+	font-weight: 700;
+	height: fit-content;
+	font-size: 1.5rem;
+	float: left;
+	font-family: 'Satisfy', cursive;
+}
+
+.nav_items {
+	float: right;
+	height: 100%;
+	display: flex;
+	align-items: center;
+}
+
+.nav_item {
+	margin-right: 10px;
+}
+
+.icon_home {
+	font-size: 25px;
+	color: #262626;
+}
+
+.nav_portrait {
+	width: 27px;
+	height: 27px;
+	margin-top: 3px;
+	border-radius: 50%;
+}
+
+.nav_NoPortrait {
+	color: black;
+	font-size: 27px;
+}
+
+/* Home Container */
+
+.home_container {
+	/* flex-wrap: wrap-reverse; */
+	animation: fadein 0.5s ease-in-out;
+	padding: 0 20px;
+	height: fit-content;
+	max-width: 985px;
+	display: flex;
+	margin: 0px auto;
+	padding-top: 30px;
+}
+
+.side_container {
+	animation: fadein 0.5s ease-in-out;
+	/* height: fit-content; */
+	width: 293px;
+}
+
+.main_container {
+	width: 614px;
+	margin-right: 20px;
+	font-family: 'Roboto', Arial, Helvetica, sans-serif;
+}
+
+.post {
+	min-width: 400px;
+	max-width: 614px;
+	height: fit-content;
+	margin-bottom: 20px;
+}
+
+.form_rweets,
+.profile_section {
+	padding: 10px;
+	width: 293px;
+	float: right;
+	position: fixed;
+	background-color: #ffffff;
+	border: 1px solid #dbdbdb;
+	border-radius: 3px;
+	margin-bottom: 30px;
+	height: fit-content;
+	font-family: 'Roboto', Arial, Helvetica, sans-serif;
+}
+
+/* rweet */
+
+.rweet_creator_container {
+	background-color: #ffffff;
+	border: 1px solid #dbdbdb;
+	border-radius: 3px;
+	height: 60px;
+	width: 100%;
+	position: relative;
+	display: flex;
+	align-items: center;
+}
+
+.rweet_creator_link {
+	text-decoration: none;
+	height: fit-content;
+	width: fit-content;
+	display: flex;
+	align-items: center;
+}
+
+.rweet_creator_img {
+	border-radius: 50%;
+	margin: 0px 10px 0px 15px;
+	width: 32px;
+	height: 32px;
+}
+
+.rweet_creator_name {
+	color: black;
+	font-weight: 500;
+	font-size: 14px;
+}
+
+.rweet_img_container {
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	position: relative;
+	background-color: black;
+	border: 1px solid #dbdbdb;
+	min-height: 400px;
+	height: fit-content;
+	width: 100%;
+	border-radius: 3px;
+}
+
+.rweet_creator_menu {
+	font-size: 14px;
+	position: absolute;
+	top: 23px;
+	right: 20px;
+	border: 0;
+	outline: 0;
+	background: 0;
+	cursor: pointer;
+}
+
+.rweet_img {
+	z-index: 1;
+	height: 100%;
+	width: 100%;
+	border-radius: 3px;
+}
+
+.rweet_text_container {
+	font-size: 14px;
+	height: fit-content;
+	width: 100%;
+	display: flex;
+}
+
+.rweet_text {
+	line-height: 130%;
+	padding: 13px;
+	background-color: #ffffff;
+	border: 1px solid #dbdbdb;
+	border-radius: 3px;
+	min-height: 100px;
+	height: fit-content;
+	width: 100%;
+	white-space: pre-wrap;
+	word-break: break-all;
+}
+
+.rweet_text_userName {
+	font-weight: 500;
+	margin-right: 5px;
+}
+
+/* RweetFactory */
+
+.form_rweets {
+	display: flex;
+	flex-direction: column;
+}
+
+.preview_container {
+	align-self: center;
+	width: 95%;
+	min-height: 220px;
+	height: fit-content;
+	border-radius: 3px;
+	border: 1px solid #dbdbdb;
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	position: relative;
+}
+
+.rweet_file_btn {
+	position: absolute;
+	color: #dbdbdb;
+}
+.real_preview {
+	position: relative;
+	width: 100%;
+	height: 100%;
+	border-radius: 3px;
+}
+
+.preview_cancel {
+	font-size: 17px;
+	cursor: pointer;
+	border: 0;
+	background-color: transparent;
+	right: 0px;
+	bottom: 5px;
+	position: absolute;
+	color: rgb(145, 140, 140);
+}
+
+.form_rweets_text {
+	margin-top: 5px;
+	width: 95%;
+	height: 130px;
+	padding: 10px;
+	outline: none;
+	border-radius: 3px;
+	border: 1px solid #dbdbdb;
+	resize: none;
+	align-self: center;
+}
+
+#input-file,
+#input-submit {
+	display: none;
+}
+
+.form_rweet_controller {
+	margin: 15px 0 15px 10px;
+	width: 80px;
+}
+
+.rweet_submit_btn {
+	color: #262626;
+}
+
+/* profile */
+
+.profile_show {
+	text-align: center;
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+}
+
+.profile_portrait {
+	margin-top: 20px;
+	width: 250px;
+	height: 250px;
+	position: relative;
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+}
+
+.profile_name_container {
+	margin: 10px 0;
+	width: 250px;
+	display: flex;
+	justify-content: center;
+	align-items: center;
+}
+
+.profile_name {
+	font-size: 1.7rem;
+	margin-right: 10px;
+}
+
+.profile_info {
+	font-size: 14px;
+	text-align: left;
+	line-height: 130%;
+	padding: 13px;
+	/* background-color: #ffffff;
+	border: 1px solid #dbdbdb;
+	border-radius: 3px; */
+	min-height: 130px;
+	height: fit-content;
+	width: 100%;
+	white-space: pre-wrap;
+	word-break: break-all;
+}
+
+.profile_form_info {
+	margin-bottom: 10px;
+	width: 95%;
+	height: 130px;
+	padding: 10px;
+	outline: none;
+	border-radius: 3px;
+	border: 1px solid #dbdbdb;
+	resize: none;
+	align-self: center;
+}
+
+.profile_update_btn {
+	font-size: 25px;
+}
+
+.default_portrait {
+	font-size: 250px;
+	color: #dbdbdb;
+	position: absolute;
+}
+
+.real_portrait {
+	z-index: 2;
+	border-radius: 50%;
+	width: 250px;
+	height: 250px;
+}
+
+.profile_menu {
+	margin-top: 10px;
+	animation: fadein 0.2s;
+	width: 100%;
+	height: fit-content;
+	border-radius: 3px;
+	display: flex;
+	flex-direction: column;
+	justify-content: center;
+	align-items: stretch;
+}
+
+.profile_btn {
+	cursor: pointer;
+	height: 30px;
+	border: 1px solid #dbdbdb;
+	border-radius: 3px;
+	outline: 0;
+	background-color: #fafafa;
+	font-weight: 500;
+	margin-bottom: 5px;
+}
+
+.editing_form {
+	animation: fadein 0.2s;
+	display: flex;
+	flex-direction: column;
+	align-items: stretch;
+}
+
+.name_form_container {
+	display: flex;
+	padding: 10px;
+	justify-content: space-between;
+}
+
+.name_label {
+	font-size: 15px;
+	line-height: 30px;
+	display: inline-block;
+	vertical-align: middle;
+}
+
+.name_form {
+	width: 190px;
+	outline: none;
+}
+
+/* Auth */
+
+.auth_container {
+	background-color: #ffffff;
+	border: 1px solid #dbdbdb;
+	border-radius: 3px;
+	height: fit-content;
+	width: 350px;
+	margin: 120px auto 0;
+}
+
+.auth_title {
+	width: 100%;
+	text-align: center;
+	font-size: 3rem;
+	font-family: 'Satisfy', cursive;
+	margin: 30px 0 45px;
+}
+
+.auth_form {
+	width: 100%;
+	height: 130px;
+}
+
+.auth_input {
+	background-color: #fafafa;
+	border: 1px solid #dbdbdb;
+	border-radius: 3px;
+	width: 75%;
+	height: 36px;
+	display: block;
+	margin: 5px auto;
+}
+
+.auth_btn {
+	background-color: #b2dffc;
+	border: 1px solid #dbdbdb;
+	border-radius: 3px;
+	width: 75%;
+	height: 30px;
+	display: block;
+	margin: 10px auto;
+	font-weight: 500;
+	color: #fafafa;
+	cursor: pointer;
+}
+
+.auth_mode_container {
+	background-color: #ffffff;
+	border: 1px solid #dbdbdb;
+	border-radius: 3px;
+	height: 63px;
+	width: 350px;
+	margin: 10px auto 0;
+	display: flex;
+	align-items: center;
+}
+
+.auth_mode {
+	width: 100%;
+	text-align: center;
+	font-weight: 500;
+	font-family: 'Roboto', Arial, Helvetica, sans-serif;
+	font-size: 14px;
+	color: #8e8e8e;
+	cursor: pointer;
+}
+
+.auth_ortext {
+	height: 15px;
+	width: 295.8px;
+	display: flex;
+	align-items: center;
+	margin: 5px auto;
+}
+
+.ortext_slice {
+	width: 114px;
+	height: 1px;
+	border-bottom: 1px solid #dbdbdb;
+}
+
+.ortext {
+	text-align: center;
+	width: 32px;
+	margin: 0px 17px;
+	font-weight: 500;
+	font-family: 'Roboto', Arial, Helvetica, sans-serif;
+	font-size: 14px;
+	color: #8e8e8e;
+}
+
+.auth_socialLogin {
+	width: 75%;
+	height: 70px;
+	margin: 30px auto;
+}
+
+.socialLogin_btn {
+	width: 100%;
+	height: 30px;
+	display: block;
+	margin: 10px auto;
+	cursor: pointer;
+	font-family: 'Roboto', Arial, Helvetica, sans-serif;
+	font-size: 14px;
+	color: #8e8e8e;
+	font-weight: 500;
+}
+
+.icon_google {
+	margin-right: 10px;
+	font-size: 15px;
+}
+
+.icon_github {
+	margin-right: 10px;
+	font-size: 15px;
+}
+
+.auth_error {
+	text-align: center;
+	color: red;
+	font-size: 14px;
+	margin: 20px 0;
+	font-weight: 600;
+}
+
+/* Modal */
+@keyframes fadein {
+	from {
+		opacity: 0;
+	}
+	to {
+		opacity: 1;
+	}
+}
+
+.modal {
+	width: 100%;
+	height: 100%;
+	position: fixed;
+	content: '';
+	background-color: rgba(0, 0, 0, 0.3);
+	top: 0;
+	left: 0;
+	z-index: 3;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+}
+
+.modal_content {
+	animation: fadein 0.15s;
+	z-index: 4;
+	width: 500px;
+	height: fit-content;
+	background-color: #ffffff;
+	border: 1px solid #dbdbdb;
+	border-radius: 10px;
+}
+
+.modal_btn_controller {
+	width: 100%;
+	height: fit-content;
+}
+
+.modal_btn {
+	font-weight: 500;
+	width: 100%;
+	height: 50px;
+	border: 0;
+	border-top: 1px solid#dbdbdb;
+	outline: 0;
+	background: 0;
+	cursor: pointer;
+}
+
+.edit_form {
+	width: 100%;
+	height: 300px;
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	justify-content: center;
+}
+
+.edit_text {
+	margin-top: 10px;
+	border-top-left-radius: 10px;
+	border-top-right-radius: 10px;
+	width: 95%;
+	height: 80%;
+	border: 1px solid #dbdbdb;
+	resize: none;
+	outline: none;
+}
+
+.edit_controller {
+	border-bottom-left-radius: 10px;
+	border-bottom-right-radius: 10px;
+	margin-bottom: 10px;
+	border: 1px solid #dbdbdb;
+	border-top: 0px;
+	width: 95%;
+	height: 15%;
+	display: flex;
+	justify-content: center;
+}
+
+.edit_btn1 {
+	font-weight: 500;
+	cursor: pointer;
+	border: 0;
+	outline: 0;
+	width: 50%;
+	border-right: 1px solid #dbdbdb;
+	background: 0;
+}
+.edit_btn2 {
+	font-weight: 500;
+	cursor: pointer;
+	border: 0;
+	outline: 0;
+	width: 50%;
+	background: 0;
+}

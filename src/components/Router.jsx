@@ -1,15 +1,28 @@
-import { Route, BrowserRouter, Switch } from 'react-router-dom';
+import { useSelector } from 'react-redux';
+import { Route, BrowserRouter, Switch, Redirect } from 'react-router-dom';
+import Auth from '../pages/Auth';
 import Home from '../pages/Home';
 import Profile from '../pages/Profile';
 import User from '../pages/User';
 
 const AppRouter = () => {
+	const isLoggedIn = useSelector((state) => state.init.currentUser.isSignIn);
 	return (
 		<BrowserRouter>
 			<Switch>
-				<Route path="/" exact component={Home} />
-				<Route path="/user" exact component={User} />
-				<Route path="/profile" exact component={Profile} />
+				{isLoggedIn ? (
+					<>
+						<Route path="/" exact component={Home} />
+						<Route path="/profile" exact component={Profile} />
+						<Route path="/user" exact component={User} />
+						<Redirect from="*" to="/" />
+					</>
+				) : (
+					<>
+						<Route path="/" exact component={Auth} />
+						<Redirect from="*" to="/" />
+					</>
+				)}
 			</Switch>
 		</BrowserRouter>
 	);
