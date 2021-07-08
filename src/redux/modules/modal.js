@@ -1,8 +1,19 @@
-// Action Type
+/* import { createSlice } from '@reduxjs/toolkit';
 
-// Action Creator
+// Initial State
+const initialState = {};
 
-// init Structure
+// Slice
+const modal = createSlice({
+	name: 'redux-racstagram/modal',
+	initialState,
+	reducers: {},
+	extraReducers: {},
+});
 
-// Reducer
-export default function reducer() {}
+export default modal.reducer;
+
+// actionCreator
+export const {} = modal.actions;
+
+// Async */

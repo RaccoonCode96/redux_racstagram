@@ -1,8 +1,19 @@
-// Action Type
+/* import { createSlice } from '@reduxjs/toolkit';
 
-// Action Creator
+// Initial State
+const initialState = {};
 
-// init Structure
+// Slice
+const load = createSlice({
+	name: 'redux-racstagram/load',
+	initialState,
+	reducers: {},
+	extraReducers: {},
+});
 
-// Reducer
-export default function reducer() {}
+export default load.reducer;
+
+// actionCreator
+export const {} = load.actions;
+
+// Async */

@@ -1,8 +1,19 @@
-// Action Type
+/* import { createSlice } from '@reduxjs/toolkit';
 
-// Action Creator
+// Initial State
+const initialState = {};
 
-// init Structure
+// Slice
+const navigation = createSlice({
+	name: 'redux-racstagram/navigation',
+	initialState,
+	reducers: {},
+	extraReducers: {},
+});
 
-// Reducer
-export default function reducer() {}
+export default navigation.reducer;
+
+// actionCreator
+export const {} = navigation.actions;
+
+// Async */

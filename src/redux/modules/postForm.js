@@ -1,8 +1,19 @@
-// Action Type
+/* import { createSlice } from '@reduxjs/toolkit';
 
-// Action Creator
+// Initial State
+const initialState = {};
 
-// init Structure
+// Slice
+const postForm = createSlice({
+	name: 'redux-racstagram/postForm',
+	initialState,
+	reducers: {},
+	extraReducers: {},
+});
 
-// Reducer
-export default function reducer() {}
+export default postForm.reducer;
+
+// actionCreator
+export const {} = postForm.actions;
+
+// Async */

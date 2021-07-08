@@ -1,10 +1,16 @@
+import { useCallback } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
 import Init from '../components/Init';
-import { useSelector } from 'react-redux';
+import { setIsinitTrue } from '../redux/modules/init';
 
 const InitContainer = () => {
-	const init = useSelector((state) => state.init);
+	const isInit = useSelector((state) => state.init.isInit);
+	const dispatch = useDispatch();
 
-	return <Init init={init} />;
+	const setIsinit = useCallback(() => {
+		dispatch(setIsinitTrue());
+	}, [dispatch]);
+	return <Init setIsinit={setIsinit} isInit={isInit} />;
 };
 
 export default InitContainer;
