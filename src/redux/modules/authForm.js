@@ -1,8 +1,19 @@
-// Action Type
+/* import { createSlice } from '@reduxjs/toolkit';
 
-// Action Creator
+// Initial State
+const initialState = {};
 
-// init Structure
+// Slice
+const authForm = createSlice({
+	name: 'redux-racstagram/authForm',
+	initialState,
+	reducers: {},
+	extraReducers: {},
+});
 
-// Reducer
-export default function reducer() {}
+export default authForm.reducer;
+
+// actionCreator
+// export const {} = authForm.actions;
+
+// Async */

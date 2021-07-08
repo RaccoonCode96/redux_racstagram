@@ -1,8 +1,32 @@
-// Action Type
+import { createSlice } from '@reduxjs/toolkit';
 
-// Action Creator
+// Initial State
+const initialState = {
+	isInit: false,
+	currentUser: {
+		loading: false,
+		photoURL: '',
+		displayName: '',
+		uid: '',
+		error: '',
+	},
+};
 
-// init Structure
+// Slice
+const init = createSlice({
+	name: 'redux-racstagram/init',
+	initialState,
+	reducers: {
+		setIsinitTrue: (state) => ({
+			...state,
+			isInit: true,
+		}),
+	},
+	extraReducers: {},
+});
 
-// Reducer
-export default function reducer() {}
+export default init.reducer;
+
+// actionCreator
+export const { setIsinitTrue } = init.actions;
+// Async
