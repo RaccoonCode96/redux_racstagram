@@ -1,7 +1,7 @@
 import { useCallback } from 'react';
 import { useDispatch } from 'react-redux';
 import SocialSignIn from '../components/SocialSignIn';
-import { SocialSignInThunk } from '../redux/modules/init';
+import { socialSignInThunk } from '../redux/modules/auth';
 
 const SocialSignInContainer = () => {
 	const dispatch = useDispatch();
@@ -10,7 +10,7 @@ const SocialSignInContainer = () => {
 			const {
 				target: { name },
 			} = event;
-			dispatch(SocialSignInThunk(name));
+			dispatch(socialSignInThunk(name));
 		},
 		[dispatch]
 	);

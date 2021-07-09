@@ -1,3 +1,13 @@
+# 프로젝트
+
+이 프로젝트는 기존에 React & firebase를 통해서 만든 인스타그램 클론 프로젝트 리팩토링 프로젝트 입니다.
+
+해당 프로젝트에서는 redux-toolkit을 사용하여 상태관리를 구현하고 있습니다.
+
+더불어 나중에, styled component나 sass 중에 채택하여 css 작업을 할 예정 입니다.
+
+<br/>
+
 # 오늘 깨달은 것
 
 <br/>
@@ -46,3 +56,30 @@
   - Router component : 간단한 Route 묶음 형태
   - rootReducer : slice.reducer를 묶는 combineReducers의 형태
   - store : rootReducer를 연결해 놓는 형태
+
+<br/>
+<br/>
+<br/>
+
+## 20210709
+
+- 궁금한점
+
+  - redux를 사용하는데, react-redux에서 제시하는 container component 개념으로 component를 깨끗하게 template로만 사용하는 용도 하고 싶다
+  - 하지만, 너무 그렇게 하면 오히려 component를 더 많이 만드는 것이 아닌가라는 생각도 든다.
+  - container 패턴에 딱 맞게 하는게 좋을 까 아니면, 융통성 있게 component를 작업 함수로 오염을 시켜도 될까?
+  - contextAPI vs redux-toolkit vs graphql -> 과연 어느 상태 관리가 좋을 까?
+
+- 깨달은 점
+
+  - `input`을 구현할 때 controlled component 방식은 input의 event를 통해서 입력을 받아 react의 상태값을 일치 시키고 해당 값을 다시 input 컴포넌트에 반영하여 일치시키는 작업
+
+    - 여러 input을 사용하는 경우 객체에 한번에 담아 사용하는 게 보기 좋은 듯함
+    - 객체 안의 값은 변하는 값이지만, 객체 식별자가 참조하는 값(객체가 들어있는 메모리 주소)은 변하지 않기 때문에 react에서는 변한 값이라고 인식하지 못하여 render를 하지 않음
+    - useState 사용시 화면이 rendering 될수 있게 새로운 객체가 setState 되게 해야함 (새로운 값이라고 인식하게 해야함)
+
+  - `form`을 사용하는 이유는 짐작으로는 단지, enter를 통해서 해당 액션이 일어나게 하려는 것 같다.
+
+    - 어차피 controlled component 방식으로 input을 사용하는 경우, react state에 반영되어서 이미 값을 가진 상태인데, button onClick으로 그냥 해당 액션을 요청하면 되지 않나라는 생각이 든다.
+
+  - `useRef`는 실제 돔의 여러가지 상태를 조작해야 하는 경우 사용하는 것(비제어 컴포넌트)

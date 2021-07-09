@@ -1,4 +1,4 @@
-import AuthForm from '../components/AuthForm';
+import SignInFormContainer from '../containers/SignInFormContainer';
 import SignInError from '../components/SignInError';
 import SocialSignInContainer from '../containers/SocialSignInContainer';
 
@@ -8,7 +8,7 @@ const Auth = () => {
 			<div className="auth_container">
 				<h2 className="auth_title">Racstagram</h2>
 				<div className="auth_form">
-					<AuthForm />
+					<SignInFormContainer />
 				</div>
 				<div className="auth_ortext">
 					<div className="ortext_slice"></div>
