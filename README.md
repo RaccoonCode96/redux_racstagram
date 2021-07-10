@@ -88,9 +88,9 @@
 <br/>
 <br/>
 
-## Auth
+## 20210710
 
-### 20210710
+### Auth
 
 - [x] Auth 로그인 화면, 가입화면 통합 하여 토글로 변경
   - [x] id, password 넣은 input은 공유하고, 가입화면에만 nickname input 추가 구현
@@ -100,3 +100,9 @@
   - [x] 가입시 nickname input으로 사용할 이름을 받아 사용자 profile displayName을 초기에 설정 (사용자 info는 로그인 해야 업데이트 할 수 있음)
 - [x] error Auth 화면에 보이기
 - [x] social 로그인 Popup -> Redirect (브라우저는 popup 띄우는것을 안좋아함, popup시 error로 중지는 안되지만 콘솔에 경고가 뜸)
+
+<br/>
+
+- thunkAPI의 getState는 안에 콜백으로 세세하게 state를 가져오지 못함
+  - 무조건 전체 state라서 일단 받고, 분리해서 가져와야 함
+- 화면에 띄울 에러 메세지는 따로 Error state를 만들어서 어떤 작업중 에러 발생시 error를 update하게 해서 상황에 맞는 Error를 가져와 처리 할수 있음
