@@ -1,108 +1,79 @@
-# 프로젝트
+> # 리팩토링 Instagram 클론 프로젝트 by Redux-toolkit
+
+<br/>
+
+![instagram_logo](https://user-images.githubusercontent.com/76491635/125172632-b7b10180-e1f5-11eb-98a8-a5977759bd42.png)
+
+<br/>
+
+> # 📄 프로젝트 설명
+
+<br/>
 
 이 프로젝트는 기존에 React & firebase를 통해서 만든 인스타그램 클론 프로젝트 리팩토링 프로젝트 입니다.
 
-해당 프로젝트에서는 redux-toolkit을 사용하여 상태관리를 구현하고 있습니다.
+<br/>
+
+해당 프로젝트에서는 `redux-toolkit(Slice 모델)`을 사용하여 상태관리를 구현하고 있습니다.
+
+<br/>
 
 더불어 나중에, styled component나 sass 중에 채택하여 css 작업을 할 예정 입니다.
 
 <br/>
 
-# 오늘 깨달은 것
-
-<br/>
-
-## 20210708
-
-<br/>
-
-- `Page의 Container는 없는게 좋을듯 하다.`
-
-  - page는 말 그대로 page니까, Container 또는 Component 만을 배치하는 용도로 사용하는 것이 좋을 듯 하다.
-
-<br/>
-
-- `Error : A non-serializable value was detected in an action`
-
-  - 엄청 큰 데이터를 받아서 하나의 Action 객체를 만들려고 하면 에러 발생함
-  - ActionCreator에 데이터를 넣어 Action을 만들기 전에, 해당 데이터에 필요한 데이터만 가져오도록 하자
-  - toolkit을 사용하면, slice에서 prepare 프로퍼티를 지정하면 action을 만들 데이터를 사전에 가공할 수 있음
-
-<br/>
-
-- `dispatch 사용시 ActionCreator를 참조하지 말고 꼭 호출하는 것을 잊지말자`
-
-<br/>
-
-- `createAsyncThunk 사용시 try-catch, async-await를 잊지 말자`
-
-  - slice 방식을 사용하는 비동기 작업은 createAsyncThunk를 통해서 쉽게 구현할 수 있다.
-  - 에러를 받고, 비동기 작업을 연속으로 처리하는 과정은 try-catch문, async-await 조합으로 하는게 깔끔하니 좋다.
-  - then, catch 방식은 가독성이 떨어지는듯 하다.
-
-<br/>
-
-- `Detail Error 받기`
-
-  - Detail Error를 받으려면 ExtraReducers에 `action.payload`로 Error를 받아오도록 해야한다.
-  - action.error는 단지 rejected message 밖에 없다.
-
-<br/>
-
-- 나중에, redux-toolkit용 component, container, module/slice, rootReducer, store까지 설정해 놓은 **template를 만들어 놓으면 좋을 듯하다.**
-  - modules/slice : Async, Initial State, Slice, actionCreator 영역을 주석으로 구분하고 각각 어느정도 구성을 해놓은 형태
-  - container : component를 연결하는 형태
-  - component : 간단한 jsx를 return하여 구분할 수 있는 형태
-  - Router component : 간단한 Route 묶음 형태
-  - rootReducer : slice.reducer를 묶는 combineReducers의 형태
-  - store : rootReducer를 연결해 놓는 형태
+- 여러가지 다른 활동을 자세히 보고 싶으시다면, [ '라쿤코드의 개발블로그'](https://goforit.tistory.com/)에서 확인 가능합니다.
 
 <br/>
 <br/>
 <br/>
 
-## 20210709
+# 💻 화면 개요
 
-- 궁금한점
+<br/>
 
-  - redux를 사용하는데, react-redux에서 제시하는 container component 개념으로 component를 깨끗하게 template로만 사용하는 용도 하고 싶다
-  - 하지만, 너무 그렇게 하면 오히려 component를 더 많이 만드는 것이 아닌가라는 생각도 든다.
-  - container 패턴에 딱 맞게 하는게 좋을 까 아니면, 융통성 있게 component를 작업 함수로 오염을 시켜도 될까?
-  - contextAPI vs redux-toolkit vs graphql -> 과연 어느 상태 관리가 좋을 까?
+체크는 현재 구현된 상황을 의미합니다.
 
-- 깨달은 점
+<br/>
 
-  - `input`을 구현할 때 controlled component 방식은 input의 event를 통해서 입력을 받아 react의 상태값을 일치 시키고 해당 값을 다시 input 컴포넌트에 반영하여 일치시키는 작업
-
-    - 여러 input을 사용하는 경우 객체에 한번에 담아 사용하는 게 보기 좋은 듯함
-    - 객체 안의 값은 변하는 값이지만, 객체 식별자가 참조하는 값(객체가 들어있는 메모리 주소)은 변하지 않기 때문에 react에서는 변한 값이라고 인식하지 못하여 render를 하지 않음
-    - useState 사용시 화면이 rendering 될수 있게 새로운 객체가 setState 되게 해야함 (새로운 값이라고 인식하게 해야함)
-
-  - `form`을 사용하는 이유는 짐작으로는 단지, enter를 통해서 해당 액션이 일어나게 하려는 것 같다.
-
-    - 어차피 controlled component 방식으로 input을 사용하는 경우, react state에 반영되어서 이미 값을 가진 상태인데, button onClick으로 그냥 해당 액션을 요청하면 되지 않나라는 생각이 든다.
-
-  - `useRef`는 실제 돔의 여러가지 상태를 조작해야 하는 경우 사용하는 것(비제어 컴포넌트)
+- [x] `로딩 화면 또는 Component` : 앱 실행 초기화 작업시 로딩 또는 다른 작업시 사용할 로딩 화면 및 Component
+- [x] `로그인 화면` : 기본 Email 로그인, Social 로그인, 로그인 에러
+  - [x] `Email 로그인` : Email, Password input, 로그인 버튼
+  - [x] `Social 로그인` : google로그인 버튼, github로그인 버튼
+  - [x] `로그인 에러` : Email로그인, google로그인, github 로그인 에러 발생시 사용자에게 출력
+- [x] `회원가입 화면` : Email 로그인을 위한 계정을 만드는 화면, 회원가입 에러
+  - [x] `Email 형식 가입` : Email, Password input, 회원가입 버튼
+    - [x] 가입시 사용자 Nickname 지정 input (추가 사항)
+- [ ] `피드 화면` : 사용 유저의 모든 게시글을 표시하는 화면
+  - [ ] `게시글 박스` :
+    - [ ] `타이틀 영역` : 최상단의 작성자 사진 + 이름, 게시글 수정 탭
+    - [ ] `사진 영역` : 기존에는 1개만 가능했음 (욕심내면, 여러개 슬라이드 형식으로 가능하게 하고 싶음)
+    - [ ] `내용 영역` : 게시글 내용
+- [ ] `현재 유저 프로필 화면` : 로그인한 현재 유저의 게시물과 대략적인 프로필를 표시하는 화면
+- [ ] `유저 프로필 화면` : 유저의 게시물과 프로필을 확인 할수 있는 화면 (피드 게시글 작성자 유저 이름을 눌러 유저 프로필 화면으로 이동)
+- [ ] `네비게이션 바` : 앱로고 - 피드(Home)탭 - 글 작성탭 - 현재 유저 프로필(프로필 수정, 프로필 이동, 로그아웃) 탭
+  - [x] `로그아웃`
 
 <br/>
 <br/>
 <br/>
 
-## 20210710
-
-### Auth
-
-- [x] Auth 로그인 화면, 가입화면 통합 하여 토글로 변경
-  - [x] id, password 넣은 input은 공유하고, 가입화면에만 nickname input 추가 구현
-- [x] email 로그인 구현
-- [x] email 가입 구현
-  - [x] 가입시 바로 로그인
-  - [x] 가입시 nickname input으로 사용할 이름을 받아 사용자 profile displayName을 초기에 설정 (사용자 info는 로그인 해야 업데이트 할 수 있음)
-- [x] error Auth 화면에 보이기
-- [x] social 로그인 Popup -> Redirect (브라우저는 popup 띄우는것을 안좋아함, popup시 error로 중지는 안되지만 콘솔에 경고가 뜸)
+> # 📅 TIL (Today I Learned, 오늘 깨달은 것들)
 
 <br/>
 
-- thunkAPI의 getState는 안에 콜백으로 세세하게 state를 가져오지 못함
-  - 무조건 전체 state라서 일단 받고, 분리해서 가져와야 함
-- 화면에 띄울 에러 메세지는 따로 Error state를 만들어서 어떤 작업중 에러 발생시 error를 update하게 해서 상황에 맞는 Error를 가져와 처리 할수 있음
+### 2021.07.08 사항
+
+- https://goforit.tistory.com/168
+
+<br/>
+
+### 2021.07.09 사항
+
+- https://goforit.tistory.com/169
+
+<br/>
+
+### 2021.07.10 사항
+
+- https://goforit.tistory.com/170
