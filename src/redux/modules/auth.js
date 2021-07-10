@@ -3,6 +3,7 @@ import { authService, firebaseInstance } from '../../fBase';
 
 // Initial State
 const initialState = {
+	errorSelector: '',
 	emailSignIn: {
 		isSignIn: false,
 		loading: false,
@@ -23,6 +24,7 @@ export const emailSignInThunk = createAsyncThunk(
 			await authService.signInWithEmailAndPassword(email, password);
 			return true;
 		} catch (error) {
+			thunkAPI.dispatch(selectError(error.code));
 			return thunkAPI.rejectWithValue({
 				code: error.code,
 				message: error.message,
@@ -48,6 +50,7 @@ export const socialSignInThunk = createAsyncThunk(
 			await authService.signInWithPopup(provider);
 			return true;
 		} catch (error) {
+			thunkAPI.dispatch(selectError(error.code));
 			return thunkAPI.rejectWithValue({
 				code: error.code,
 				message: error.message,
@@ -64,46 +67,50 @@ const auth = createSlice({
 		resetAuth: (state) => ({
 			...initialState,
 		}),
+		selectError: (state, { payload }) => ({
+			...state,
+			errorSelector: payload,
+		}),
 	},
 	extraReducers: {
 		[emailSignInThunk.pending]: (state) => ({
 			...state,
 			emailSignIn: { ...state.emailSignIn, loading: true },
 		}),
-		[emailSignInThunk.fulfilled]: (state, action) => ({
+		[emailSignInThunk.fulfilled]: (state, { payload }) => ({
 			...state,
 			emailSignIn: {
 				...state.emailSignIn,
 				loading: false,
-				isSignIn: action.payload,
+				isSignIn: payload,
 			},
 		}),
-		[emailSignInThunk.rejected]: (state, action) => ({
+		[emailSignInThunk.rejected]: (state, { payload }) => ({
 			...state,
 			emailSignIn: {
 				...state.emailSignIn,
 				loading: false,
-				signInError: action.payload,
+				signInError: payload,
 			},
 		}),
 		[socialSignInThunk.pending]: (state) => ({
 			...state,
 			socialSignIn: { ...state.socialSignIn, loading: true },
 		}),
-		[socialSignInThunk.fulfilled]: (state, action) => ({
+		[socialSignInThunk.fulfilled]: (state, { payload }) => ({
 			...state,
 			socialSignIn: {
 				...state.socialSignIn,
 				loading: false,
-				isSignIn: action.payload,
+				isSignIn: payload,
 			},
 		}),
-		[socialSignInThunk.rejected]: (state, action) => ({
+		[socialSignInThunk.rejected]: (state, { payload }) => ({
 			...state,
 			socialSignIn: {
 				...state.socialSignIn,
 				loading: false,
-				signInError: action.payload,
+				signInError: payload,
 			},
 		}),
 	},
@@ -112,6 +119,6 @@ const auth = createSlice({
 export default auth.reducer;
 
 // actionCreator
-export const { resetAuth } = auth.actions;
+export const { resetAuth, selectError } = auth.actions;
 
 // Async
