@@ -100,7 +100,7 @@ export const socialSignInThunk = createAsyncThunk(
 				provider = new firebaseInstance.auth.GithubAuthProvider();
 			}
 			provider.addScope('profile');
-			await authService.signInWithPopup(provider);
+			await authService.signInWithRedirect(provider);
 			return true;
 		} catch (error) {
 			thunkAPI.dispatch(selectError(error.code));
