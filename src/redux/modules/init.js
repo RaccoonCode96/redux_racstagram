@@ -1,37 +1,8 @@
-import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
-import { authService, firebaseInstance } from '../../fBase';
-
-// Async
-export const SocialSignInThunk = createAsyncThunk(
-	'redux-racstagram/auth/SocialSignInThunk',
-	async (name, thunkAPI) => {
-		try {
-			await authService.setPersistence(
-				firebaseInstance.auth.Auth.Persistence.SESSION
-			);
-			let provider;
-			if (name === 'google') {
-				provider = new firebaseInstance.auth.GoogleAuthProvider();
-			} else if (name === 'github') {
-				provider = new firebaseInstance.auth.GithubAuthProvider();
-			}
-			provider.addScope('profile');
-			await authService.signInWithPopup(provider);
-			return true;
-		} catch (error) {
-			return thunkAPI.rejectWithValue(error);
-		}
-	}
-);
+import { createSlice } from '@reduxjs/toolkit';
 
 // Initial State
 const initialState = {
 	isInit: false,
-	socialSignIn: {
-		loading: false,
-		isSignIn: false,
-		signInError: '',
-	},
 	currentUser: {
 		isSignIn: false,
 		photoURL: '',
@@ -66,28 +37,7 @@ const init = createSlice({
 			}),
 		},
 	},
-	extraReducers: {
-		[SocialSignInThunk.pending]: (state) => ({
-			...state,
-			socialSignIn: { ...state.socialSignIn, loading: true },
-		}),
-		[SocialSignInThunk.fulfilled]: (state, action) => ({
-			...state,
-			socialSignIn: {
-				...state.socialSignIn,
-				loading: false,
-				isSignIn: action.payload,
-			},
-		}),
-		[SocialSignInThunk.rejected]: (state, action) => ({
-			...state,
-			socialSignIn: {
-				...state.socialSignIn,
-				loading: false,
-				signInError: action.payload,
-			},
-		}),
-	},
+	extraReducers: {},
 });
 
 export default init.reducer;

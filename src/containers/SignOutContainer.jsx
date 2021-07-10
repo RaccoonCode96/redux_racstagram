@@ -5,8 +5,9 @@ import { authService } from '../fBase';
 
 const SignOutContainer = () => {
 	const history = useHistory();
-	const onSignOutClick = useCallback(() => {
-		authService.signOut();
+
+	const onSignOutClick = useCallback(async () => {
+		await authService.signOut();
 		history.push('/');
 	}, [history]);
 	return <SignOut onSignOutClick={onSignOutClick} />;
