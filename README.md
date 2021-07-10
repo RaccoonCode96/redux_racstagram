@@ -83,3 +83,20 @@
     - 어차피 controlled component 방식으로 input을 사용하는 경우, react state에 반영되어서 이미 값을 가진 상태인데, button onClick으로 그냥 해당 액션을 요청하면 되지 않나라는 생각이 든다.
 
   - `useRef`는 실제 돔의 여러가지 상태를 조작해야 하는 경우 사용하는 것(비제어 컴포넌트)
+
+<br/>
+<br/>
+<br/>
+
+## Auth
+
+### 20210710
+
+- [x] Auth 로그인 화면, 가입화면 통합 하여 토글로 변경
+  - [x] id, password 넣은 input은 공유하고, 가입화면에만 nickname input 추가 구현
+- [x] email 로그인 구현
+- [x] email 가입 구현
+  - [x] 가입시 바로 로그인
+  - [x] 가입시 nickname input으로 사용할 이름을 받아 사용자 profile displayName을 초기에 설정 (사용자 info는 로그인 해야 업데이트 할 수 있음)
+- [x] error Auth 화면에 보이기
+- [x] social 로그인 Popup -> Redirect (브라우저는 popup 띄우는것을 안좋아함, popup시 error로 중지는 안되지만 콘솔에 경고가 뜸)
