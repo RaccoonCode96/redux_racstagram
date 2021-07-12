@@ -36,11 +36,11 @@ export const emailSignUpThunk = createAsyncThunk(
 			await authService.createUserWithEmailAndPassword(email, password);
 			await thunkAPI.dispatch(emailSignInThunk(data));
 			return true;
-		} catch (error) {
-			thunkAPI.dispatch(selectError(error.code));
+		} catch ({ code, message }) {
+			thunkAPI.dispatch(selectError(code));
 			return thunkAPI.rejectWithValue({
-				code: error.code,
-				message: error.message,
+				code,
+				message,
 			});
 		}
 	}
@@ -51,17 +51,14 @@ export const updateDisplayNameThunk = createAsyncThunk(
 	async (displayName, thunkAPI) => {
 		try {
 			await authService.currentUser.updateProfile({ displayName });
-			const state = await thunkAPI.getState();
-			thunkAPI.dispatch(
-				setCurrentUser({ ...state.init.currentUser, displayName })
-			);
+			const {
+				init: { currentUser },
+			} = await thunkAPI.getState();
+			thunkAPI.dispatch(setCurrentUser({ ...currentUser, displayName }));
 			return true;
-		} catch (error) {
-			thunkAPI.dispatch(selectError(error.code));
-			return thunkAPI.rejectWithValue({
-				code: error.code,
-				message: error.message,
-			});
+		} catch ({ code, message }) {
+			thunkAPI.dispatch(selectError(code));
+			return thunkAPI.rejectWithValue({ code, message });
 		}
 	}
 );
@@ -76,12 +73,9 @@ export const emailSignInThunk = createAsyncThunk(
 				await thunkAPI.dispatch(updateDisplayNameThunk(displayName));
 			}
 			return true;
-		} catch (error) {
-			thunkAPI.dispatch(selectError(error.code));
-			return thunkAPI.rejectWithValue({
-				code: error.code,
-				message: error.message,
-			});
+		} catch ({ code, message }) {
+			thunkAPI.dispatch(selectError(code));
+			return thunkAPI.rejectWithValue({ code, message });
 		}
 	}
 );
@@ -102,12 +96,9 @@ export const socialSignInThunk = createAsyncThunk(
 			provider.addScope('profile');
 			await authService.signInWithRedirect(provider);
 			return true;
-		} catch (error) {
-			thunkAPI.dispatch(selectError(error.code));
-			return thunkAPI.rejectWithValue({
-				code: error.code,
-				message: error.message,
-			});
+		} catch ({ code, message }) {
+			thunkAPI.dispatch(selectError(code));
+			return thunkAPI.rejectWithValue({ code, message });
 		}
 	}
 );

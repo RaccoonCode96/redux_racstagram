@@ -4,6 +4,7 @@ import Auth from '../pages/Auth';
 import Home from '../pages/Home';
 import Profile from '../pages/Profile';
 import User from '../pages/User';
+import Write from '../pages/Write';
 
 const AppRouter = () => {
 	const isLoggedIn = useSelector((state) => state.init.currentUser.isSignIn);
@@ -13,6 +14,7 @@ const AppRouter = () => {
 				{isLoggedIn ? (
 					<>
 						<Route path="/" exact component={Home} />
+						<Route path="/write" exact component={Write} />
 						<Route path="/profile" exact component={Profile} />
 						<Route path="/user" exact component={User} />
 						<Redirect from="*" to="/" />

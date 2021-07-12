@@ -1,6 +1,7 @@
 import { createSlice } from '@reduxjs/toolkit';
 
 // Initial State
+
 const initialState = {
 	isInit: false,
 	currentUser: {
@@ -27,12 +28,9 @@ const init = createSlice({
 			}),
 			prepare: ({ photoURL, displayName, uid }) => ({
 				payload: uid
-					? { photoURL, displayName, uid, isSignIn: true }
+					? { photoURL: photoURL ?? '', displayName, uid, isSignIn: true }
 					: {
-							photoURL: '',
-							displayName: '',
-							uid: '',
-							isSignIn: false,
+							...initialState.currentUser,
 					  },
 			}),
 		},

@@ -1,5 +1,12 @@
+import NavigationContainer from '../containers/NavigationContainer';
+
 const User = () => {
-	return <div>User</div>;
+	return (
+		<>
+			<NavigationContainer />
+			<div>User</div>
+		</>
+	);
 };
 
 export default User;

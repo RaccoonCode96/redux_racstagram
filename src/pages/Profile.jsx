@@ -1,5 +1,12 @@
+import NavigationContainer from '../containers/NavigationContainer';
+
 const Profile = () => {
-	return <div>Profile</div>;
+	return (
+		<>
+			<NavigationContainer />
+			<div>Profile</div>
+		</>
+	);
 };
 
 export default Profile;

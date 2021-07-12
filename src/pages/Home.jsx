@@ -1,9 +1,12 @@
+import NavigationContainer from '../containers/NavigationContainer';
+import PostContainer from '../containers/PostContainer';
 import SignOutContainer from '../containers/SignOutContainer';
 
 const Home = () => {
 	return (
 		<>
-			<div>Home</div>
+			<NavigationContainer />
+			<PostContainer />
 			<SignOutContainer />
 		</>
 	);
