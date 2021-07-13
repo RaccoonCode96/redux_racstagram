@@ -1,9 +1,9 @@
 import { faImage, faUserCircle } from '@fortawesome/free-regular-svg-icons';
-import { faEllipsisH } from '@fortawesome/free-solid-svg-icons';
+// import { faEllipsisH } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { Link } from 'react-router-dom';
 
-const Post = ({ post }) => {
+const Post = ({ post, deletePost, updatePost }) => {
 	return (
 		<div className="post">
 			<>
@@ -26,9 +26,23 @@ const Post = ({ post }) => {
 						)}
 						<h4 className="rweet_creator_name">{post.userDisplayName}</h4>
 					</Link>
-					<button className="rweet_creator_menu">
-						<FontAwesomeIcon icon={faEllipsisH} size="1x" />
+					<button
+						onClick={() => {
+							deletePost(post);
+						}}
+					>
+						삭제
 					</button>
+					<button
+						onClick={() => {
+							updatePost(post);
+						}}
+					>
+						수정
+					</button>
+					{/* <button className="rweet_creator_menu">
+						<FontAwesomeIcon icon={faEllipsisH} size="1x" />
+					</button> */}
 				</div>
 				<div className="rweet_img_container">
 					<FontAwesomeIcon

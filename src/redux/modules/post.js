@@ -2,9 +2,35 @@ import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
 import { v4 as uuidv4 } from 'uuid';
 import { dbService, storageService } from '../../fBase';
 
+/* 
+postList
+ [
+  {
+    postId,
+    userDisplayName,
+    userId,
+    postDate,
+    userPhotoUrl,
+    postImageUrl,
+    postText
+  }
+] 
+*/
+
 // Initial State
 const initialState = {
 	postList: [],
+	postSelector: '',
+	updatePost: {
+		isUpdate: false,
+		loading: false,
+		updateError: '',
+	},
+	deletePost: {
+		isDelete: false,
+		loading: false,
+		deleteError: '',
+	},
 	getPostList: {
 		isGet: false,
 		loading: false,
@@ -24,6 +50,60 @@ const initialState = {
 };
 
 // Async
+export const updatePostThunk = createAsyncThunk(
+	'redux-racstagram/post/updatePostThunk',
+	async (inputs, thunkAPI) => {
+		try {
+			const {
+				init: { currentUser },
+				post: { getImageUrl },
+			} = await thunkAPI.getState();
+			const { postId, text, prevImageUrl, userId } = inputs;
+			// 유저 방어 코드
+			if (userId === currentUser.uid) {
+				if (prevImageUrl !== '') {
+					await storageService.refFromURL(prevImageUrl).delete();
+				}
+				await dbService.collection('posts').doc(postId).update({
+					postText: text,
+					postImageUrl: getImageUrl.imageUrl,
+				});
+			} else {
+				throw new Error('Invalid user access!');
+			}
+			return true;
+		} catch ({ code, message }) {
+			return thunkAPI.rejectWithValue({ code, message });
+		}
+	}
+);
+
+export const deletePostThunk = createAsyncThunk(
+	'redux-racstagram/post/deletePostThunk',
+	async (thunkAPI) => {
+		try {
+			let result = '';
+			const {
+				init: { currentUser },
+				post: { postSelector },
+			} = await thunkAPI.getState();
+			const { postId, postImageUrl, userId } = postSelector;
+			// 유저 방어 코드
+			if (userId === currentUser.uid) {
+				await dbService.doc(`posts/${postId}`).delete();
+				if (postImageUrl !== '') {
+					await storageService.refFromURL(postImageUrl).delete();
+				}
+				result = postId;
+			} else {
+				throw new Error('Invalid user access!');
+			}
+			return result;
+		} catch ({ code, message }) {
+			return thunkAPI.rejectWithValue({ code, message });
+		}
+	}
+);
 
 export const getImageUrlThunk = createAsyncThunk(
 	'redux-racstagram/post/getImageUrlThunk',
@@ -105,6 +185,10 @@ const post = createSlice({
 		resetPost: (state) => ({
 			...initialState,
 		}),
+		selectPost: (state, { payload }) => ({
+			...state,
+			postSelector: payload,
+		}),
 	},
 	extraReducers: {
 		[getImageUrlThunk.pending]: (state) => ({
@@ -169,10 +253,50 @@ const post = createSlice({
 				getError: payload,
 			},
 		}),
+		[deletePostThunk.pending]: (state) => ({
+			...state,
+			deletePost: { ...state.deletePost, loading: true },
+		}),
+		[deletePostThunk.fulfilled]: (state, { payload }) => {
+			const result = state.postList.filter((post) => post.postId !== payload);
+			return {
+				...state,
+				postList: result,
+				deletePost: {
+					...state.deletePost,
+					loading: false,
+					isDelete: true,
+				},
+			};
+		},
+		[deletePostThunk.rejected]: (state, { payload }) => ({
+			...state,
+			deletePost: {
+				...state.deletePost,
+				loading: false,
+				deleteError: payload,
+			},
+		}),
+		[updatePostThunk.pending]: (state) => ({
+			...state,
+			updatePost: { ...state.updatePost, loading: true },
+		}),
+		[updatePostThunk.fulfilled]: (state, { payload }) => ({
+			...state,
+			updatePost: { ...state.updatePost, isUpdate: payload, loading: false },
+		}),
+		[updatePostThunk.rejected]: (state, { payload }) => ({
+			...state,
+			updatePost: {
+				...state.updatePost,
+				loading: false,
+				updateError: payload,
+			},
+		}),
 	},
 });
 
 export default post.reducer;
 
 // actionCreator
-export const { resetPost } = post.actions;
+export const { resetPost, selectPost } = post.actions;
