@@ -7,14 +7,17 @@ import { getImageUrlThunk, updatePostThunk } from '../redux/modules/post';
 const PostUpdateContainer = () => {
 	const history = useHistory();
 	const dispatch = useDispatch();
-	const post = useSelector((state) => state.post.postSelector);
+	const { postImageUrl, postText, postId, userId } = useSelector(
+		(state) => state.post.postSelector
+	);
 	const [inputs, setInputs] = useState({
-		imageBase64: post.postImageUrl,
-		text: post.postText,
+		imageBase64: postImageUrl,
+		prevImageUrl: postImageUrl,
+		prevText: postText,
+		text: postText,
+		postId,
+		userId,
 		preventSubmit: false,
-		postId: post.postId,
-		prevImageUrl: post.postImageUrl,
-		userId: post.userId,
 	});
 
 	const onChange = useCallback(
@@ -40,9 +43,22 @@ const PostUpdateContainer = () => {
 	const onSubmit = useCallback(
 		async (event) => {
 			event.preventDefault();
-			if (inputs.preventSubmit === false && inputs.imageBase64) {
+			// 이미지가 있고 없고 분류 처리 필요
+			const { preventSubmit, imageBase64, prevImageUrl, text, prevText } =
+				inputs;
+			if (
+				preventSubmit === true ||
+				(text === prevText && imageBase64 === prevImageUrl)
+			) {
+				history.push('/');
+				return;
+			} else {
+				// submit false 이고 이전 값과 같지 않으면
 				setInputs({ ...inputs, preventSubmit: true });
-				await dispatch(getImageUrlThunk(inputs.imageBase64));
+				// 이전과 같진 않지만, 값이 있는 경우
+				if (imageBase64) {
+					await dispatch(getImageUrlThunk(imageBase64));
+				}
 				await dispatch(updatePostThunk(inputs));
 				setInputs({ ...inputs, preventSubmit: false });
 				history.push('/');

@@ -11,6 +11,11 @@ const initialState = {
 		loading: false,
 		updateError: '',
 	},
+	updatePhotoUrl: {
+		isUpdate: false,
+		loading: false,
+		updateError: '',
+	},
 	emailSignUp: {
 		isSignUp: false,
 		loading: false,
@@ -47,7 +52,7 @@ export const emailSignUpThunk = createAsyncThunk(
 );
 
 export const updateDisplayNameThunk = createAsyncThunk(
-	'redux-racstagram/auth/updateProfileThunk',
+	'redux-racstagram/auth/updateDisplayThunk',
 	async (displayName, thunkAPI) => {
 		try {
 			await authService.currentUser.updateProfile({ displayName });
@@ -55,6 +60,23 @@ export const updateDisplayNameThunk = createAsyncThunk(
 				init: { currentUser },
 			} = await thunkAPI.getState();
 			thunkAPI.dispatch(setCurrentUser({ ...currentUser, displayName }));
+			return true;
+		} catch ({ code, message }) {
+			thunkAPI.dispatch(selectError(code));
+			return thunkAPI.rejectWithValue({ code, message });
+		}
+	}
+);
+
+export const updatePhotoUrlThunk = createAsyncThunk(
+	'redux-racstagram/auth/updatePhotoUrlThunk',
+	async (photoURL, thunkAPI) => {
+		try {
+			await authService.currentUser.updateProfile({ photoURL });
+			const {
+				init: { currentUser },
+			} = await thunkAPI.getState();
+			thunkAPI.dispatch(setCurrentUser({ ...currentUser, photoURL }));
 			return true;
 		} catch ({ code, message }) {
 			thunkAPI.dispatch(selectError(code));
@@ -197,6 +219,26 @@ const auth = createSlice({
 			...state,
 			updateDisplayName: {
 				...state.updateDisplayName,
+				loading: false,
+				updateError: payload,
+			},
+		}),
+		[updatePhotoUrlThunk.pending]: (state) => ({
+			...state,
+			updatePhotoUrl: { ...state.updatePhotoUrl, loading: true },
+		}),
+		[updatePhotoUrlThunk.fulfilled]: (state, { payload }) => ({
+			...state,
+			updatePhotoUrl: {
+				...state.updatePhotoUrl,
+				loading: false,
+				isUpdate: payload,
+			},
+		}),
+		[updatePhotoUrlThunk.rejected]: (state, { payload }) => ({
+			...state,
+			updatePhotoUrl: {
+				...state.updatePhotoUrl,
 				loading: false,
 				updateError: payload,
 			},

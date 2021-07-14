@@ -10,6 +10,7 @@ const initialState = {
 		displayName: '',
 		uid: '',
 	},
+	updateSelector: '',
 };
 
 // Slice
@@ -34,6 +35,10 @@ const init = createSlice({
 					  },
 			}),
 		},
+		updateSelector: (state, { payload }) => ({
+			...state,
+			updateSelector: payload,
+		}),
 	},
 	extraReducers: {},
 });
@@ -41,6 +46,6 @@ const init = createSlice({
 export default init.reducer;
 
 // actionCreator
-export const { setIsinitTrue, setCurrentUser } = init.actions;
+export const { setIsinitTrue, setCurrentUser, updateSelector } = init.actions;
 
 // payload로 한번에 너무 많은 데이터를 redux로 보내면 안됨, prepare에서 걸러지도록 해야함

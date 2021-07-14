@@ -58,16 +58,23 @@ export const updatePostThunk = createAsyncThunk(
 				init: { currentUser },
 				post: { getImageUrl },
 			} = await thunkAPI.getState();
-			const { postId, text, prevImageUrl, userId } = inputs;
+			const { postId, text, prevImageUrl, imageBase64, userId } = inputs;
 			// 유저 방어 코드
 			if (userId === currentUser.uid) {
-				if (prevImageUrl !== '') {
+				if (prevImageUrl) {
 					await storageService.refFromURL(prevImageUrl).delete();
 				}
-				await dbService.collection('posts').doc(postId).update({
-					postText: text,
-					postImageUrl: getImageUrl.imageUrl,
-				});
+				if (imageBase64) {
+					await dbService.collection('posts').doc(postId).update({
+						postImageUrl: getImageUrl.imageUrl,
+					});
+				}
+				await dbService
+					.collection('posts')
+					.doc(postId)
+					.update({
+						postText: text ?? '',
+					});
 			} else {
 				throw new Error('Invalid user access!');
 			}

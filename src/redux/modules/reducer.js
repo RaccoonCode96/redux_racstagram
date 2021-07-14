@@ -2,6 +2,7 @@ import { combineReducers } from 'redux';
 import init from './init';
 import auth from './auth';
 import post from './post';
+import profile from './profile';
 /* import authForm from './AuthForm';
 import load from './Load';
 import modal from './Modal';
@@ -14,12 +15,14 @@ const reducer = combineReducers({
 	init,
 	auth,
 	post,
-	/* 	authForm,
+	profile,
+	/* 	
+  authForm,
 	load,
 	modal,
 	navigation,
 	postForm,
-	profileForm, */
+  */
 });
 
 export default reducer;

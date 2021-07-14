@@ -1,10 +1,11 @@
 import NavigationContainer from '../containers/NavigationContainer';
+import UserProfileContainer from '../containers/UserProfileContainer';
 
 const Profile = () => {
 	return (
 		<>
 			<NavigationContainer />
-			<div>Profile</div>
+			<UserProfileContainer />
 		</>
 	);
 };
