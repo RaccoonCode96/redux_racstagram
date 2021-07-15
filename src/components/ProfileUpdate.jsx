@@ -10,7 +10,12 @@ const ProfileUpdate = ({ onChange, inputs, onSubmit }) => {
 			)}
 
 			<form onSubmit={onSubmit}>
-				<input type="file" name="file" accept="image/*" onChange={onChange} />
+				<input
+					type="file"
+					name="file"
+					accept=".jpg, .png"
+					onChange={onChange}
+				/>
 				<textarea
 					name="text"
 					value={text}

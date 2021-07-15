@@ -100,19 +100,26 @@
 - 글 수정, 글 삭제 구현 (Update, Delete 구현)
   - https://goforit.tistory.com/176
 
+<br/>
+
 ### 2021.07.14 사항
 
-- postUpdate, profileUpdate는 update 라우트를 공유하게 함
-  - 안그러면 라우트가 많아짐
-  - 아니면 나중에, component로 빼서 사용할 수도 있음
-- profile update 구현
-- displayName, photoURL만 변경시킬수 있게 해놓았음
-  - text를 구현시켜야함, firebase의 경우 displayName과 photoURL만 지원하기 때문에, 데이터베이스에 user탭을 따로 만들어야 함
-- 오늘은 여러 조건에서 방어코드로 빨리 빠져나오게 하는 처리를 깨달았음
-- 소셜로그인시 자동으로 가져오는 프로필 사진의 경우 storage에 올라가지 않기 때문에, 기존 프로필 사진을 변경하는 경우의 storage url을 지워야 하는데 여기서 까다롭다.
-  - 생각01: 애초에 소셜 로그인 프로필을 받지 않는다.
-  - 생각02: 소셜 로그인으로 처음 가입하여 들어가는 경우에, 해당 프로필 이미지를 storage에 넣는다. (처음 가입하는 때를 찾기가 힘듦)
-  - 생각03: 소셜 로그인 프로필의 url을 storage에서 찾아서 없으면 지우기를 넘어감
-    - url의 존재를 보려면, 결국엔 error로 확인 가능함
-    - 에러 처리시 존재하지 않는 에러코드일 경우 그냥 넘어가고, 그외의 에러는 받아서 위로 올려서 에러 반환시켜야 함 (try-catch를 한번더 씀으로)
-- getImageUrl 공통 사용 데이터 쪽으로 올려야 함
+- 프로필 수정 구현, profile 이미지 url 처리에 관한 문제 발생과 고민
+  - https://goforit.tistory.com/177
+
+<br/>
+
+### 2021.07.15 사항
+
+<br/>
+
+- profile 이미지 url 삭제에 관한 문제 해결
+
+  - 그냥, 따로 action을 만들어서 error를 처리받고 updateProfile에서는 try에 넣지 않음으로서 이미지 삭제 에러가 발생해도 실패만 redux로 뜨고, 나머지는 진행하게됨
+
+- 나중에, User에 대한 정보를 firebase database에 만들어서 관리해야함
+  - 현재는 post에 userPhotoUrl, displayName이 존재하여 모든 글을 찾아서 업데이트하기란 성능에 좋지 않음
+  - post의 userId 만 가지고 데이터베이스의 유저정보를 가져와서 글상자의 상단을 구성하면 굳이 글을 모두 update할 필요가 없음
+- **결국에는 firebase의 currentUser의 photoUrl, displayName은 한계가 있으므로 User를 관리하는 데이터베이스가 필요함**
+  - User 데이터 베이스 구성하고 User 데이터 베이스 중심의 profile update 및 가입시 User데이터 지정 작업을 구현해야함
+  - 로그인시 제공하는 uid를 가지고 User 데이터를 활용하도록 개편이 필요함

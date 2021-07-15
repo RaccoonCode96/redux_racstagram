@@ -1,35 +1,53 @@
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
+import { storageService } from '../../fBase';
 import { updateDisplayNameThunk, updatePhotoUrlThunk } from './auth';
 
 // Initial State
 const initialState = {
 	updateProfile: {
-		laoding: false,
+		loading: false,
 		isUpdate: false,
 		updateError: '',
+	},
+	deleteImageUrl: {
+		loading: false,
+		isDelete: false,
+		deleteError: '',
 	},
 };
 
 // Async
+export const deleteImageUrlThunk = createAsyncThunk(
+	'redux-racstagram/profile/deleteImageUrlThunk',
+	async (ImageUrl, thunkAPI) => {
+		try {
+			storageService.refFromURL(ImageUrl).delete();
+			return true;
+		} catch ({ code, message }) {
+			return thunkAPI.rejectWithValue({ code, message });
+		}
+	}
+);
+
 export const updateProfileThunk = createAsyncThunk(
 	'redux-racstagram/profile/updateProfileThunk',
 	async (inputs, thunkAPI) => {
+		const {
+			post: { getImageUrl },
+		} = await thunkAPI.getState();
+		const { displayName, imageBase64, prevImageUrl } = inputs;
+
+		// 이전 storage 이미지 파일 제거 처리 (초반 외부 image URL인 경우 에러 제외)
+		if (prevImageUrl) {
+			thunkAPI.dispatch(deleteImageUrlThunk(prevImageUrl));
+		}
+		// 추가하는 이미지 url & displayName 반영 하기
 		try {
-			const {
-				post: { getImageUrl },
-			} = await thunkAPI.getState();
-			const { displayName, imageBase64 } = inputs;
-
-			// 기존 url 삭제는 보류
-			// if(prevImageUrl) {
-			//     await storageService.refFromURL(prevImageUrl).delete();
-			// }
-
 			if (imageBase64) {
-				await thunkAPI.dispatch(updatePhotoUrlThunk(getImageUrl.imageUrl));
+				thunkAPI.dispatch(updatePhotoUrlThunk(getImageUrl.imageUrl));
 			}
 			if (displayName) {
-				await thunkAPI.dispatch(updateDisplayNameThunk(displayName));
+				thunkAPI.dispatch(updateDisplayNameThunk(displayName));
 			}
 			return true;
 		} catch ({ code, message }) {
@@ -62,6 +80,26 @@ const profile = createSlice({
 				...state.updateProfile,
 				loading: false,
 				updateError: payload,
+			},
+		}),
+		[deleteImageUrlThunk.pending]: (state) => ({
+			...state,
+			deleteImageUrl: { ...state.deleteImageUrl, loading: true },
+		}),
+		[deleteImageUrlThunk.fulfilled]: (state, { payload }) => ({
+			...state,
+			deleteImageUrl: {
+				...state.deleteImageUrl,
+				loading: false,
+				isDelete: payload,
+			},
+		}),
+		[deleteImageUrlThunk.rejected]: (state, { payload }) => ({
+			...state,
+			deleteImageUrl: {
+				...state.deleteImageUrl,
+				loading: false,
+				deleteError: payload,
 			},
 		}),
 	},
