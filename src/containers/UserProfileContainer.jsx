@@ -2,7 +2,7 @@ import { useCallback } from 'react';
 import { useDispatch } from 'react-redux';
 import { useHistory } from 'react-router-dom';
 import UserProfile from '../components/UserProfile';
-import { updateSelector } from '../redux/modules/init';
+import { updateSelector } from '../redux/modules/common';
 
 const UserProfileContainer = () => {
 	const dispatch = useDispatch();

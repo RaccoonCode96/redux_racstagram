@@ -2,7 +2,8 @@ import { useCallback, useState } from 'react';
 import { useDispatch } from 'react-redux';
 import { useHistory } from 'react-router-dom';
 import PostForm from '../components/PostForm';
-import { getImageUrlThunk, setPostObjThunk } from '../redux/modules/post';
+import { getImageUrlThunk } from '../redux/modules/common';
+import { setPostObjThunk } from '../redux/modules/post';
 
 const PostFormContainer = () => {
 	const history = useHistory();

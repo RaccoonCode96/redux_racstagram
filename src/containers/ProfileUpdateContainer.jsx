@@ -3,14 +3,14 @@ import { useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useHistory } from 'react-router-dom';
 import ProfileUpdate from '../components/ProfileUpdate';
-import { getImageUrlThunk } from '../redux/modules/post';
+import { getImageUrlThunk } from '../redux/modules/common';
 import { updateProfileThunk } from '../redux/modules/profile';
 
 const ProfileUpdateContainer = () => {
 	const history = useHistory();
 	const dispatch = useDispatch();
 	const { photoURL, displayName } = useSelector(
-		(state) => state.init.currentUser
+		(state) => state.profile.currentUser
 	);
 	const [inputs, setInputs] = useState({
 		text: '',

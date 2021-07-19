@@ -4,13 +4,6 @@ import { createSlice } from '@reduxjs/toolkit';
 
 const initialState = {
 	isInit: false,
-	currentUser: {
-		isSignIn: false,
-		photoURL: '',
-		displayName: '',
-		uid: '',
-	},
-	updateSelector: '',
 };
 
 // Slice
@@ -22,23 +15,6 @@ const init = createSlice({
 			...state,
 			isInit: true,
 		}),
-		setCurrentUser: {
-			reducer: (state, { payload }) => ({
-				...state,
-				currentUser: { ...state.currentUser, ...payload },
-			}),
-			prepare: ({ photoURL, displayName, uid }) => ({
-				payload: uid
-					? { photoURL: photoURL ?? '', displayName, uid, isSignIn: true }
-					: {
-							...initialState.currentUser,
-					  },
-			}),
-		},
-		updateSelector: (state, { payload }) => ({
-			...state,
-			updateSelector: payload,
-		}),
 	},
 	extraReducers: {},
 });
@@ -46,6 +22,6 @@ const init = createSlice({
 export default init.reducer;
 
 // actionCreator
-export const { setIsinitTrue, setCurrentUser, updateSelector } = init.actions;
+export const { setIsinitTrue } = init.actions;
 
 // payload로 한번에 너무 많은 데이터를 redux로 보내면 안됨, prepare에서 걸러지도록 해야함

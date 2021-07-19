@@ -1,5 +1,4 @@
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
-import { v4 as uuidv4 } from 'uuid';
 import { dbService, storageService } from '../../fBase';
 
 /* 
@@ -36,12 +35,6 @@ const initialState = {
 		loading: false,
 		getError: '',
 	},
-	getImageUrl: {
-		isGet: false,
-		loading: false,
-		getError: '',
-		imageUrl: '',
-	},
 	setPostObj: {
 		isSet: false,
 		loading: false,
@@ -55,8 +48,8 @@ export const updatePostThunk = createAsyncThunk(
 	async (inputs, thunkAPI) => {
 		try {
 			const {
-				init: { currentUser },
-				post: { getImageUrl },
+				profile: { currentUser },
+				common: { getImageUrl },
 			} = await thunkAPI.getState();
 			const { postId, text, prevImageUrl, imageBase64, userId } = inputs;
 			// 유저 방어 코드
@@ -87,17 +80,17 @@ export const updatePostThunk = createAsyncThunk(
 
 export const deletePostThunk = createAsyncThunk(
 	'redux-racstagram/post/deletePostThunk',
-	async (thunkAPI) => {
+	async (data, thunkAPI) => {
 		try {
-			let result = '';
 			const {
-				init: { currentUser },
+				profile: { currentUser },
 				post: { postSelector },
 			} = await thunkAPI.getState();
+			let result = '';
 			const { postId, postImageUrl, userId } = postSelector;
 			// 유저 방어 코드
 			if (userId === currentUser.uid) {
-				await dbService.doc(`posts/${postId}`).delete();
+				await dbService.collection('posts').doc(postId).delete();
 				if (postImageUrl !== '') {
 					await storageService.refFromURL(postImageUrl).delete();
 				}
@@ -107,33 +100,8 @@ export const deletePostThunk = createAsyncThunk(
 			}
 			return result;
 		} catch ({ code, message }) {
+			console.log({ code, message });
 			return thunkAPI.rejectWithValue({ code, message });
-		}
-	}
-);
-
-export const getImageUrlThunk = createAsyncThunk(
-	'redux-racstagram/post/getImageUrlThunk',
-	async (imageBase64, thunkAPI) => {
-		try {
-			if (imageBase64) {
-				const {
-					init: { currentUser },
-				} = await thunkAPI.getState();
-				// storage 생성
-				const attachmentRef = storageService
-					.ref()
-					.child(`${currentUser.uid}/${uuidv4()}`);
-				// firebase storage에 데이터 넣기
-				const res = await attachmentRef.putString(imageBase64, 'data_url');
-				// url 가져오기
-				return await res.ref.getDownloadURL();
-			}
-		} catch ({ code, message }) {
-			return thunkAPI.rejectWithValue({
-				code,
-				message,
-			});
 		}
 	}
 );
@@ -143,8 +111,8 @@ export const setPostObjThunk = createAsyncThunk(
 	async (text, thunkAPI) => {
 		try {
 			const {
-				init: { currentUser },
-				post: { getImageUrl },
+				profile: { currentUser },
+				common: { getImageUrl },
 			} = await thunkAPI.getState();
 			const postObj = {
 				postText: text,
@@ -198,27 +166,6 @@ const post = createSlice({
 		}),
 	},
 	extraReducers: {
-		[getImageUrlThunk.pending]: (state) => ({
-			...state,
-			getImageUrl: { ...state.getImageUrl, loading: true },
-		}),
-		[getImageUrlThunk.fulfilled]: (state, { payload }) => ({
-			...state,
-			getImageUrl: {
-				...state.getImageUrl,
-				loading: false,
-				isGet: true,
-				imageUrl: payload,
-			},
-		}),
-		[getImageUrlThunk.rejected]: (state, { payload }) => ({
-			...state,
-			getImageUrl: {
-				...state.getImageUrl,
-				loading: false,
-				getError: payload,
-			},
-		}),
 		[setPostObjThunk.pending]: (state) => ({
 			...state,
 			setPostObj: { ...state.setPostObj, loading: true },

@@ -1,21 +1,11 @@
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
 import { authService, firebaseInstance } from '../../fBase';
-import { setCurrentUser } from './init';
+import { updateDisplayNameThunk } from './profile';
 
 // Initial State
 const initialState = {
 	newAccount: false,
 	errorSelector: '',
-	updateDisplayName: {
-		isUpdate: false,
-		loading: false,
-		updateError: '',
-	},
-	updatePhotoUrl: {
-		isUpdate: false,
-		loading: false,
-		updateError: '',
-	},
 	emailSignUp: {
 		isSignUp: false,
 		loading: false,
@@ -31,8 +21,27 @@ const initialState = {
 		loading: false,
 		signInError: '',
 	},
+	signOut: {
+		isSignOut: false,
+		loading: false,
+		signOutError: '',
+	},
 };
 // async
+export const signOutThunk = createAsyncThunk(
+	'redux-racstagram/auth/signOutThunk',
+	async (thunkAPI) => {
+		try {
+			await authService.signOut();
+			return true;
+		} catch ({ code, message }) {
+			return thunkAPI.rejectWithValue({
+				code,
+				message,
+			});
+		}
+	}
+);
 export const emailSignUpThunk = createAsyncThunk(
 	'redux-racstagram/auth/emailSignUpThunk',
 	async (data, thunkAPI) => {
@@ -47,40 +56,6 @@ export const emailSignUpThunk = createAsyncThunk(
 				code,
 				message,
 			});
-		}
-	}
-);
-
-export const updateDisplayNameThunk = createAsyncThunk(
-	'redux-racstagram/auth/updateDisplayThunk',
-	async (displayName, thunkAPI) => {
-		try {
-			await authService.currentUser.updateProfile({ displayName });
-			const {
-				init: { currentUser },
-			} = await thunkAPI.getState();
-			thunkAPI.dispatch(setCurrentUser({ ...currentUser, displayName }));
-			return true;
-		} catch ({ code, message }) {
-			thunkAPI.dispatch(selectError(code));
-			return thunkAPI.rejectWithValue({ code, message });
-		}
-	}
-);
-
-export const updatePhotoUrlThunk = createAsyncThunk(
-	'redux-racstagram/auth/updatePhotoUrlThunk',
-	async (photoURL, thunkAPI) => {
-		try {
-			await authService.currentUser.updateProfile({ photoURL });
-			const {
-				init: { currentUser },
-			} = await thunkAPI.getState();
-			thunkAPI.dispatch(setCurrentUser({ ...currentUser, photoURL }));
-			return true;
-		} catch ({ code, message }) {
-			thunkAPI.dispatch(selectError(code));
-			return thunkAPI.rejectWithValue({ code, message });
 		}
 	}
 );
@@ -203,44 +178,24 @@ const auth = createSlice({
 				signUpError: payload,
 			},
 		}),
-		[updateDisplayNameThunk.pending]: (state) => ({
+		[signOutThunk.pending]: (state) => ({
 			...state,
-			updateDisplayName: { ...state.updateDisplayName, loading: true },
+			signOut: { ...state.signOut, loading: true },
 		}),
-		[updateDisplayNameThunk.fulfilled]: (state, { payload }) => ({
+		[signOutThunk.fulfilled]: (state, { payload }) => ({
 			...state,
-			updateDisplayName: {
-				...state.updateDisplayName,
+			signOut: {
+				...state.signOut,
 				loading: false,
-				isUpdate: payload,
+				isSignOut: payload,
 			},
 		}),
-		[updateDisplayNameThunk.rejected]: (state, { payload }) => ({
+		[signOutThunk.rejected]: (state, { payload }) => ({
 			...state,
-			updateDisplayName: {
-				...state.updateDisplayName,
+			signOut: {
+				...state.signOut,
 				loading: false,
-				updateError: payload,
-			},
-		}),
-		[updatePhotoUrlThunk.pending]: (state) => ({
-			...state,
-			updatePhotoUrl: { ...state.updatePhotoUrl, loading: true },
-		}),
-		[updatePhotoUrlThunk.fulfilled]: (state, { payload }) => ({
-			...state,
-			updatePhotoUrl: {
-				...state.updatePhotoUrl,
-				loading: false,
-				isUpdate: payload,
-			},
-		}),
-		[updatePhotoUrlThunk.rejected]: (state, { payload }) => ({
-			...state,
-			updatePhotoUrl: {
-				...state.updatePhotoUrl,
-				loading: false,
-				updateError: payload,
+				signOutError: payload,
 			},
 		}),
 	},

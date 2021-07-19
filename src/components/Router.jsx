@@ -8,7 +8,7 @@ import User from '../pages/User';
 import Write from '../pages/Write';
 
 const AppRouter = () => {
-	const isLoggedIn = useSelector((state) => state.init.currentUser.isSignIn);
+	const isLoggedIn = useSelector((state) => state.profile.currentUser.isSignIn);
 	return (
 		<BrowserRouter>
 			<Switch>

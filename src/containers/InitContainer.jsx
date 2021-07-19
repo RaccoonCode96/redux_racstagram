@@ -2,7 +2,8 @@ import { useCallback } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import Init from '../components/Init';
 import { authService } from '../fBase';
-import { setIsinitTrue, setCurrentUser } from '../redux/modules/init';
+import { setIsinitTrue } from '../redux/modules/init';
+import { setCurrentUser } from '../redux/modules/profile';
 
 const InitContainer = () => {
 	const isInit = useSelector((state) => state.init.isInit);
