@@ -1,9 +1,11 @@
 import { combineReducers } from 'redux';
+
 import init from './init';
 import auth from './auth';
 import post from './post';
 import profile from './profile';
 import common from './common';
+import users from './users';
 
 const reducer = combineReducers({
 	init,
@@ -11,6 +13,7 @@ const reducer = combineReducers({
 	post,
 	profile,
 	common,
+	users,
 });
 
 /* 
@@ -98,6 +101,9 @@ state = {
       deleteError: '',
     },
   },
+  users :{
+    
+  }
 }
  */
 

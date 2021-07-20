@@ -1,9 +1,10 @@
-const UserProfile = ({ updateProfile }) => {
+const UserProfile = ({ updateProfile, profileInfo }) => {
+	const { userPhotoUrl, userDisplayName, userIntro } = profileInfo;
 	return (
 		<>
-			<div>UserImage</div>
-			<div>UserName</div>
-			<div>UserIntroText</div>
+			<img src={userPhotoUrl} alt="userPhotoUrl" width="300px" />
+			<div>{userDisplayName}</div>
+			<div>{userIntro}</div>
 			<button onClick={updateProfile}>수정하기</button>
 		</>
 	);

@@ -2,6 +2,7 @@ import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
 import { deleteImageUrlThunk } from './common';
 import { authService } from '../../fBase';
 import { selectError } from './auth';
+import { setCurrentUserInfoThunk } from './users';
 
 // Initial State
 const initialState = {
@@ -38,6 +39,9 @@ export const updateDisplayNameThunk = createAsyncThunk(
 				profile: { currentUser },
 			} = await thunkAPI.getState();
 			thunkAPI.dispatch(setCurrentUser({ ...currentUser, displayName }));
+			thunkAPI.dispatch(
+				setCurrentUserInfoThunk({ userDisplayName: displayName })
+			);
 			return true;
 		} catch ({ code, message }) {
 			thunkAPI.dispatch(selectError(code));
@@ -55,6 +59,7 @@ export const updatePhotoUrlThunk = createAsyncThunk(
 				profile: { currentUser },
 			} = await thunkAPI.getState();
 			thunkAPI.dispatch(setCurrentUser({ ...currentUser, photoURL }));
+			thunkAPI.dispatch(setCurrentUserInfoThunk({ userPhotoUrl: photoURL }));
 			return true;
 		} catch ({ code, message }) {
 			thunkAPI.dispatch(selectError(code));
