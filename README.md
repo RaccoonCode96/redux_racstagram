@@ -123,3 +123,38 @@
 - **결국에는 firebase의 currentUser의 photoUrl, displayName은 한계가 있으므로 User를 관리하는 데이터베이스가 필요함**
   - User 데이터 베이스 구성하고 User 데이터 베이스 중심의 profile update 및 가입시 User데이터 지정 작업을 구현해야함
   - 로그인시 제공하는 uid를 가지고 User 데이터를 활용하도록 개편이 필요함
+
+### 2021.07.19 사항
+
+- 전체적인 redux 상태 관리 구조 개편
+
+### 2021.07.20 사항
+
+- user를 관리하는 users 데이터 베이스 구현
+  - users는 다른 사람의 user 데이터 까지 보관할 예정
+  - 글상자에서, user 관련 데이터를 사용하게 되는 경우 uid로 가져올 수 있게 할 예정(update가 빠름)
+- update profile, get profile를 데이터 베이스를 통하는 것으로 개편
+- currentUserInfo를 만들어 현재 유저 User 관련 정보만 담는 state를 만듦
+  - profile의 currentUser는 uid만 관리하게 하도록 할 예정
+
+<br/>
+
+- 작성자 정보를 post가 가지는것 vs uid만 post가 가지고 작성자 정보를 따로 관리
+  - post가 가지는 경우
+  - 저장 공간이 늘어남, 유저 정보가 update되면 해당 글을 모두 찾아 update해주어야 함
+  - 유저가 많아져서 글의 개수가 많아지면, update하는데 현재 만들어진 모든 글의 개수만큼 연산하는 시간이 걸림
+  - update는 많이 일어 나진 않을 것 같음
+  - 글 불러오는데 O(n) 예상
+  - update 하는데 O(n) 예상
+
+<br/>
+  
+  - 따로 관리하는 경우 
+    - 저장 공간이 줄어듬, 글을 불러 올 때 마다 uid를 통해서 작성자 정보를 가져와야함(글을 찾아서 update를 할 필요는 없음)
+    - 유저가 많아져서 글의 개수가 많아져도, update하는 시간은 유저 수 정도만 연산하는 시간이 걸림
+    - 글 불러오는데 O(n^2) 예상
+    - update 하는데 O(n) 예상
+
+<br/>
+
+- 따로 관리하는 경우가 더 느릴 것으로 예상됨 하지만, user intro를 관리하려면 필요하긴 함
