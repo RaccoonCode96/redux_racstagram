@@ -1,8 +1,7 @@
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
 import { deleteImageUrlThunk } from './common';
-import { authService } from '../../fBase';
-import { selectError } from './auth';
 import { setCurrentUserInfoThunk } from './users';
+import { updatePostUserInfoThunk } from './post';
 
 // Initial State
 const initialState = {
@@ -13,60 +12,11 @@ const initialState = {
 	},
 	currentUser: {
 		isSignIn: false,
-		photoURL: '',
-		displayName: '',
 		uid: '',
-	},
-	updateDisplayName: {
-		isUpdate: false,
-		loading: false,
-		updateError: '',
-	},
-	updatePhotoUrl: {
-		isUpdate: false,
-		loading: false,
-		updateError: '',
 	},
 };
 
 // Async
-export const updateDisplayNameThunk = createAsyncThunk(
-	'redux-racstagram/profile/updateDisplayThunk',
-	async (displayName, thunkAPI) => {
-		try {
-			await authService.currentUser.updateProfile({ displayName });
-			const {
-				profile: { currentUser },
-			} = await thunkAPI.getState();
-			thunkAPI.dispatch(setCurrentUser({ ...currentUser, displayName }));
-			thunkAPI.dispatch(
-				setCurrentUserInfoThunk({ userDisplayName: displayName })
-			);
-			return true;
-		} catch ({ code, message }) {
-			thunkAPI.dispatch(selectError(code));
-			return thunkAPI.rejectWithValue({ code, message });
-		}
-	}
-);
-
-export const updatePhotoUrlThunk = createAsyncThunk(
-	'redux-racstagram/profile/updatePhotoUrlThunk',
-	async (photoURL, thunkAPI) => {
-		try {
-			await authService.currentUser.updateProfile({ photoURL });
-			const {
-				profile: { currentUser },
-			} = await thunkAPI.getState();
-			thunkAPI.dispatch(setCurrentUser({ ...currentUser, photoURL }));
-			thunkAPI.dispatch(setCurrentUserInfoThunk({ userPhotoUrl: photoURL }));
-			return true;
-		} catch ({ code, message }) {
-			thunkAPI.dispatch(selectError(code));
-			return thunkAPI.rejectWithValue({ code, message });
-		}
-	}
-);
 
 export const updateProfileThunk = createAsyncThunk(
 	'redux-racstagram/profile/updateProfileThunk',
@@ -74,7 +24,7 @@ export const updateProfileThunk = createAsyncThunk(
 		const {
 			common: { getImageUrl },
 		} = await thunkAPI.getState();
-		const { displayName, imageBase64, prevImageUrl } = inputs;
+		const { displayName, imageBase64, prevImageUrl, userIntro } = inputs;
 
 		// 이전 storage 이미지 파일 제거 처리 (초반 외부 image URL인 경우 에러 제외)
 		if (prevImageUrl) {
@@ -82,11 +32,22 @@ export const updateProfileThunk = createAsyncThunk(
 		}
 		// 추가하는 이미지 url & displayName 반영 하기
 		try {
-			if (imageBase64) {
-				thunkAPI.dispatch(updatePhotoUrlThunk(getImageUrl.imageUrl));
-			}
-			if (displayName) {
-				thunkAPI.dispatch(updateDisplayNameThunk(displayName));
+			if (userIntro || displayName || imageBase64) {
+				await Promise.all([
+					thunkAPI.dispatch(
+						setCurrentUserInfoThunk({
+							userIntro,
+							userDisplayName: displayName,
+							userPhotoUrl: getImageUrl.imageUrl,
+						})
+					),
+					thunkAPI.dispatch(
+						updatePostUserInfoThunk({
+							userDisplayName: displayName,
+							userPhotoUrl: getImageUrl.imageUrl,
+						})
+					),
+				]);
 			}
 			return true;
 		} catch ({ code, message }) {
@@ -100,14 +61,18 @@ const profile = createSlice({
 	name: 'redux-racstagram/profile',
 	initialState,
 	reducers: {
+		resetProfile: () => ({ ...initialState }),
 		setCurrentUser: {
 			reducer: (state, { payload }) => ({
 				...state,
 				currentUser: { ...state.currentUser, ...payload },
 			}),
-			prepare: ({ photoURL, displayName, uid }) => ({
+			prepare: ({ uid }) => ({
 				payload: uid
-					? { photoURL: photoURL ?? '', displayName, uid, isSignIn: true }
+					? {
+							...(uid && { uid }),
+							isSignIn: true,
+					  }
 					: {
 							...initialState.currentUser,
 					  },
@@ -115,46 +80,6 @@ const profile = createSlice({
 		},
 	},
 	extraReducers: {
-		[updateDisplayNameThunk.pending]: (state) => ({
-			...state,
-			updateDisplayName: { ...state.updateDisplayName, loading: true },
-		}),
-		[updateDisplayNameThunk.fulfilled]: (state, { payload }) => ({
-			...state,
-			updateDisplayName: {
-				...state.updateDisplayName,
-				loading: false,
-				isUpdate: payload,
-			},
-		}),
-		[updateDisplayNameThunk.rejected]: (state, { payload }) => ({
-			...state,
-			updateDisplayName: {
-				...state.updateDisplayName,
-				loading: false,
-				updateError: payload,
-			},
-		}),
-		[updatePhotoUrlThunk.pending]: (state) => ({
-			...state,
-			updatePhotoUrl: { ...state.updatePhotoUrl, loading: true },
-		}),
-		[updatePhotoUrlThunk.fulfilled]: (state, { payload }) => ({
-			...state,
-			updatePhotoUrl: {
-				...state.updatePhotoUrl,
-				loading: false,
-				isUpdate: payload,
-			},
-		}),
-		[updatePhotoUrlThunk.rejected]: (state, { payload }) => ({
-			...state,
-			updatePhotoUrl: {
-				...state.updatePhotoUrl,
-				loading: false,
-				updateError: payload,
-			},
-		}),
 		[updateProfileThunk.pending]: (state) => ({
 			...state,
 			updateProfile: { ...state.updateProfile, loading: true },
@@ -181,7 +106,7 @@ const profile = createSlice({
 export default profile.reducer;
 
 // actionCreator
-export const { setCurrentUser } = profile.actions;
+export const { setCurrentUser, resetProfile } = profile.actions;
 
 // post 위치의 getImageUrl 공유 위치로 옮기기
 // profile photo storage에서 지우는 것은 보류

@@ -127,3 +127,64 @@
 
 - 현재 유저의 profile 보여주기 구현 ,users database 구현, profile update시 users db로 관리 구현
   - https://goforit.tistory.com/184
+
+### 2021.07.21 사항
+
+- 유저 데이터 베이스를 활용하도록 변경함
+
+- `소셜 로그인시` -> 기존의 유저 데이터베이스에 정보가 있는지를 확인해서 소셜 로그인의 정보로 세팅함, 없는 정보는 Default 값을 줌 (displayName이 없으면 uuid로 random으로 넣어줌, 이미지가 없으면 기본 이미지를 넣어줌)
+  - 어쨌거나, 한번 최초 로그인 하면 유저 데이터 베이스에 정보가 생김
+- `일반 이메일 가입시` -> 닉네임은 무조건 받기로 되어 있고 유저 이미지는 Default 값을 줌
+
+- 유저 profile 수정시, 기존에 작성한 글의 user 정보와 users 데이터 베이스에 있는 정보도 수정하게 함
+- 기존의 updateDisplayName, updateImageUrl의 경우 합쳐서 만들었음
+  - `updatePostUserInfoThunk` : posts에 있는 유저가 작성한 post에 있는 유저 정보 수정
+  - `setCurrentUserInfoThunk` : users 데이터베이스의 현재 유저의 user 데이터를 수정
+  - `getCurrentUserInfoThunk` : 현재 users 데이터베이스의 현재 유저의 user 데이터를 가져옴
+
+## 깨달은 것
+
+- **데이터가 없는 경우에 유연하게 해당 데이터를 넣지 않는 스프레드 문법의 표현식**
+  - 기존의 값을 유지한 상태에서 변하는 값만 update 한 새로운 object를 만들 수 있음
+  - 재사용성을 높여주는 방식임
+
+```js
+const init = {
+	name: '',
+	weight: 0,
+	tall: 0,
+	isAnimal: false,
+	isbird: false,
+};
+
+const Raccoon = {
+	name: 'Raccoon',
+	weight: 75,
+	tall: 180,
+};
+
+const Jerry = {
+	name: 'Jerry',
+	weight: 10,
+	tall: 14,
+	isAnimal: true,
+};
+
+const { name, weight, tall, isAnimal, isbird } = Raccoon;
+// 값이 없으면, 해당 프로퍼티는 undefined로 할당되어 없는 값을 undefined로 update함
+
+const newInfo1 = { ...init, name, weight, tall, isAnimal, isbird };
+console.log(newInfo1);
+// {name: "Raccoon", weight: 75, tall: 180, isAnimal: undefined, isbird: undefined}
+
+const newInfo = {
+	...init,
+	...(name && { name }),
+	...(weight && { weight }),
+	...(tall && { tall }),
+	...(isAnimal && { isAnimal }),
+	...(isbird && { isbird }),
+};
+console.log(newInfo); // {name: "Raccoon", weight: 75, tall: 180, isAnimal: false, isbird: false}
+// 있는 정보만 스프레드 문법의 대상이 됨
+```

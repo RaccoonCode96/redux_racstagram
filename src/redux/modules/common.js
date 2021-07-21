@@ -62,6 +62,7 @@ const common = createSlice({
 	name: 'redux-racstagram/common',
 	initialState,
 	reducers: {
+		resetCommon: () => ({ ...initialState }),
 		updateSelector: (state, { payload }) => ({
 			...state,
 			updateSelector: payload,
@@ -115,4 +116,4 @@ const common = createSlice({
 export default common.reducer;
 
 // actionCreator
-export const { updateSelector } = common.actions;
+export const { updateSelector, resetCommon } = common.actions;

@@ -40,9 +40,45 @@ const initialState = {
 		loading: false,
 		setError: '',
 	},
+	updatePostUserInfo: {
+		isUpdate: false,
+		loading: false,
+		updateError: '',
+	},
 };
 
 // Async
+export const updatePostUserInfoThunk = createAsyncThunk(
+	'redux-racstagram/post/updatePostUserInfoThunk',
+	async (info, thunkAPI) => {
+		try {
+			const { userPhotoUrl, userDisplayName } = info;
+			const {
+				profile: { currentUser },
+			} = thunkAPI.getState();
+			const col = await dbService
+				.collection('posts')
+				.where('userId', '==', currentUser.uid)
+				.get();
+			await console.log(col.docs, 'docs');
+			const posts = [...col.docs];
+			console.log(posts);
+			for await (let post of posts) {
+				dbService
+					.collection('posts')
+					.doc(post.id)
+					.update({
+						...(userPhotoUrl && { userPhotoUrl }),
+						...(userDisplayName && { userDisplayName }),
+					});
+			}
+			return true;
+		} catch ({ code, message }) {
+			return thunkAPI.rejectWithValue({ code, message });
+		}
+	}
+);
+
 export const updatePostThunk = createAsyncThunk(
 	'redux-racstagram/post/updatePostThunk',
 	async (inputs, thunkAPI) => {
@@ -62,12 +98,14 @@ export const updatePostThunk = createAsyncThunk(
 						postImageUrl: getImageUrl.imageUrl,
 					});
 				}
-				await dbService
-					.collection('posts')
-					.doc(postId)
-					.update({
-						postText: text ?? '',
-					});
+				if (text) {
+					await dbService
+						.collection('posts')
+						.doc(postId)
+						.update({
+							postText: text ?? '',
+						});
+				}
 			} else {
 				throw new Error('Invalid user access!');
 			}
@@ -113,13 +151,14 @@ export const setPostObjThunk = createAsyncThunk(
 			const {
 				profile: { currentUser },
 				common: { getImageUrl },
+				users: { currentUserInfo },
 			} = await thunkAPI.getState();
 			const postObj = {
 				postText: text,
 				postDate: Date.now(),
 				userId: currentUser.uid,
-				userPhotoUrl: currentUser.photoURL,
-				userDisplayName: currentUser.displayName,
+				userPhotoUrl: currentUserInfo.userPhotoUrl,
+				userDisplayName: currentUserInfo.userDisplayName,
 				postImageUrl: getImageUrl.imageUrl,
 			};
 			await dbService.collection('posts').add(postObj);
@@ -166,6 +205,26 @@ const post = createSlice({
 		}),
 	},
 	extraReducers: {
+		[updatePostUserInfoThunk.pending]: (state) => ({
+			...state,
+			updatePostUserInfo: { ...state.updatePostUserInfo, loading: true },
+		}),
+		[updatePostUserInfoThunk.fulfilled]: (state, { payload }) => ({
+			...state,
+			updatePostUserInfo: {
+				...state.updatePostUserInfo,
+				loading: false,
+				isUpdate: payload,
+			},
+		}),
+		[updatePostUserInfoThunk.rejected]: (state, { payload }) => ({
+			...state,
+			updatePostUserInfo: {
+				...state.updatePostUserInfo,
+				loading: false,
+				updateError: payload,
+			},
+		}),
 		[setPostObjThunk.pending]: (state) => ({
 			...state,
 			setPostObj: { ...state.setPostObj, loading: true },

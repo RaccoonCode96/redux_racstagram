@@ -42,6 +42,7 @@ export const setCurrentUserInfoThunk = createAsyncThunk(
 					},
 					{ merge: true }
 				);
+			await thunkAPI.dispatch(getCurrentUserInfoThunk());
 			return true;
 		} catch ({ error, code }) {
 			return thunkAPI.rejectWithValue({ error, code });
@@ -51,7 +52,7 @@ export const setCurrentUserInfoThunk = createAsyncThunk(
 
 export const getCurrentUserInfoThunk = createAsyncThunk(
 	'redux-racstagram/users/getCurrentUserInfoThunk',
-	async (payload, thunkAPI) => {
+	async (_, thunkAPI) => {
 		try {
 			const {
 				profile: { currentUser },
@@ -67,35 +68,13 @@ export const getCurrentUserInfoThunk = createAsyncThunk(
 	}
 );
 
-// export const getCurrentUserInfoThunk = createAsyncThunk(
-// 	'redux-racstagram/users/getCurrentUserInfoThunk',
-// 	async (payload, thunkAPI) => {
-// 		try {
-// 			const {
-// 				profile: { currentUser },
-// 			} = thunkAPI.getState();
-// 			let res = '';
-// 			dbService.collection('users').onSnapshot(async (snapshot) => {
-// 				for await (let doc of snapshot.docs) {
-// 					if (doc.id === currentUser.uid) {
-// 						res = { ...doc.data() };
-// 					}
-// 				}
-// 			});
-// 			await new Promise();
-// 			console.log(res);
-// 			return res;
-// 		} catch ({ code, message }) {
-// 			return thunkAPI.rejectWithValue({ code, message });
-// 		}
-// 	}
-// );
-
 // Slice
 const users = createSlice({
 	name: 'redux-racstagram/users',
 	initialState,
-	reducers: {},
+	reducers: {
+		resetUsers: () => ({ ...initialState }),
+	},
 	extraReducers: {
 		[setCurrentUserInfoThunk.pending]: (state) => ({
 			...state,
@@ -144,4 +123,4 @@ const users = createSlice({
 export default users.reducer;
 
 // actionCreator
-// export const {  } = users.actions;
+export const { resetUsers } = users.actions;

@@ -1,6 +1,14 @@
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
+import { v4 as uuidv4 } from 'uuid';
 import { authService, firebaseInstance } from '../../fBase';
-import { updateDisplayNameThunk } from './profile';
+import { resetCommon } from './common';
+import { resetPost } from './post';
+import { resetProfile } from './profile';
+import {
+	getCurrentUserInfoThunk,
+	resetUsers,
+	setCurrentUserInfoThunk,
+} from './users';
 
 // Initial State
 const initialState = {
@@ -27,12 +35,21 @@ const initialState = {
 		signOutError: '',
 	},
 };
+
+const DEFAULT_USER_IMAGE =
+	'https://firebasestorage.googleapis.com/v0/b/rwitter-914af.appspot.com/o/user_icon.png?alt=media&token=e536785a-6116-4cdf-bb6b-fe2288de5804';
 // async
 export const signOutThunk = createAsyncThunk(
 	'redux-racstagram/auth/signOutThunk',
-	async (thunkAPI) => {
+	async (_, thunkAPI) => {
 		try {
-			await authService.signOut();
+			await Promise.all([
+				authService.signOut(),
+				thunkAPI.dispatch(resetPost()),
+				thunkAPI.dispatch(resetCommon()),
+				thunkAPI.dispatch(resetProfile()),
+				thunkAPI.dispatch(resetUsers()),
+			]);
 			return true;
 		} catch ({ code, message }) {
 			return thunkAPI.rejectWithValue({
@@ -66,8 +83,13 @@ export const emailSignInThunk = createAsyncThunk(
 		try {
 			const { email, password, displayName } = data;
 			await authService.signInWithEmailAndPassword(email, password);
-			if (displayName !== '') {
-				await thunkAPI.dispatch(updateDisplayNameThunk(displayName));
+			if (displayName) {
+				await thunkAPI.dispatch(
+					setCurrentUserInfoThunk({
+						userDisplayName: displayName,
+						userPhotoUrl: DEFAULT_USER_IMAGE,
+					})
+				);
 			}
 			return true;
 		} catch ({ code, message }) {
@@ -91,7 +113,27 @@ export const socialSignInThunk = createAsyncThunk(
 				provider = new firebaseInstance.auth.GithubAuthProvider();
 			}
 			provider.addScope('profile');
-			await authService.signInWithRedirect(provider);
+
+			const DEFAULT_USER_DISPLAYNAME = uuidv4();
+			// Popup 로그인
+			const {
+				user: { photoURL, displayName },
+			} = await authService.signInWithPopup(provider);
+
+			// 기존 사용자 정보 가져올지 검사
+			await thunkAPI.dispatch(getCurrentUserInfoThunk());
+			const {
+				users: { currentUserInfo },
+			} = await thunkAPI.getState();
+
+			if (!(currentUserInfo.userDisplayName && currentUserInfo.userPhotoUrl)) {
+				await thunkAPI.dispatch(
+					setCurrentUserInfoThunk({
+						userPhotoUrl: photoURL || DEFAULT_USER_IMAGE,
+						userDisplayName: displayName || DEFAULT_USER_DISPLAYNAME,
+					})
+				);
+			}
 			return true;
 		} catch ({ code, message }) {
 			thunkAPI.dispatch(selectError(code));

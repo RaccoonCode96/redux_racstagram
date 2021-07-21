@@ -1,5 +1,5 @@
 const ProfileUpdate = ({ onChange, inputs, onSubmit }) => {
-	const { text, imageBase64, displayName } = inputs;
+	const { userIntro, imageBase64, displayName } = inputs;
 
 	return (
 		<>
@@ -17,8 +17,8 @@ const ProfileUpdate = ({ onChange, inputs, onSubmit }) => {
 					onChange={onChange}
 				/>
 				<textarea
-					name="text"
-					value={text}
+					name="userIntro"
+					value={userIntro}
 					wrap="hard"
 					maxLength={120}
 					cols="20"

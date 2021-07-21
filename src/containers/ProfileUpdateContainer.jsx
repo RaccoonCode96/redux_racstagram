@@ -9,25 +9,26 @@ import { updateProfileThunk } from '../redux/modules/profile';
 const ProfileUpdateContainer = () => {
 	const history = useHistory();
 	const dispatch = useDispatch();
-	const { photoURL, displayName } = useSelector(
-		(state) => state.profile.currentUser
+	const { userPhotoUrl, userDisplayName, userIntro } = useSelector(
+		(state) => state.users.currentUserInfo
 	);
 	const [inputs, setInputs] = useState({
-		text: '',
-		prevDisplayName: displayName,
-		displayName,
-		prevImageUrl: photoURL,
-		imageBase64: photoURL,
+		prevIntro: userIntro,
+		userIntro,
+		prevDisplayName: userDisplayName,
+		displayName: userDisplayName,
+		prevImageUrl: userPhotoUrl,
+		imageBase64: userPhotoUrl,
 		preventSubmit: false,
 	});
 
 	const onChange = useCallback(
 		(event) => {
 			const { name, value, files } = event.target;
-			if (name === 'text') {
+			if (name === 'userIntro') {
 				setInputs({
 					...inputs,
-					text: value,
+					userIntro: value,
 				});
 			} else if (name === 'file') {
 				const theFile = files[0];
@@ -61,11 +62,15 @@ const ProfileUpdateContainer = () => {
 				prevImageUrl,
 				displayName,
 				prevDisplayName,
+				userIntro,
+				prevIntro,
 			} = inputs;
 			// 방어 코드
 			if (
 				preventSubmit === true ||
-				(imageBase64 === prevImageUrl && displayName === prevDisplayName)
+				(imageBase64 === prevImageUrl &&
+					displayName === prevDisplayName &&
+					prevIntro === userIntro)
 			) {
 				history.push('/');
 				return;
