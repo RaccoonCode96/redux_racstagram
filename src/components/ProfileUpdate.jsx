@@ -24,6 +24,7 @@ const ProfileUpdate = ({ onChange, inputs, onSubmit }) => {
 					cols="20"
 					rows="2"
 					onChange={onChange}
+					required
 					placeholder="Profile Info"
 				></textarea>
 				<input

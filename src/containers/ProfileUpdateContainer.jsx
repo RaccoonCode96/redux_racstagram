@@ -31,18 +31,23 @@ const ProfileUpdateContainer = () => {
 					userIntro: value,
 				});
 			} else if (name === 'file') {
-				const theFile = files[0];
-				const reader = new FileReader();
-				reader.onloadend = (finishedEvent) => {
-					const {
-						currentTarget: { result },
-					} = finishedEvent;
-					setInputs({
-						...inputs,
-						imageBase64: result,
-					});
-				};
-				reader.readAsDataURL(theFile);
+				if (files[0]) {
+					const theFile = files[0];
+					const reader = new FileReader();
+					reader.onloadend = (finishedEvent) => {
+						const {
+							currentTarget: { result },
+						} = finishedEvent;
+						setInputs({
+							...inputs,
+							imageBase64: result,
+						});
+					};
+					reader.readAsDataURL(theFile);
+				} else {
+					// 이미지 선택이 취소되어 없는 경우
+					setInputs({ ...inputs, imageBase64: inputs.prevImageUrl });
+				}
 			} else if (name === 'displayName') {
 				setInputs({
 					...inputs,
@@ -80,7 +85,6 @@ const ProfileUpdateContainer = () => {
 					await dispatch(getImageUrlThunk(imageBase64));
 				}
 				await dispatch(updateProfileThunk(inputs));
-				setInputs({ ...inputs, preventSubmit: false });
 				history.push('/');
 			}
 		},

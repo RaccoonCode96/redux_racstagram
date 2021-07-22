@@ -6,7 +6,7 @@ import post from './post';
 import profile from './profile';
 import common from './common';
 import users from './users';
-
+// import modal from './modal';
 const reducer = combineReducers({
 	init,
 	auth,
@@ -14,6 +14,7 @@ const reducer = combineReducers({
 	profile,
 	common,
 	users,
+	// modal,
 });
 
 /* 

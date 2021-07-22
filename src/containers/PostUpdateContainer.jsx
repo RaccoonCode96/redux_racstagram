@@ -25,15 +25,19 @@ const PostUpdateContainer = () => {
 		(event) => {
 			const { name, value, files } = event.target;
 			if (name === 'file') {
-				const theFile = files[0];
-				const reader = new FileReader();
-				reader.onloadend = (finishedEvent) => {
-					const {
-						currentTarget: { result },
-					} = finishedEvent;
-					setInputs({ ...inputs, imageBase64: result });
-				};
-				reader.readAsDataURL(theFile);
+				if (files[0]) {
+					const theFile = files[0];
+					const reader = new FileReader();
+					reader.onloadend = (finishedEvent) => {
+						const {
+							currentTarget: { result },
+						} = finishedEvent;
+						setInputs({ ...inputs, imageBase64: result });
+					};
+					reader.readAsDataURL(theFile);
+				} else {
+					setInputs({ ...inputs, imageBase64: inputs.prevImageUrl });
+				}
 			} else if (name === 'text') {
 				setInputs({ ...inputs, text: value });
 			}
@@ -57,11 +61,10 @@ const PostUpdateContainer = () => {
 				// submit false 이고 이전 값과 같지 않으면
 				setInputs({ ...inputs, preventSubmit: true });
 				// 이전과 같진 않지만, 값이 있는 경우
-				if (imageBase64) {
+				if (imageBase64 !== prevImageUrl) {
 					await dispatch(getImageUrlThunk(imageBase64));
 				}
 				await dispatch(updatePostThunk(inputs));
-				setInputs({ ...inputs, preventSubmit: false });
 				history.push('/');
 			}
 		},

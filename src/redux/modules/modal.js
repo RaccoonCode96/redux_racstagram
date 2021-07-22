@@ -14,6 +14,6 @@ const modal = createSlice({
 export default modal.reducer;
 
 // actionCreator
-export const {} = modal.actions;
+// export const {  } = modal.actions;
 
 // Async */

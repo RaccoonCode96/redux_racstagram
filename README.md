@@ -128,19 +128,28 @@
 - 현재 유저의 profile 보여주기 구현 ,users database 구현, profile update시 users db로 관리 구현
   - https://goforit.tistory.com/184
 
+<br/>
+
 ### 2021.07.21 사항
 
+<br/>
+
+- users 데이터 베이스 구축에 따른 update profile, login시 profile update 구현
 - 유저 데이터 베이스를 활용하도록 변경함
 
 - `소셜 로그인시` -> 기존의 유저 데이터베이스에 정보가 있는지를 확인해서 소셜 로그인의 정보로 세팅함, 없는 정보는 Default 값을 줌 (displayName이 없으면 uuid로 random으로 넣어줌, 이미지가 없으면 기본 이미지를 넣어줌)
   - 어쨌거나, 한번 최초 로그인 하면 유저 데이터 베이스에 정보가 생김
 - `일반 이메일 가입시` -> 닉네임은 무조건 받기로 되어 있고 유저 이미지는 Default 값을 줌
 
+- 단, redirect 로그인시 해당 profile update 작업이 안되기 때문에 popup 로그인으로 되돌아 갔음
+
 - 유저 profile 수정시, 기존에 작성한 글의 user 정보와 users 데이터 베이스에 있는 정보도 수정하게 함
 - 기존의 updateDisplayName, updateImageUrl의 경우 합쳐서 만들었음
   - `updatePostUserInfoThunk` : posts에 있는 유저가 작성한 post에 있는 유저 정보 수정
   - `setCurrentUserInfoThunk` : users 데이터베이스의 현재 유저의 user 데이터를 수정
   - `getCurrentUserInfoThunk` : 현재 users 데이터베이스의 현재 유저의 user 데이터를 가져옴
+
+<br/>
 
 ## 깨달은 것
 
@@ -188,3 +197,42 @@ const newInfo = {
 console.log(newInfo); // {name: "Raccoon", weight: 75, tall: 180, isAnimal: false, isbird: false}
 // 있는 정보만 스프레드 문법의 대상이 됨
 ```
+
+<br/>
+<br/>
+<br/>
+
+### 2021.07.22 사항
+
+<br/>
+
+- Post, User image를 다루는 경우, delete를 디테일 하게 다루는 작업 구현
+  - Post 또는 User를 update 하는 경우, 이미지가 이전과 달라 졌는지 조건을 주어, 변하지 않은 경우 데이터베이스에서 기존 data를 삭제하지 않도록 함
+
+<br/>
+
+- file input에 값이 들어 왔다가 취소되는 경우 file 처리를 안하게 조건을 줌 (없는 값을 참조하는 경우 에러 발생하기 때문에)
+
+<br/>
+
+- imageUrl을 사용하여 처리한 경우, getimageUrl의 imageUrl을 reset 시키는 작업 구현
+
+<br/>
+
+- 재사용 가능한 모달 컴포넌트 구현
+  - 모달이 on off만 하도록 하였고, styled-Component로 css를 주어야 함
+
+```js
+const Modal = ({ children, isOn }) => {
+	return isOn ? <>{children}</> : <></>;
+};
+
+export default Modal;
+
+/* 
+Modal 컴포넌트로 표현할 컴포넌트를 감싸서 children으로 대입
+isOn에 보일지 안보일지의 값을 전달해서 제어 함
+*/
+```
+
+- Post 제거, 수정 모달 버튼 -> 현재 사용자와 작성자 일치 여부에 따른 접근 제한

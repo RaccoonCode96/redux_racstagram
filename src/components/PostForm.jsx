@@ -8,7 +8,13 @@ const PostForm = ({ onChange, inputs, onSubmit }) => {
 				<></>
 			)}
 			<form onSubmit={onSubmit}>
-				<input type="file" name="file" accept="image/*" onChange={onChange} />
+				<input
+					type="file"
+					name="file"
+					accept="image/*"
+					required
+					onChange={onChange}
+				/>
 				<textarea
 					name="text"
 					value={text}

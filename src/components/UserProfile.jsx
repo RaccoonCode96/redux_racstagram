@@ -4,7 +4,7 @@ const UserProfile = ({ updateProfile, profileInfo }) => {
 		<>
 			<img src={userPhotoUrl} alt="userPhotoUrl" width="300px" />
 			<div>{userDisplayName}</div>
-			<div>{userIntro}</div>
+			<textarea readOnly disabled value={userIntro}></textarea>
 			<button onClick={updateProfile}>수정하기</button>
 		</>
 	);

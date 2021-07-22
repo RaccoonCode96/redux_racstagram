@@ -12,6 +12,7 @@ import {
 const PostContainer = () => {
 	const history = useHistory();
 	const dispatch = useDispatch();
+	const currentUserId = useSelector((state) => state.profile.currentUser.uid);
 	const postList = useSelector((state) => state.post.postList);
 
 	const getPost = useCallback(() => {
@@ -47,6 +48,7 @@ const PostContainer = () => {
 					key={post.postId}
 					updatePost={updatePost}
 					deletePost={deletePost}
+					currentUserId={currentUserId}
 				/>
 			))}
 		</>

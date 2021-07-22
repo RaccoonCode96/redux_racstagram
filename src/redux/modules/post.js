@@ -1,5 +1,6 @@
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
-import { dbService, storageService } from '../../fBase';
+import { dbService } from '../../fBase';
+import { deleteImageUrlThunk, resetCommon } from './common';
 
 /* 
 postList
@@ -60,9 +61,7 @@ export const updatePostUserInfoThunk = createAsyncThunk(
 				.collection('posts')
 				.where('userId', '==', currentUser.uid)
 				.get();
-			await console.log(col.docs, 'docs');
 			const posts = [...col.docs];
-			console.log(posts);
 			for await (let post of posts) {
 				dbService
 					.collection('posts')
@@ -85,27 +84,30 @@ export const updatePostThunk = createAsyncThunk(
 		try {
 			const {
 				profile: { currentUser },
-				common: { getImageUrl },
+				common: {
+					getImageUrl: { imageUrl: postImageUrl },
+				},
 			} = await thunkAPI.getState();
-			const { postId, text, prevImageUrl, imageBase64, userId } = inputs;
+			const {
+				postId,
+				text: postText,
+				prevImageUrl,
+				imageBase64,
+				userId,
+			} = inputs;
 			// 유저 방어 코드
 			if (userId === currentUser.uid) {
-				if (prevImageUrl) {
-					await storageService.refFromURL(prevImageUrl).delete();
+				if (prevImageUrl !== imageBase64) {
+					thunkAPI.dispatch(deleteImageUrlThunk(prevImageUrl));
 				}
-				if (imageBase64) {
-					await dbService.collection('posts').doc(postId).update({
-						postImageUrl: getImageUrl.imageUrl,
+				await dbService
+					.collection('posts')
+					.doc(postId)
+					.update({
+						...(postImageUrl && { postImageUrl }),
+						...(postText && { postText }),
 					});
-				}
-				if (text) {
-					await dbService
-						.collection('posts')
-						.doc(postId)
-						.update({
-							postText: text ?? '',
-						});
-				}
+				await thunkAPI.dispatch(resetCommon());
 			} else {
 				throw new Error('Invalid user access!');
 			}
@@ -130,15 +132,15 @@ export const deletePostThunk = createAsyncThunk(
 			if (userId === currentUser.uid) {
 				await dbService.collection('posts').doc(postId).delete();
 				if (postImageUrl !== '') {
-					await storageService.refFromURL(postImageUrl).delete();
+					await thunkAPI.dispatch(deleteImageUrlThunk(postImageUrl));
 				}
 				result = postId;
 			} else {
 				throw new Error('Invalid user access!');
 			}
+			await thunkAPI.dispatch(resetCommon());
 			return result;
 		} catch ({ code, message }) {
-			console.log({ code, message });
 			return thunkAPI.rejectWithValue({ code, message });
 		}
 	}
@@ -162,6 +164,7 @@ export const setPostObjThunk = createAsyncThunk(
 				postImageUrl: getImageUrl.imageUrl,
 			};
 			await dbService.collection('posts').add(postObj);
+			await thunkAPI.dispatch(resetCommon());
 			return true;
 		} catch ({ code, message }) {
 			return thunkAPI.rejectWithValue({

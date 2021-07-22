@@ -1,5 +1,5 @@
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
-import { deleteImageUrlThunk } from './common';
+import { deleteImageUrlThunk, resetCommon } from './common';
 import { setCurrentUserInfoThunk } from './users';
 import { updatePostUserInfoThunk } from './post';
 
@@ -27,7 +27,7 @@ export const updateProfileThunk = createAsyncThunk(
 		const { displayName, imageBase64, prevImageUrl, userIntro } = inputs;
 
 		// 이전 storage 이미지 파일 제거 처리 (초반 외부 image URL인 경우 에러 제외)
-		if (prevImageUrl) {
+		if (prevImageUrl !== imageBase64) {
 			thunkAPI.dispatch(deleteImageUrlThunk(prevImageUrl));
 		}
 		// 추가하는 이미지 url & displayName 반영 하기
@@ -48,6 +48,7 @@ export const updateProfileThunk = createAsyncThunk(
 						})
 					),
 				]);
+				await thunkAPI.dispatch(resetCommon());
 			}
 			return true;
 		} catch ({ code, message }) {
