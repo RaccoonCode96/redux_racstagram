@@ -177,7 +177,7 @@ export const setPostObjThunk = createAsyncThunk(
 
 export const getPostListThunk = createAsyncThunk(
 	'redux-racstagram/post/getPostListThunk',
-	async (thunkAPI) => {
+	async (_, thunkAPI) => {
 		try {
 			const array = await dbService
 				.collection('posts')

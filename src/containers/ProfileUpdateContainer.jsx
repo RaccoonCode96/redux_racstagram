@@ -77,7 +77,7 @@ const ProfileUpdateContainer = () => {
 					displayName === prevDisplayName &&
 					prevIntro === userIntro)
 			) {
-				history.push('/');
+				history.replace('/');
 				return;
 			} else {
 				setInputs({ ...inputs, preventSubmit: true });
@@ -85,7 +85,7 @@ const ProfileUpdateContainer = () => {
 					await dispatch(getImageUrlThunk(imageBase64));
 				}
 				await dispatch(updateProfileThunk(inputs));
-				history.push('/');
+				history.replace('/');
 			}
 		},
 		[dispatch, history, inputs]

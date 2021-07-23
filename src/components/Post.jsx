@@ -14,7 +14,14 @@ const Post = ({ post, deletePost, updatePost, currentUserId }) => {
 		<div className="post">
 			<>
 				<div className="rweet_creator_container">
-					<Link to="/user" className="rweet_creator_link">
+					<Link
+						to={
+							currentUserId === post.userId
+								? `profile`
+								: `user/${post.userDisplayName}`
+						}
+						className="rweet_creator_link"
+					>
 						<img
 							alt="rweet_creator_img"
 							className="rweet_creator_img"

@@ -55,7 +55,7 @@ const PostUpdateContainer = () => {
 				preventSubmit === true ||
 				(text === prevText && imageBase64 === prevImageUrl)
 			) {
-				history.push('/');
+				history.replace('/');
 				return;
 			} else {
 				// submit false 이고 이전 값과 같지 않으면
@@ -65,7 +65,7 @@ const PostUpdateContainer = () => {
 					await dispatch(getImageUrlThunk(imageBase64));
 				}
 				await dispatch(updatePostThunk(inputs));
-				history.push('/');
+				history.replace('/');
 			}
 		},
 		[dispatch, inputs, history]

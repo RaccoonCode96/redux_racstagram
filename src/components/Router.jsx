@@ -18,7 +18,7 @@ const AppRouter = () => {
 						<Route path="/write" exact component={Write} />
 						<Route path="/update" exact component={Update} />
 						<Route path="/profile" exact component={Profile} />
-						<Route path="/user" exact component={User} />
+						<Route path="/user/:userName" exact component={User} />
 						<Redirect from="*" to="/" />
 					</>
 				) : (

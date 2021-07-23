@@ -36,8 +36,8 @@ const initialState = {
 	},
 };
 
-const DEFAULT_USER_IMAGE =
-	'https://firebasestorage.googleapis.com/v0/b/rwitter-914af.appspot.com/o/user_icon.png?alt=media&token=e536785a-6116-4cdf-bb6b-fe2288de5804';
+export const DEFAULT_USER_IMAGE =
+	'https://firebasestorage.googleapis.com/v0/b/rwitter-914af.appspot.com/o/user_icon.png?alt=media&token=f4e74544-2aff-4657-aa59-117adb4aad65';
 // async
 export const signOutThunk = createAsyncThunk(
 	'redux-racstagram/auth/signOutThunk',

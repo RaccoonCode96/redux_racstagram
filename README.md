@@ -177,3 +177,59 @@
   - https://goforit.tistory.com/187
 
 <br/>
+
+### 2021.07.23 사항
+
+<br/>
+
+## 작업 개요
+
+- 현재 유저의 Profile 페이지, 자신이 작성한 글의 image 테이블 구현
+  - 이전에 현재 유저의 profileInfo를 가져 왔다면, 이번에는 profilePostList를 가져옴 (둘은 비동기적으로 구현)
+  - 나중에 image 클릭시 post를 스크롤해서 볼수 있는 피드 형태의 detail을 볼수 있게 하고자 함
+  - ProfilePostImages 컴포넌트
+
+<br/>
+
+- 글 작성자 프로필 화면 이동 (user 페이지로 이동)
+  - 작성된 글의 작성자 클릭시 작성자 이름으로 된 dynamic route로 이동
+  - 작성자 이름을 useParam으로 받음
+  - 작성자 profile 가져오기
+    - 작성자 이름을 기준으로 post list 와 userInfo를 가져옴 (비동기)
+
+<br/>
+
+- 본인 글의 작성자 누르면 본인 profile로 가게 조건을 걸어 두어야 함
+
+<br/>
+
+- 사용자의 잘못된 뒤로가기 제한을 위한 history.replace 사용
+  - post, profile의 update 이후 뒤로 가기를 막기 위해서, replace를 사용 함
+  - 하지만 완전히 history를 제거할 수 없음, 로그아웃 및 로그인 후 뒤로가기 버튼 클릭시 url의 변경은 없기 때문에 영향을 주지는 않음 (로그인 state 값으로 router의 존재를 제어하기 때문)
+
+<br/>
+
+## 앞으로 필요한 사항
+
+<br/>
+
+- 작성자 이름 고유화 작업 필요
+  - 선택된 유저의 profile을 가져올 때, 중복 이름이면 잘못 가져오는 에러를 범할 수 있음
+  - 작성자 이름 설정시 이전에 있는 이름인지 확인하는 작업이 필요 함
+
+<br/>
+
+- 더 빠른 연산을 위해서, 화면이 render 되고 profile에 관련된 정보를 가져오지 말고 profile 보기위해 버튼을 눌렀을 때 부터 미리 profile 정보를 요청하게 하자
+
+<br/>
+
+- 현재 유저, 특정 유저 postList의 피드 구현 필요
+
+<br/>
+
+- 현재 유저와 특정 유저 profile을 요청하는 작업이 비슷하여 보일러 플레이트 코드 발생함
+  - 조건을 주어 특정 유저 profile 요청 작업으로 통합이 필요함
+
+<br/>
+
+- 각 redux에서 사용하는 state의 이름을 통일감 있게 관리 필요

@@ -2,6 +2,7 @@ import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
 import { deleteImageUrlThunk, resetCommon } from './common';
 import { setCurrentUserInfoThunk } from './users';
 import { updatePostUserInfoThunk } from './post';
+import { dbService } from '../../fBase';
 
 // Initial State
 const initialState = {
@@ -14,9 +15,37 @@ const initialState = {
 		isSignIn: false,
 		uid: '',
 	},
+	profilePostList: [],
+	getProfilePost: {
+		loading: false,
+		isGet: false,
+		getError: '',
+	},
 };
 
 // Async
+export const getProfilePostThunk = createAsyncThunk(
+	'redux-racstagram/profile/getProfilePostThunk',
+	async (_, thunkAPI) => {
+		try {
+			const {
+				profile: { currentUser },
+			} = thunkAPI.getState();
+			const array = await dbService
+				.collection('posts')
+				.where('userId', '==', currentUser.uid)
+				.orderBy('postDate', 'desc')
+				.get();
+			const postList = await array.docs.map((doc) => ({
+				postId: doc.id,
+				...doc.data(),
+			}));
+			return postList;
+		} catch ({ code, message }) {
+			return thunkAPI.rejectWithValue({ code, message });
+		}
+	}
+);
 
 export const updateProfileThunk = createAsyncThunk(
 	'redux-racstagram/profile/updateProfileThunk',
@@ -99,6 +128,27 @@ const profile = createSlice({
 				...state.updateProfile,
 				loading: false,
 				updateError: payload,
+			},
+		}),
+		[getProfilePostThunk.pending]: (state) => ({
+			...state,
+			getProfilePost: { ...state.getProfilePost, loading: true },
+		}),
+		[getProfilePostThunk.fulfilled]: (state, { payload }) => ({
+			...state,
+			profilePostList: payload,
+			getProfilePost: {
+				...state.getProfilePost,
+				loading: false,
+				isGet: true,
+			},
+		}),
+		[getProfilePostThunk.rejected]: (state, { payload }) => ({
+			...state,
+			getProfilePost: {
+				...state.getProfilePost,
+				loading: false,
+				getError: payload,
 			},
 		}),
 	},

@@ -48,7 +48,7 @@ const PostFormContainer = () => {
 				setInputs({ ...inputs, preventSubmit: true });
 				await dispatch(getImageUrlThunk(inputs.imageBase64));
 				await dispatch(setPostObjThunk(inputs.text));
-				history.push('/');
+				history.replace('/');
 			}
 		},
 		[dispatch, inputs, history]

@@ -1,6 +1,7 @@
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
 import { v4 as uuidv4 } from 'uuid';
 import { storageService } from '../../fBase';
+import { DEFAULT_USER_IMAGE } from './auth';
 
 // Initial State
 const initialState = {
@@ -46,9 +47,11 @@ export const getImageUrlThunk = createAsyncThunk(
 
 export const deleteImageUrlThunk = createAsyncThunk(
 	'redux-racstagram/profile/deleteImageUrlThunk',
-	async (ImageUrl, thunkAPI) => {
+	async (imageUrl, thunkAPI) => {
 		try {
-			storageService.refFromURL(ImageUrl).delete();
+			if (imageUrl !== DEFAULT_USER_IMAGE) {
+				storageService.refFromURL(imageUrl).delete();
+			}
 			return true;
 		} catch ({ code, message }) {
 			return thunkAPI.rejectWithValue({ code, message });
