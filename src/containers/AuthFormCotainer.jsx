@@ -3,9 +3,11 @@ import { useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import AuthForm from '../components/AuthForm';
 import { emailSignInThunk, emailSignUpThunk } from '../redux/modules/auth';
+import { checkDisplayNameThunk } from '../redux/modules/users';
 
 const AuthFormContainer = () => {
 	const dispatch = useDispatch();
+	const exist = useSelector((state) => state.users.checkDisplayName.exist);
 	const newAccount = useSelector((state) => state.auth.newAccount);
 	const [inputs, setInputs] = useState({
 		email: '',
@@ -42,10 +44,27 @@ const AuthFormContainer = () => {
 			if (newAccount === false) {
 				dispatch(emailSignInThunk(inputs));
 			} else {
+				if (!exist[1] || exist[1] !== inputs.displayName) {
+					window.alert('닉네임 중복 확인이 필요 합니다.');
+					return;
+				}
+				if (exist[0]) {
+					window.alert(`${exist[1]}는 존재하는 닉네임 입니다.`);
+					return;
+				}
 				dispatch(emailSignUpThunk(inputs));
 			}
+			return;
 		},
-		[inputs, dispatch, newAccount]
+		[inputs, dispatch, newAccount, exist]
+	);
+
+	const check = useCallback(
+		(displayName) => {
+			dispatch(checkDisplayNameThunk(displayName));
+			return;
+		},
+		[dispatch]
 	);
 
 	return (
@@ -54,6 +73,8 @@ const AuthFormContainer = () => {
 			inputs={inputs}
 			onSubmit={onSubmit}
 			newAccount={newAccount}
+			check={check}
+			exist={exist}
 		/>
 	);
 };

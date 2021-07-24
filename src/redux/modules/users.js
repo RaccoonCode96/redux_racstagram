@@ -36,9 +36,31 @@ const initialState = {
 		isGet: false,
 		getError: '',
 	},
+	checkDisplayName: {
+		loading: false,
+		isCheck: false,
+		checkError: '',
+		exist: [false, ''],
+	},
 };
 
 // async
+export const checkDisplayNameThunk = createAsyncThunk(
+	'redux-racstagram/users/checkDisplayNameThunk',
+	async (userName, thunkAPI) => {
+		try {
+			const { docs } = await dbService
+				.collection('users')
+				.where('userDisplayName', '==', userName)
+				.get();
+			const res = [!!docs[0], userName];
+			return res;
+		} catch ({ code, message }) {
+			return thunkAPI.rejectWithValue({ code, message });
+		}
+	}
+);
+
 export const getSeletedUserPostThunk = createAsyncThunk(
 	'redux-racstagram/users/getSeletedUserPostThunk',
 	async (userDisplayName, thunkAPI) => {
@@ -129,6 +151,27 @@ const users = createSlice({
 		resetUsers: () => ({ ...initialState }),
 	},
 	extraReducers: {
+		[checkDisplayNameThunk.pending]: (state) => ({
+			...state,
+			checkDisplayName: { ...state.checkDisplayName, loading: true },
+		}),
+		[checkDisplayNameThunk.fulfilled]: (state, { payload }) => ({
+			...state,
+			checkDisplayName: {
+				...state.checkDisplayName,
+				loading: false,
+				isCheck: true,
+				exist: payload,
+			},
+		}),
+		[checkDisplayNameThunk.rejected]: (state, { payload }) => ({
+			...state,
+			checkDisplayName: {
+				...state.checkDisplayName,
+				loading: false,
+				checkError: payload,
+			},
+		}),
 		[getSeletedUserPostThunk.pending]: (state) => ({
 			...state,
 			getSeletedUserPost: { ...state.getSeletedUserPost, loading: true },
