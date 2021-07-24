@@ -183,3 +183,70 @@
 - 현재 유저&다른 유저 profile 화면의 userPosts, userInfo 구현
 - 뒤로가기 제한을 위한 history관리
   - https://goforit.tistory.com/188
+
+### 2021.07.24 사항
+
+- `firebase firestore 보안 규칙 수정`
+
+  - users collection의 userDisplayName만 로그인 없이 read 할수 있도록 변경 함
+
+- `react 이벤트 버블링 현상`
+
+  - function component 사용시 event.stopPropagation를 사용해도 작동하지 않고 event를 상위에 전달하게 됨 event.preventDefault를 사용해야 전파를 아에 하지 않았음
+  - class component의 경우에는 event.stopPropagtion이 작동함
+  - react가 document에 단일 이벤트 리스너 구조인 것은 알지만, 왜 이런 현상이 일어나는지는 모르겠음
+
+- `displayName 고유화를 위한 checkDisplayName 구현`
+  - 회원가입, profile 수정시 DisplayName 중복 체크 확인 구현
+  - redux의 users의 checkDisplayName의 exist 프로퍼티인 배열값의 0번은 존재하는 이름인지를 표시, 1번은 검사를 실시한 이름을 뜻함
+
+```js
+const users = {
+  ...,
+  checkDisplayName: {
+    loading: false,
+    isCheck: false,
+    checkError: '',
+    exist: [false, ''],
+  }
+}
+```
+
+- 프로필 displayName 수정의 경우 자신이 쓰던 displayName에 대한 것도 고려 해야해서 까다로움
+
+  - 경우1) 중복확인이 필요하지 않은 경우
+    - 기존에 쓰던 displayName과 현재 입력창의 input이 같은 경우 `(input === prev)`
+  - 경우2) 중복확인이 필요한 경우
+    - 1.현재 input과 검사한 displayName(결과는 모르지만)과 다를 경우 `(input !== chekedName)`
+    - 2.검사한 displayName이 없는 경우(초기값 ''인 경우) -> `(checkedName === '')`
+      - 검사한 displayName이 ''이고 input과 같은 경우도 원하지 않기에 중복 확인이 필요하지만 어차피 chekedName 값 조건에서 필터링이 되기때문에 상관 없음
+  - 경우3) 중복 확인을 한 경우
+    - 중복O:
+      - 검사한 이름의 결과 값이 true 인 경우 `(checkedValue === true)`
+    - 중복X:
+      - 검사한 이름의 결과 값이 false 인 경우 `(checkedValue === false)`
+
+- `경우1과 경우3의 중복X 인 경우`
+  - input과 prev가 같은 경우와, 중복 확인하여 중복이 아닌 경우는 다음을 작업을 진행 해도 됨
+
+```js
+// 이름 중복 방어 코드
+// input과 과거 이름이 다른 경우
+if (prevDisplayName !== input) {
+	// 검사한 이름이 '' or 검사한 이름이 input과 다른 경우
+	if (!checkedName || checkedName !== input) {
+		window.alert('닉네임 중복 확인이 필요 합니다.');
+		return;
+	}
+	// 중복 검사 값이 true 인 경우
+	if (exist[0]) {
+		window.alert(`${exist[1]}은 이미 존재하는 닉네임 입니다.`);
+		return;
+	}
+}
+// input과 과거 이름이 같거나, 중복 검사 값이 false인 경우
+// update Name
+```
+
+- 로그인의 경우, 자신이 쓰던 displayName이 없어서 그나마 조금 조건이 덜 까다로움
+  - prev와 input 조건만 없음
