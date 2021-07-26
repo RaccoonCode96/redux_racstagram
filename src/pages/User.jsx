@@ -1,7 +1,8 @@
-import { useCallback } from 'react';
+import { useCallback, useState } from 'react';
 import { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useParams } from 'react-router-dom';
+import Posts from '../components/Posts';
 import ProfilePostImages from '../components/ProfilePostImages';
 import UserProfile from '../components/UserProfile';
 import NavigationContainer from '../containers/NavigationContainer';
@@ -25,14 +26,30 @@ const User = () => {
 		[dispatch]
 	);
 
+	const [postOn, setPostOn] = useState({ isOn: false, scrollY: 0 });
+	const postsOnToggle = useCallback(() => {
+		setPostOn({ ...postOn, isOn: !postOn.isOn });
+	}, [setPostOn, postOn]);
+
 	useEffect(() => {
 		getProfile(userName);
 	}, [getProfile, userName]);
 	return (
 		<>
 			<NavigationContainer />
-			<UserProfile profileInfo={userInfo} />
-			<ProfilePostImages profilePostList={postList} />
+			{postOn.isOn ? (
+				<>
+					<Posts postList={postList} postsOnToggle={postsOnToggle} />
+				</>
+			) : (
+				<>
+					<UserProfile profileInfo={userInfo} />
+					<ProfilePostImages
+						profilePostList={postList}
+						postsOnToggle={postsOnToggle}
+					/>
+				</>
+			)}
 		</>
 	);
 };

@@ -1,9 +1,10 @@
-const ProfilePostImages = ({ profilePostList }) => {
+const ProfilePostImages = ({ profilePostList, postsOnToggle }) => {
 	return (
 		<>
 			<div>
 				{profilePostList.map((post) => (
 					<img
+						onClick={postsOnToggle}
 						key={post.postId}
 						src={post.postImageUrl}
 						alt={'postImageUrl'}
@@ -16,3 +17,11 @@ const ProfilePostImages = ({ profilePostList }) => {
 };
 
 export default ProfilePostImages;
+
+/*
+뒤로가기 버튼 제어시 사용되는 상위 컴포넌트의 함수와 state 
+const [postOn, setPostOn] = useState({ isOn: false, scrollY: 0 });
+const postsOnToggle = useCallback(() => {
+  setPostOn({ ...postOn, isOn: !postOn.isOn });
+}, [setPostOn, postOn]); 
+*/
