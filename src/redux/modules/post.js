@@ -1,9 +1,9 @@
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
 import { dbService } from '../../fBase';
-import { deleteImageUrlThunk, resetCommon } from './common';
+import { deleteImageUrlThunk, resetImage } from './image';
 
 /* 
-postList
+posts
  [
   {
     postId,
@@ -19,8 +19,29 @@ postList
 
 // Initial State
 const initialState = {
-	postList: [],
-	postSelector: '',
+	allPosts: [],
+	userPosts: [],
+	currentUserPosts: [],
+	getAllPosts: {
+		isGet: false,
+		loading: false,
+		getError: '',
+	},
+	getUserPosts: {
+		isGet: false,
+		loading: false,
+		getError: '',
+	},
+	getCurrentUserPosts: {
+		isGet: false,
+		loading: false,
+		getError: '',
+	},
+	createPost: {
+		isSet: false,
+		loading: false,
+		setError: '',
+	},
 	updatePost: {
 		isUpdate: false,
 		loading: false,
@@ -31,17 +52,7 @@ const initialState = {
 		loading: false,
 		deleteError: '',
 	},
-	getPostList: {
-		isGet: false,
-		loading: false,
-		getError: '',
-	},
-	setPostObj: {
-		isSet: false,
-		loading: false,
-		setError: '',
-	},
-	updatePostUserInfo: {
+	updatePostsUserInfo: {
 		isUpdate: false,
 		loading: false,
 		updateError: '',
@@ -49,8 +60,8 @@ const initialState = {
 };
 
 // Async
-export const updatePostUserInfoThunk = createAsyncThunk(
-	'redux-racstagram/post/updatePostUserInfoThunk',
+export const updatePostsUserInfoThunk = createAsyncThunk(
+	'redux-racstagram/post/updatePostsUserInfoThunk',
 	async (info, thunkAPI) => {
 		try {
 			const { userPhotoUrl, userDisplayName } = info;
@@ -84,9 +95,7 @@ export const updatePostThunk = createAsyncThunk(
 		try {
 			const {
 				profile: { currentUser },
-				common: {
-					getImageUrl: { imageUrl: postImageUrl },
-				},
+				image: { imageUrl: postImageUrl },
 			} = await thunkAPI.getState();
 			const {
 				postId,
@@ -107,7 +116,7 @@ export const updatePostThunk = createAsyncThunk(
 						...(postImageUrl && { postImageUrl }),
 						...(postText && { postText }),
 					});
-				await thunkAPI.dispatch(resetCommon());
+				await thunkAPI.dispatch(resetImage());
 			} else {
 				throw new Error('Invalid user access!');
 			}
@@ -120,14 +129,13 @@ export const updatePostThunk = createAsyncThunk(
 
 export const deletePostThunk = createAsyncThunk(
 	'redux-racstagram/post/deletePostThunk',
-	async (data, thunkAPI) => {
+	async (post, thunkAPI) => {
 		try {
 			const {
 				profile: { currentUser },
-				post: { postSelector },
 			} = await thunkAPI.getState();
 			let result = '';
-			const { postId, postImageUrl, userId } = postSelector;
+			const { postId, postImageUrl, userId } = post;
 			// 유저 방어 코드
 			if (userId === currentUser.uid) {
 				await dbService.collection('posts').doc(postId).delete();
@@ -138,7 +146,7 @@ export const deletePostThunk = createAsyncThunk(
 			} else {
 				throw new Error('Invalid user access!');
 			}
-			await thunkAPI.dispatch(resetCommon());
+			await thunkAPI.dispatch(resetImage());
 			return result;
 		} catch ({ code, message }) {
 			return thunkAPI.rejectWithValue({ code, message });
@@ -146,25 +154,25 @@ export const deletePostThunk = createAsyncThunk(
 	}
 );
 
-export const setPostObjThunk = createAsyncThunk(
-	'redux-racstagram/post/setPostObjThunk',
+export const createPostThunk = createAsyncThunk(
+	'redux-racstagram/post/createPostThunk',
 	async (text, thunkAPI) => {
 		try {
 			const {
 				profile: { currentUser },
-				common: { getImageUrl },
+				image: { imageUrl },
 				users: { currentUserInfo },
 			} = await thunkAPI.getState();
-			const postObj = {
+			const post = {
 				postText: text,
 				postDate: Date.now(),
 				userId: currentUser.uid,
 				userPhotoUrl: currentUserInfo.userPhotoUrl,
 				userDisplayName: currentUserInfo.userDisplayName,
-				postImageUrl: getImageUrl.imageUrl,
+				postImageUrl: imageUrl,
 			};
-			await dbService.collection('posts').add(postObj);
-			await thunkAPI.dispatch(resetCommon());
+			await dbService.collection('posts').add(post);
+			await thunkAPI.dispatch(resetImage());
 			return true;
 		} catch ({ code, message }) {
 			return thunkAPI.rejectWithValue({
@@ -175,19 +183,62 @@ export const setPostObjThunk = createAsyncThunk(
 	}
 );
 
-export const getPostListThunk = createAsyncThunk(
-	'redux-racstagram/post/getPostListThunk',
+export const getAllPostsThunk = createAsyncThunk(
+	'redux-racstagram/post/getAllPostsThunk',
 	async (_, thunkAPI) => {
 		try {
 			const array = await dbService
 				.collection('posts')
 				.orderBy('postDate', 'desc')
 				.get();
-			const postList = array.docs.map((doc) => ({
+			const posts = array.docs.map((doc) => ({
 				postId: doc.id,
 				...doc.data(),
 			}));
-			return postList;
+			return posts;
+		} catch ({ code, message }) {
+			return thunkAPI.rejectWithValue({ code, message });
+		}
+	}
+);
+
+export const getUserPostsThunk = createAsyncThunk(
+	'redux-racstagram/post/getUserPostsThunk',
+	async (userName, thunkAPI) => {
+		try {
+			const { docs } = await dbService
+				.collection('posts')
+				.where('userDisplayName', '==', userName)
+				.orderBy('postDate', 'desc')
+				.get();
+			const posts = docs.map((doc) => ({
+				postId: doc.id,
+				...doc.data(),
+			}));
+			return posts;
+		} catch ({ code, message }) {
+			return thunkAPI.rejectWithValue({ code, message });
+		}
+	}
+);
+
+export const getCurrentUserPostsThunk = createAsyncThunk(
+	'redux-racstagram/post/getCurrentUserPostsThunk',
+	async (_, thunkAPI) => {
+		try {
+			const {
+				profile: { currentUser },
+			} = thunkAPI.getState();
+			const array = await dbService
+				.collection('posts')
+				.where('userId', '==', currentUser.uid)
+				.orderBy('postDate', 'desc')
+				.get();
+			const posts = await array.docs.map((doc) => ({
+				postId: doc.id,
+				...doc.data(),
+			}));
+			return posts;
 		} catch ({ code, message }) {
 			return thunkAPI.rejectWithValue({ code, message });
 		}
@@ -208,11 +259,11 @@ const post = createSlice({
 		}),
 	},
 	extraReducers: {
-		[updatePostUserInfoThunk.pending]: (state) => ({
+		[updatePostsUserInfoThunk.pending]: (state) => ({
 			...state,
 			updatePostUserInfo: { ...state.updatePostUserInfo, loading: true },
 		}),
-		[updatePostUserInfoThunk.fulfilled]: (state, { payload }) => ({
+		[updatePostsUserInfoThunk.fulfilled]: (state, { payload }) => ({
 			...state,
 			updatePostUserInfo: {
 				...state.updatePostUserInfo,
@@ -220,7 +271,7 @@ const post = createSlice({
 				isUpdate: payload,
 			},
 		}),
-		[updatePostUserInfoThunk.rejected]: (state, { payload }) => ({
+		[updatePostsUserInfoThunk.rejected]: (state, { payload }) => ({
 			...state,
 			updatePostUserInfo: {
 				...state.updatePostUserInfo,
@@ -228,11 +279,11 @@ const post = createSlice({
 				updateError: payload,
 			},
 		}),
-		[setPostObjThunk.pending]: (state) => ({
+		[createPostThunk.pending]: (state) => ({
 			...state,
 			setPostObj: { ...state.setPostObj, loading: true },
 		}),
-		[setPostObjThunk.fulfilled]: (state, { payload }) => ({
+		[createPostThunk.fulfilled]: (state, { payload }) => ({
 			...state,
 			setPostObj: {
 				...state.setPostObj,
@@ -240,7 +291,7 @@ const post = createSlice({
 				isSet: payload,
 			},
 		}),
-		[setPostObjThunk.rejected]: (state, { payload }) => ({
+		[createPostThunk.rejected]: (state, { payload }) => ({
 			...state,
 			setPostObj: {
 				...state.setPostObj,
@@ -248,23 +299,65 @@ const post = createSlice({
 				setError: payload,
 			},
 		}),
-		[getPostListThunk.pending]: (state) => ({
+		[getAllPostsThunk.pending]: (state) => ({
 			...state,
-			getPostList: { ...state.getPostList, loading: true },
+			getAllPosts: { ...state.getAllPosts, loading: true },
 		}),
-		[getPostListThunk.fulfilled]: (state, { payload }) => ({
+		[getAllPostsThunk.fulfilled]: (state, { payload }) => ({
 			...state,
-			postList: payload,
-			getPostList: {
-				...state.getPostList,
+			allPosts: payload,
+			getAllPosts: {
+				...state.getAllPosts,
 				loading: false,
 				isGet: true,
 			},
 		}),
-		[getPostListThunk.rejected]: (state, { payload }) => ({
+		[getAllPostsThunk.rejected]: (state, { payload }) => ({
 			...state,
-			getPostList: {
-				...state.getPostList,
+			getAllPosts: {
+				...state.getAllPosts,
+				loading: false,
+				getError: payload,
+			},
+		}),
+		[getUserPostsThunk.pending]: (state) => ({
+			...state,
+			getUserPosts: { ...state.getUserPosts, loading: true },
+		}),
+		[getUserPostsThunk.fulfilled]: (state, { payload }) => ({
+			...state,
+			userPosts: payload,
+			getUserPosts: {
+				...state.getUserPosts,
+				loading: false,
+				isGet: true,
+			},
+		}),
+		[getUserPostsThunk.rejected]: (state, { payload }) => ({
+			...state,
+			getUserPosts: {
+				...state.getUserPosts,
+				loading: false,
+				getError: payload,
+			},
+		}),
+		[getCurrentUserPostsThunk.pending]: (state) => ({
+			...state,
+			getCurrentUserPosts: { ...state.getCurrentUserPosts, loading: true },
+		}),
+		[getCurrentUserPostsThunk.fulfilled]: (state, { payload }) => ({
+			...state,
+			currentUserPosts: payload,
+			getCurrentUserPosts: {
+				...state.getCurrentUserPosts,
+				loading: false,
+				isGet: true,
+			},
+		}),
+		[getCurrentUserPostsThunk.rejected]: (state, { payload }) => ({
+			...state,
+			getCurrentUserPosts: {
+				...state.getCurrentUserPosts,
 				loading: false,
 				getError: payload,
 			},
@@ -273,18 +366,14 @@ const post = createSlice({
 			...state,
 			deletePost: { ...state.deletePost, loading: true },
 		}),
-		[deletePostThunk.fulfilled]: (state, { payload }) => {
-			const result = state.postList.filter((post) => post.postId !== payload);
-			return {
-				...state,
-				postList: result,
-				deletePost: {
-					...state.deletePost,
-					loading: false,
-					isDelete: true,
-				},
-			};
-		},
+		[deletePostThunk.fulfilled]: (state, { payload }) => ({
+			...state,
+			deletePost: {
+				...state.deletePost,
+				loading: false,
+				isDelete: true,
+			},
+		}),
 		[deletePostThunk.rejected]: (state, { payload }) => ({
 			...state,
 			deletePost: {

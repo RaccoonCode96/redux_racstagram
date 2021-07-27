@@ -1,48 +1,55 @@
-import { useEffect } from 'react';
-import { useCallback } from 'react';
+import { useCallback, useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { useHistory } from 'react-router-dom';
-import Post from '../components/Post';
+import { useHistory, useLocation } from 'react-router-dom';
 import {
 	deletePostThunk,
-	getPostListThunk,
-	selectPost,
+	getAllPostsThunk,
+	getCurrentUserPostsThunk,
+	getUserPostsThunk,
 } from '../redux/modules/post';
+import Post from '../components/Post';
 
-const PostContainer = () => {
+const PostContainer = ({ postsType, postsOnToggle, getPosts }) => {
+	console.log('PostConatiner');
+	const posts = useSelector((state) => state.post[postsType]);
 	const history = useHistory();
+	const { pathname } = useLocation();
 	const dispatch = useDispatch();
 	const currentUserId = useSelector((state) => state.profile.currentUser.uid);
-	const postList = useSelector((state) => state.post.postList);
 
-	const getPost = useCallback(() => {
-		dispatch(getPostListThunk());
-	}, [dispatch]);
+	useEffect(() => {
+		getPosts();
+	}, [getPosts]);
 
 	const deletePost = useCallback(
 		(post) => {
-			dispatch(selectPost(post));
-			dispatch(deletePostThunk());
+			dispatch(deletePostThunk(post));
+			if (pathname === '/') {
+				dispatch(getAllPostsThunk());
+			} else if (pathname === '/profile') {
+				dispatch(getCurrentUserPostsThunk());
+			} else if (pathname.includes('/user/')) {
+				dispatch(getUserPostsThunk(pathname.split('/')[2]));
+			}
 		},
-		[dispatch]
+		[dispatch, pathname]
 	);
 
 	const updatePost = useCallback(
 		(post) => {
-			dispatch(selectPost(post));
-			history.push('/update');
+			history.push({
+				pathname: '/update',
+				state: { post, profileInfo: {}, type: 'post' },
+			});
 		},
-		[dispatch, history]
+		[history]
 	);
-
-	useEffect(() => {
-		getPost();
-	}, [getPost]);
 
 	return (
 		<>
 			<div>Posts</div>
-			{postList.map((post) => (
+			{postsOnToggle && <button onClick={postsOnToggle}>뒤로가기</button>}
+			{posts.map((post) => (
 				<Post
 					post={post}
 					key={post.postId}
@@ -56,3 +63,11 @@ const PostContainer = () => {
 };
 
 export default PostContainer;
+
+/*
+뒤로가기 버튼 제어시 사용되는 상위 컴포넌트의 함수와 state 
+const [postOn, setPostOn] = useState({ isOn: false, scrollY: 0 });
+const postsOnToggle = useCallback(() => {
+  setPostOn({ ...postOn, isOn: !postOn.isOn });
+}, [setPostOn, postOn]); 
+*/

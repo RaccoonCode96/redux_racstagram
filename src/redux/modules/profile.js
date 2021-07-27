@@ -1,8 +1,8 @@
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
-import { deleteImageUrlThunk, resetCommon } from './common';
+import { deleteImageUrlThunk, resetImage } from './image';
 import { setCurrentUserInfoThunk } from './users';
-import { updatePostUserInfoThunk } from './post';
 import { dbService } from '../../fBase';
+import { updatePostsUserInfoThunk } from './post';
 
 // Initial State
 const initialState = {
@@ -51,7 +51,7 @@ export const updateProfileThunk = createAsyncThunk(
 	'redux-racstagram/profile/updateProfileThunk',
 	async (inputs, thunkAPI) => {
 		const {
-			common: { getImageUrl },
+			image: { imageUrl },
 		} = await thunkAPI.getState();
 		const { displayName, imageBase64, prevImageUrl, userIntro } = inputs;
 
@@ -67,17 +67,17 @@ export const updateProfileThunk = createAsyncThunk(
 						setCurrentUserInfoThunk({
 							userIntro,
 							userDisplayName: displayName,
-							userPhotoUrl: getImageUrl.imageUrl,
+							userPhotoUrl: imageUrl,
 						})
 					),
 					thunkAPI.dispatch(
-						updatePostUserInfoThunk({
+						updatePostsUserInfoThunk({
 							userDisplayName: displayName,
-							userPhotoUrl: getImageUrl.imageUrl,
+							userPhotoUrl: imageUrl,
 						})
 					),
 				]);
-				await thunkAPI.dispatch(resetCommon());
+				await thunkAPI.dispatch(resetImage());
 			}
 			return true;
 		} catch ({ code, message }) {

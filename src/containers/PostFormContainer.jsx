@@ -3,8 +3,8 @@ import { useCallback, useState } from 'react';
 import { useDispatch } from 'react-redux';
 import { useHistory } from 'react-router-dom';
 import PostForm from '../components/PostForm';
-import { getImageUrlThunk } from '../redux/modules/common';
-import { setPostObjThunk } from '../redux/modules/post';
+import { getImageUrlThunk } from '../redux/modules/image';
+import { createPostThunk } from '../redux/modules/post';
 import { getCurrentUserInfoThunk } from '../redux/modules/users';
 
 const PostFormContainer = () => {
@@ -47,7 +47,7 @@ const PostFormContainer = () => {
 			if (inputs.preventSubmit === false && inputs.imageBase64) {
 				setInputs({ ...inputs, preventSubmit: true });
 				await dispatch(getImageUrlThunk(inputs.imageBase64));
-				await dispatch(setPostObjThunk(inputs.text));
+				await dispatch(createPostThunk(inputs.text));
 				history.replace('/');
 			}
 		},

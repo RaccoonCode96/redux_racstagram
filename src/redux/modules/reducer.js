@@ -4,16 +4,16 @@ import init from './init';
 import auth from './auth';
 import post from './post';
 import profile from './profile';
-import common from './common';
 import users from './users';
+import image from './image';
 // import modal from './modal';
 const reducer = combineReducers({
 	init,
 	auth,
 	post,
 	profile,
-	common,
 	users,
+	image,
 	// modal,
 });
 

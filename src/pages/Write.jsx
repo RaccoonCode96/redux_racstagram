@@ -1,6 +1,6 @@
 import { useEffect } from 'react';
 import { useDispatch } from 'react-redux';
-import NavigationContainer from '../containers/NavigationContainer';
+import Navigation from '../components/Navigation';
 import PostFormContainer from '../containers/PostFormContainer';
 import { resetPost } from '../redux/modules/post';
 
@@ -13,7 +13,7 @@ const Write = () => {
 	}, [dispatch]);
 	return (
 		<>
-			<NavigationContainer />
+			<Navigation />
 			<PostFormContainer />
 		</>
 	);

@@ -3,17 +3,15 @@ import { useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useHistory } from 'react-router-dom';
 import ProfileUpdate from '../components/ProfileUpdate';
-import { getImageUrlThunk } from '../redux/modules/common';
+import { getImageUrlThunk } from '../redux/modules/image';
 import { updateProfileThunk } from '../redux/modules/profile';
 import { checkDisplayNameThunk } from '../redux/modules/users';
 
-const ProfileUpdateContainer = () => {
+const ProfileUpdateContainer = ({ profileInfo }) => {
 	const history = useHistory();
 	const dispatch = useDispatch();
 
-	const { userPhotoUrl, userDisplayName, userIntro } = useSelector(
-		(state) => state.users.currentUserInfo
-	);
+	const { userPhotoUrl, userDisplayName, userIntro } = profileInfo;
 
 	const exist = useSelector((state) => state.users.checkDisplayName.exist);
 
@@ -94,7 +92,7 @@ const ProfileUpdateContainer = () => {
 					displayName === prevDisplayName &&
 					prevIntro === userIntro)
 			) {
-				history.replace('/');
+				history.replace('/profile');
 				return;
 			} else {
 				setInputs({ ...inputs, preventSubmit: true });
@@ -102,7 +100,7 @@ const ProfileUpdateContainer = () => {
 					await dispatch(getImageUrlThunk(imageBase64));
 				}
 				await dispatch(updateProfileThunk(inputs));
-				history.replace('/');
+				history.replace('/profile');
 			}
 		},
 		[dispatch, history, inputs, exist]

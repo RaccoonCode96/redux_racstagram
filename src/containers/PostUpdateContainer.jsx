@@ -1,16 +1,14 @@
 import { useCallback, useState } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
+import { useDispatch } from 'react-redux';
 import { useHistory } from 'react-router-dom';
 import PostUpdate from '../components/PostUpdate';
-import { getImageUrlThunk } from '../redux/modules/common';
+import { getImageUrlThunk } from '../redux/modules/image';
 import { updatePostThunk } from '../redux/modules/post';
 
-const PostUpdateContainer = () => {
+const PostUpdateContainer = ({ post }) => {
 	const history = useHistory();
 	const dispatch = useDispatch();
-	const { postImageUrl, postText, postId, userId } = useSelector(
-		(state) => state.post.postSelector
-	);
+	const { postImageUrl, postText, postId, userId } = post;
 	const [inputs, setInputs] = useState({
 		imageBase64: postImageUrl,
 		prevImageUrl: postImageUrl,

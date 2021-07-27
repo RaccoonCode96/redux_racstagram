@@ -5,12 +5,11 @@ import { DEFAULT_USER_IMAGE } from './auth';
 
 // Initial State
 const initialState = {
-	updateSelector: '',
+	imageUrl: '',
 	getImageUrl: {
 		isGet: false,
 		loading: false,
 		getError: '',
-		imageUrl: '',
 	},
 	deleteImageUrl: {
 		loading: false,
@@ -20,7 +19,7 @@ const initialState = {
 };
 // Async
 export const getImageUrlThunk = createAsyncThunk(
-	'redux-racstagram/post/getImageUrlThunk',
+	'redux-racstagram/images/getImageUrlThunk',
 	async (imageBase64, thunkAPI) => {
 		try {
 			if (imageBase64) {
@@ -46,7 +45,7 @@ export const getImageUrlThunk = createAsyncThunk(
 );
 
 export const deleteImageUrlThunk = createAsyncThunk(
-	'redux-racstagram/profile/deleteImageUrlThunk',
+	'redux-racstagram/images/deleteImageUrlThunk',
 	async (imageUrl, thunkAPI) => {
 		try {
 			if (imageUrl !== DEFAULT_USER_IMAGE) {
@@ -61,15 +60,11 @@ export const deleteImageUrlThunk = createAsyncThunk(
 
 // Slice
 // updateSelector : profile, post Update를 구분 해주는 역할
-const common = createSlice({
-	name: 'redux-racstagram/common',
+const image = createSlice({
+	name: 'redux-racstagram/images',
 	initialState,
 	reducers: {
-		resetCommon: () => ({ ...initialState }),
-		updateSelector: (state, { payload }) => ({
-			...state,
-			updateSelector: payload,
-		}),
+		resetimage: () => ({ ...initialState }),
 	},
 	extraReducers: {
 		[getImageUrlThunk.pending]: (state) => ({
@@ -78,11 +73,11 @@ const common = createSlice({
 		}),
 		[getImageUrlThunk.fulfilled]: (state, { payload }) => ({
 			...state,
+			imageUrl: payload,
 			getImageUrl: {
 				...state.getImageUrl,
 				loading: false,
 				isGet: true,
-				imageUrl: payload,
 			},
 		}),
 		[getImageUrlThunk.rejected]: (state, { payload }) => ({
@@ -116,7 +111,7 @@ const common = createSlice({
 	},
 });
 
-export default common.reducer;
+export default image.reducer;
 
 // actionCreator
-export const { updateSelector, resetCommon } = common.actions;
+export const { resetImage } = image.actions;

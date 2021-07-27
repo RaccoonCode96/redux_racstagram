@@ -1,7 +1,7 @@
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
 import { v4 as uuidv4 } from 'uuid';
 import { authService, firebaseInstance } from '../../fBase';
-import { resetCommon } from './common';
+import { resetImage } from './image';
 import { resetPost } from './post';
 import { resetProfile } from './profile';
 import {
@@ -46,7 +46,7 @@ export const signOutThunk = createAsyncThunk(
 			await Promise.all([
 				authService.signOut(),
 				thunkAPI.dispatch(resetPost()),
-				thunkAPI.dispatch(resetCommon()),
+				thunkAPI.dispatch(resetImage()),
 				thunkAPI.dispatch(resetProfile()),
 				thunkAPI.dispatch(resetUsers()),
 			]);

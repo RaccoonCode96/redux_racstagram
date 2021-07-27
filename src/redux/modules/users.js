@@ -9,32 +9,26 @@ const initialState = {
 		userDisplayName: '',
 		userIntro: '',
 	},
-	setCurrentUserInfo: {
-		isSet: false,
-		loading: false,
-		setError: '',
+	userInfo: {
+		userId: '',
+		userPhotoUrl: '',
+		userDisplayName: '',
+		userIntro: '',
 	},
 	getCurrentUserInfo: {
 		isGet: false,
 		loading: false,
 		getError: '',
 	},
-	selectedUserInfo: {
-		userId: '',
-		userPhotoUrl: '',
-		userDisplayName: '',
-		userIntro: '',
-	},
 	getUserInfo: {
 		isGet: false,
 		loading: false,
 		getError: '',
 	},
-	selectedUserPostList: [],
-	getSeletedUserPost: {
+	setCurrentUserInfo: {
+		isSet: false,
 		loading: false,
-		isGet: false,
-		getError: '',
+		setError: '',
 	},
 	checkDisplayName: {
 		loading: false,
@@ -61,25 +55,25 @@ export const checkDisplayNameThunk = createAsyncThunk(
 	}
 );
 
-export const getSeletedUserPostThunk = createAsyncThunk(
-	'redux-racstagram/users/getSeletedUserPostThunk',
-	async (userDisplayName, thunkAPI) => {
-		try {
-			const { docs } = await dbService
-				.collection('posts')
-				.where('userDisplayName', '==', userDisplayName)
-				.orderBy('postDate', 'desc')
-				.get();
-			const postList = docs.map((doc) => ({
-				postId: doc.id,
-				...doc.data(),
-			}));
-			return postList;
-		} catch ({ code, message }) {
-			return thunkAPI.rejectWithValue({ code, message });
-		}
-	}
-);
+// export const getSeletedUserPostThunk = createAsyncThunk(
+// 	'redux-racstagram/users/getSeletedUserPostThunk',
+// 	async (userName, thunkAPI) => {
+// 		try {
+// 			const { docs } = await dbService
+// 				.collection('posts')
+// 				.where('userDisplayName', '==', userName)
+// 				.orderBy('postDate', 'desc')
+// 				.get();
+// 			const postList = docs.map((doc) => ({
+// 				postId: doc.id,
+// 				...doc.data(),
+// 			}));
+// 			return postList;
+// 		} catch ({ code, message }) {
+// 			return thunkAPI.rejectWithValue({ code, message });
+// 		}
+// 	}
+// );
 
 export const getUserInfoThunk = createAsyncThunk(
 	'redux-racstagram/users/getUserInfoThunk',
@@ -172,34 +166,14 @@ const users = createSlice({
 				checkError: payload,
 			},
 		}),
-		[getSeletedUserPostThunk.pending]: (state) => ({
-			...state,
-			getSeletedUserPost: { ...state.getSeletedUserPost, loading: true },
-		}),
-		[getSeletedUserPostThunk.fulfilled]: (state, { payload }) => ({
-			...state,
-			selectedUserPostList: payload,
-			getSeletedUserPost: {
-				...state.getSeletedUserPost,
-				loading: false,
-				isGet: true,
-			},
-		}),
-		[getSeletedUserPostThunk.rejected]: (state, { payload }) => ({
-			...state,
-			getSeletedUserPost: {
-				...state.getSeletedUserPost,
-				loading: false,
-				getError: payload,
-			},
-		}),
+
 		[getUserInfoThunk.pending]: (state) => ({
 			...state,
 			getUserInfo: { ...state.getUserInfo, loading: true },
 		}),
 		[getUserInfoThunk.fulfilled]: (state, { payload }) => ({
 			...state,
-			selectedUserInfo: payload,
+			userInfo: payload,
 			getUserInfo: {
 				...state.getUserInfo,
 				loading: false,

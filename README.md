@@ -250,3 +250,52 @@ if (prevDisplayName !== input) {
 
 - 로그인의 경우, 자신이 쓰던 displayName이 없어서 그나마 조금 조건이 덜 까다로움
   - prev와 input 조건만 없음
+
+### 2021.07.26 사항
+
+- 포스트 디테일 만들기
+  - 현재 유저의 profile에 있는 image 테이블의 이미지 클릭시 포스트를 자세히 볼 수 있는 스크롤 방식(피드와 같이)의 Component로 교체되어 보여줌
+  - 다른 유저의 profile image 테이블의 이미지 클릭시 포스트를 자세히 볼 수 있는 있는 스크롤 방식의 Component로 교체되어 보여줌
+  - 결국엔, 현재 유저 profile과 다른 유저 profile을 보는 방식이 똑같기 때문에 보일러 플레이트 코드가 발생함 -> 통합할 필요가 있음
+- 현재 리덕스 스토어 state의 구조를 조금 더 관리하여 변형할 필요가 있음
+
+### 2021.07.27 사항
+
+<br/>
+
+- 리덕스 스토어 구조 변경함
+- 최대한 코드 중복(보일러 플레이트 코드)을 줄일려고 했으나, 코드 중복을 줄일려고 하면 오히려 더 가독성이 떨어지는 것 같아서 고민이 많다.
+- useSelector의 위치의 중요성 증가 (렌더링 최적화) -> 상위 포지션이 아닌 적절한 하위 포지션에 두어야 필요 없는 렌더링을 제거 할 수 있음
+- useSelector를 사용하는 경우 만약 비동기 작업의 상황을 알려주는 state안에 값을 참조하여 가져오면 불필요한 렌더링이 많이 발생할 것 같다는 생각이 든다(pending, fullfilled 에 의한 loading, 완료 여부 값의 변화시 새로운 객체가 들어오기 때문에 같이 새롭게 변했다고 인지할 것 같다는 생각이 든다.)
+  - 물론, 실험을 해봐야 할겠지만 우려가 되는 부분이다.
+- history push를 통해서 데이터를 전달하는 방식으로 변경함
+  - 기존 updateSelector, postSelector를 push와 함께 경로 이동시 state를 전달하는 방식으로 변경
+
+<br/>
+
+### component, container 구조 재계획
+
+<br/>
+
+- Home
+  - allPostsContainer
+    - post
+
+<br/>
+
+- Profile
+- User
+  - profileContainer
+    - currentUserProfileContainer
+    - userProfileContainer
+      - userProfile
+  - postContainer
+    - postOnToggle
+      - currentUserPostsContainer
+      - userPostsContainer
+        - post
+
+<br/>
+
+- currentUser 와 user에 대한 container를 어떻게 제어 할 것인지가 중요 사항임
+- 그리고 postOnToggle을 어떻게 비집고 넣을 것인지 중요함 (modal 방식의 children 사용한 HOC 방식을 사용할지 고민중)

@@ -1,8 +1,11 @@
-const ProfilePostImages = ({ profilePostList, postsOnToggle }) => {
+import { useSelector } from 'react-redux';
+
+const ProfilePostImages = ({ postsType, postsOnToggle }) => {
+	const posts = useSelector((state) => state.post[postsType]);
 	return (
 		<>
 			<div>
-				{profilePostList.map((post) => (
+				{posts.map((post) => (
 					<img
 						onClick={postsOnToggle}
 						key={post.postId}

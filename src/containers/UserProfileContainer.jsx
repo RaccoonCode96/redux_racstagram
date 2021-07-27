@@ -1,49 +1,35 @@
-import { useEffect, useState } from 'react';
-import { useCallback } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
-import { useHistory } from 'react-router-dom';
-import Posts from '../components/Posts';
+import { useCallback, useState } from 'react';
 import ProfilePostImages from '../components/ProfilePostImages';
 import UserProfile from '../components/UserProfile';
-import { updateSelector } from '../redux/modules/common';
-import { getProfilePostThunk } from '../redux/modules/profile';
-import { getCurrentUserInfoThunk } from '../redux/modules/users';
+import PostContainer from './PostContainer';
 
-const UserProfileContainer = () => {
-	const dispatch = useDispatch();
-	const profileInfo = useSelector((state) => state.users.currentUserInfo);
-	const profilePostList = useSelector((state) => state.profile.profilePostList);
-	const history = useHistory();
-
-	const getProfile = useCallback(async () => {
-		dispatch(getCurrentUserInfoThunk());
-		dispatch(getProfilePostThunk());
-	}, [dispatch]);
-	useEffect(() => {
-		getProfile();
-	}, [getProfile]);
-
-	const updateProfile = useCallback(() => {
-		dispatch(updateSelector('profile'));
-		history.push('/update');
-	}, [dispatch, history]);
-
+const UserProfileContainer = ({
+	postsType,
+	profileInfoType,
+	getPosts,
+	getInfo,
+}) => {
+	// profileInfo : 보여줄 유저 info
+	// updateProfile : profile update 할 로직
+	// postOn toggle
 	const [postOn, setPostOn] = useState({ isOn: false, scrollY: 0 });
 	const postsOnToggle = useCallback(() => {
 		setPostOn({ ...postOn, isOn: !postOn.isOn });
 	}, [setPostOn, postOn]);
+
 	return (
 		<>
 			{postOn.isOn ? (
-				<Posts postList={profilePostList} postsOnToggle={postsOnToggle} />
+				<PostContainer
+					getPosts={getPosts}
+					postsType={postsType}
+					postsOnToggle={postsOnToggle}
+				/>
 			) : (
 				<>
-					<UserProfile
-						updateProfile={updateProfile}
-						profileInfo={profileInfo}
-					/>
+					<UserProfile profileInfoType={profileInfoType} />
 					<ProfilePostImages
-						profilePostList={profilePostList}
+						postsType={postsType}
 						postsOnToggle={postsOnToggle}
 					/>
 				</>
