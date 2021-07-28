@@ -285,15 +285,16 @@ if (prevDisplayName !== input) {
 
 - Profile
 - User
-  - profileContainer
-    - currentUserProfileContainer
-    - userProfileContainer
-      - userProfile
-  - postContainer
-    - postOnToggle
-      - currentUserPostsContainer
-      - userPostsContainer
-        - post
+  - ProfileContainer
+    - CurrentUserProfileContainer
+    - UserProfileContainer
+      - UserProfile
+      - ProfilePostImages
+  - PostContainer
+    - PostOnToggle
+      - CurrentUserPostsContainer
+      - UserPostsContainer
+        - Post
 
 <br/>
 

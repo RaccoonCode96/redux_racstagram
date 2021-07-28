@@ -64,7 +64,7 @@ const image = createSlice({
 	name: 'redux-racstagram/images',
 	initialState,
 	reducers: {
-		resetimage: () => ({ ...initialState }),
+		resetImage: () => ({ ...initialState }),
 	},
 	extraReducers: {
 		[getImageUrlThunk.pending]: (state) => ({

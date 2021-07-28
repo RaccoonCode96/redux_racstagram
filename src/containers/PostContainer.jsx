@@ -1,4 +1,4 @@
-import { useCallback, useEffect } from 'react';
+import { useCallback } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useHistory, useLocation } from 'react-router-dom';
 import {
@@ -9,17 +9,11 @@ import {
 } from '../redux/modules/post';
 import Post from '../components/Post';
 
-const PostContainer = ({ postsType, postsOnToggle, getPosts }) => {
-	console.log('PostConatiner');
-	const posts = useSelector((state) => state.post[postsType]);
+const PostContainer = ({ postsOnToggle, posts }) => {
 	const history = useHistory();
 	const { pathname } = useLocation();
 	const dispatch = useDispatch();
 	const currentUserId = useSelector((state) => state.profile.currentUser.uid);
-
-	useEffect(() => {
-		getPosts();
-	}, [getPosts]);
 
 	const deletePost = useCallback(
 		(post) => {

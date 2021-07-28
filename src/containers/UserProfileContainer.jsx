@@ -1,37 +1,43 @@
+import { useEffect } from 'react';
 import { useCallback, useState } from 'react';
+import { useSelector } from 'react-redux';
+import { useHistory } from 'react-router-dom';
 import ProfilePostImages from '../components/ProfilePostImages';
 import UserProfile from '../components/UserProfile';
 import PostContainer from './PostContainer';
 
-const UserProfileContainer = ({
-	postsType,
-	profileInfoType,
-	getPosts,
-	getInfo,
-}) => {
-	// profileInfo : 보여줄 유저 info
-	// updateProfile : profile update 할 로직
-	// postOn toggle
+const UserProfileContainer = ({ getInfoPosts, postsType, infoType }) => {
+	useEffect(() => {
+		getInfoPosts();
+	}, [getInfoPosts]);
+
+	const posts = useSelector((state) => state.post[postsType]);
+	const profileInfo = useSelector((state) => state.users[infoType]);
+	const history = useHistory();
+
 	const [postOn, setPostOn] = useState({ isOn: false, scrollY: 0 });
 	const postsOnToggle = useCallback(() => {
 		setPostOn({ ...postOn, isOn: !postOn.isOn });
 	}, [setPostOn, postOn]);
 
+	const updateProfile = useCallback(() => {
+		history.push({
+			pathname: '/update',
+			state: { profileInfo, post: [], type: 'profile' },
+		});
+	}, [history, profileInfo]);
+
 	return (
 		<>
 			{postOn.isOn ? (
-				<PostContainer
-					getPosts={getPosts}
-					postsType={postsType}
-					postsOnToggle={postsOnToggle}
-				/>
+				<PostContainer posts={posts} postsOnToggle={postsOnToggle} />
 			) : (
 				<>
-					<UserProfile profileInfoType={profileInfoType} />
-					<ProfilePostImages
-						postsType={postsType}
-						postsOnToggle={postsOnToggle}
+					<UserProfile
+						profileInfo={profileInfo}
+						updateProfile={updateProfile}
 					/>
+					<ProfilePostImages posts={posts} postsOnToggle={postsOnToggle} />
 				</>
 			)}
 		</>

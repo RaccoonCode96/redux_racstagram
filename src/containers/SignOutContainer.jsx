@@ -8,7 +8,7 @@ const SignOutContainer = () => {
 	const history = useHistory();
 	const dispatch = useDispatch();
 	const onSignOutClick = useCallback(async () => {
-		dispatch(signOutThunk());
+		await dispatch(signOutThunk());
 		history.push('/');
 	}, [history, dispatch]);
 	return <SignOut onSignOutClick={onSignOutClick} />;

@@ -2,18 +2,14 @@ import UserProfileContainer from '../containers/UserProfileContainer';
 import SignOutContainer from '../containers/SignOutContainer';
 import { useCallback } from 'react';
 import { useDispatch } from 'react-redux';
-import { useEffect } from 'react';
 import { getCurrentUserInfoThunk } from '../redux/modules/users';
 import { getCurrentUserPostsThunk } from '../redux/modules/post';
 import Navigation from '../components/Navigation';
 const Profile = () => {
 	const dispatch = useDispatch();
 
-	const getInfo = useCallback(() => {
+	const getInfoPosts = useCallback(async () => {
 		dispatch(getCurrentUserInfoThunk());
-	}, [dispatch]);
-
-	const getPosts = useCallback(() => {
 		dispatch(getCurrentUserPostsThunk());
 	}, [dispatch]);
 
@@ -21,10 +17,9 @@ const Profile = () => {
 		<>
 			<Navigation />
 			<UserProfileContainer
-				profileInfoType={'currentUserInfo'}
+				getInfoPosts={getInfoPosts}
 				postsType={'currentUserPosts'}
-				getPosts={getPosts}
-				getInfo={getInfo}
+				infoType={'currentUserInfo'}
 			/>
 			<SignOutContainer />
 		</>

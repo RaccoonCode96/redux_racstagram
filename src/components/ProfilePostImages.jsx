@@ -1,7 +1,4 @@
-import { useSelector } from 'react-redux';
-
-const ProfilePostImages = ({ postsType, postsOnToggle }) => {
-	const posts = useSelector((state) => state.post[postsType]);
+const ProfilePostImages = ({ posts, postsOnToggle }) => {
 	return (
 		<>
 			<div>

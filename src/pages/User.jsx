@@ -1,5 +1,4 @@
 import { useCallback } from 'react';
-import { useEffect } from 'react';
 import { useDispatch } from 'react-redux';
 import { useParams } from 'react-router-dom';
 import Navigation from '../components/Navigation';
@@ -11,23 +10,17 @@ const User = () => {
 	let { userName } = useParams();
 	const dispatch = useDispatch();
 
-	const getProfile = useCallback(
-		async (userName) => {
-			dispatch(getUserInfoThunk(userName));
-			dispatch(getUserPostsThunk(userName));
-		},
-		[dispatch]
-	);
-
-	useEffect(() => {
-		getProfile(userName);
-	}, [getProfile, userName]);
+	const getInfoPosts = useCallback(async () => {
+		dispatch(getUserInfoThunk(userName));
+		dispatch(getUserPostsThunk(userName));
+	}, [dispatch, userName]);
 
 	return (
 		<>
 			<Navigation />
 			<UserProfileContainer
-				profileInfoType={'userInfo'}
+				getInfoPosts={getInfoPosts}
+				infoType={'userInfo'}
 				postsType={'userPosts'}
 			/>
 		</>

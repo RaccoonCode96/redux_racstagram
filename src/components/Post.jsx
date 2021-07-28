@@ -6,7 +6,6 @@ import { Link } from 'react-router-dom';
 import Modal from '../components/Modal';
 
 const Post = ({ post, deletePost, updatePost, currentUserId }) => {
-	console.log('post');
 	const [isOn, setIsOn] = useState(false);
 	const toggle = () => {
 		setIsOn(!isOn);

@@ -253,10 +253,6 @@ const post = createSlice({
 		resetPost: (state) => ({
 			...initialState,
 		}),
-		selectPost: (state, { payload }) => ({
-			...state,
-			postSelector: payload,
-		}),
 	},
 	extraReducers: {
 		[updatePostsUserInfoThunk.pending]: (state) => ({
@@ -404,4 +400,4 @@ const post = createSlice({
 export default post.reducer;
 
 // actionCreator
-export const { resetPost, selectPost } = post.actions;
+export const { resetPost } = post.actions;
