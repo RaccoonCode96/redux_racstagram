@@ -2,6 +2,7 @@ import { useCallback, useState } from 'react';
 import { useDispatch } from 'react-redux';
 import { useHistory } from 'react-router-dom';
 import PostUpdate from '../components/PostUpdate';
+import resize from '../hooks/resize';
 import { getImageUrlThunk } from '../redux/modules/image';
 import { updatePostThunk } from '../redux/modules/post';
 
@@ -30,7 +31,12 @@ const PostUpdateContainer = ({ post }) => {
 						const {
 							currentTarget: { result },
 						} = finishedEvent;
-						setInputs({ ...inputs, imageBase64: result });
+						const img = new Image();
+						img.src = result;
+						img.onload = (event) => {
+							const dataUrl = resize(img, 600);
+							setInputs({ ...inputs, imageBase64: dataUrl });
+						};
 					};
 					reader.readAsDataURL(theFile);
 				} else {

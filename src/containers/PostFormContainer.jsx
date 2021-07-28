@@ -3,6 +3,7 @@ import { useCallback, useState } from 'react';
 import { useDispatch } from 'react-redux';
 import { useHistory } from 'react-router-dom';
 import PostForm from '../components/PostForm';
+import resize from '../hooks/resize';
 import { getImageUrlThunk } from '../redux/modules/image';
 import { createPostThunk } from '../redux/modules/post';
 import { getCurrentUserInfoThunk } from '../redux/modules/users';
@@ -27,7 +28,13 @@ const PostFormContainer = () => {
 						const {
 							currentTarget: { result },
 						} = finishedEvent;
-						setInputs({ ...inputs, imageBase64: result });
+
+						const img = new Image();
+						img.src = result;
+						img.onload = (event) => {
+							const dataUrl = resize(img, 600);
+							setInputs({ ...inputs, imageBase64: dataUrl });
+						};
 					};
 					reader.readAsDataURL(theFile);
 				} else {

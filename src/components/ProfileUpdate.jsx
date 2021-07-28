@@ -1,6 +1,5 @@
 const ProfileUpdate = ({ onChange, inputs, onSubmit, check, exist }) => {
 	const { userIntro, imageBase64, displayName, prevDisplayName } = inputs;
-	console.log('profileUpdate');
 	return (
 		<>
 			{imageBase64 ? (

@@ -3,6 +3,7 @@ import { useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useHistory } from 'react-router-dom';
 import ProfileUpdate from '../components/ProfileUpdate';
+import resize from '../hooks/resize';
 import { getImageUrlThunk } from '../redux/modules/image';
 import { updateProfileThunk } from '../redux/modules/profile';
 import { checkDisplayNameThunk } from '../redux/modules/users';
@@ -41,10 +42,15 @@ const ProfileUpdateContainer = ({ profileInfo }) => {
 						const {
 							currentTarget: { result },
 						} = finishedEvent;
-						setInputs({
-							...inputs,
-							imageBase64: result,
-						});
+						const img = new Image();
+						img.src = result;
+						img.onload = (event) => {
+							const dataUrl = resize(img, 300);
+							setInputs({
+								...inputs,
+								imageBase64: dataUrl,
+							});
+						};
 					};
 					reader.readAsDataURL(theFile);
 				} else {

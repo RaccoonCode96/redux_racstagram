@@ -300,3 +300,53 @@ if (prevDisplayName !== input) {
 
 - currentUser 와 user에 대한 container를 어떻게 제어 할 것인지가 중요 사항임
 - 그리고 postOnToggle을 어떻게 비집고 넣을 것인지 중요함 (modal 방식의 children 사용한 HOC 방식을 사용할지 고민중)
+
+### 2021.07.28 사항
+
+- Home
+  - PostContainer : posts(페이지에 불러온 적절한 posts)
+    - Post
+
+<br/>
+
+- Profile
+- User
+  - UserProfileContainer : getInfoPosts(요청 함수), InfoType, PostsType(useSelector로 가져올 state)
+    - PostContainer : posts(페이지에 불러온 적절한 posts) , postsOnToggle (이미지 테이블과 글 디테일 뷰를 교체하는 함수)
+    - UserProfile : profileInfo(해당 페이지에 적절한 info), updateProfile(profile update 요청하는 함수)
+    - ProfilePostImages : posts(페이지에 불러온 적절한 posts) postsOnToggle (이미지 테이블과 글 디테일 뷰를 교체하는 함수)
+
+### 이미지 리사이징
+
+- canvas를 이용한 이미지 리사이징
+- file dataUrl을 가지고, Image 생성자를 통해서 Image인스턴스를 만들어서 해당 dataUrl을 src에 적용한 인스턴로 적용시킨 후 resize 함수에 넣어 size를 바꿈
+
+```js
+const resize = (img, maxSize) => {
+	let canvas = document.createElement('canvas'),
+		max_size = maxSize,
+		width = img.width,
+		height = img.height;
+	if (width > height) {
+		if (width > max_size) {
+			height *= max_size / width;
+			width = max_size;
+		}
+	} else {
+		if (height > max_size) {
+			width *= max_size / height;
+			height = max_size;
+		}
+	}
+	canvas.width = width;
+	canvas.height = height;
+	canvas.getContext('2d').drawImage(img, 0, 0, width, height);
+	const dataUrl = canvas.toDataURL('image/jpeg');
+	return dataUrl;
+};
+
+export default resize;
+```
+
+- 기본 post에 들어가는 이미지는 max 600 size로 비율을 맞추어 저장
+- profile 이미지의 경우 max 300 size로 비율을 맞추어 저장
