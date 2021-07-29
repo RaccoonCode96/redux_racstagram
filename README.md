@@ -350,3 +350,6 @@ export default resize;
 
 - 기본 post에 들어가는 이미지는 max 600 size로 비율을 맞추어 저장
 - profile 이미지의 경우 max 300 size로 비율을 맞추어 저장
+
+- 해당 글의 스크롤 위치를 계산할 수 있는 함수가 필요함
+  - 기본적인 글박스 height + 이미지 height
