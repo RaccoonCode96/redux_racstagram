@@ -1,8 +1,8 @@
 import { useCallback } from 'react';
 import { useDispatch } from 'react-redux';
 import { useHistory } from 'react-router';
-import SignOut from '../components/SignOut';
-import { signOutThunk } from '../redux/modules/auth';
+import SignOut from './SignOut';
+import { signOutThunk } from '../../redux/modules/auth';
 
 const SignOutContainer = () => {
 	const history = useHistory();

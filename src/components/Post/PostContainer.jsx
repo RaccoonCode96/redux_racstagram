@@ -6,8 +6,8 @@ import {
 	getAllPostsThunk,
 	getCurrentUserPostsThunk,
 	getUserPostsThunk,
-} from '../redux/modules/post';
-import Post from '../components/Post';
+} from '../../redux/modules/post';
+import Post from './Post';
 
 const PostContainer = ({ postsOnToggle, posts }) => {
 	const history = useHistory();

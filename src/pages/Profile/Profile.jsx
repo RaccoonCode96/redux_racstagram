@@ -1,10 +1,10 @@
-import UserProfileContainer from '../containers/UserProfileContainer';
-import SignOutContainer from '../containers/SignOutContainer';
+import UserProfileContainer from '../../components/UserProfile/UserProfileContainer';
+import SignOutContainer from '../../components/SignOut/SignOutContainer';
 import { useCallback } from 'react';
 import { useDispatch } from 'react-redux';
-import { getCurrentUserInfoThunk } from '../redux/modules/users';
-import { getCurrentUserPostsThunk } from '../redux/modules/post';
-import Navigation from '../components/Navigation';
+import { getCurrentUserInfoThunk } from '../../redux/modules/users';
+import { getCurrentUserPostsThunk } from '../../redux/modules/post';
+import Navigation from '../../components/common/Navigation';
 const Profile = () => {
 	const dispatch = useDispatch();
 

@@ -1,9 +1,9 @@
 import { useCallback } from 'react';
 import { useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import AuthForm from '../components/AuthForm';
-import { emailSignInThunk, emailSignUpThunk } from '../redux/modules/auth';
-import { checkDisplayNameThunk } from '../redux/modules/users';
+import AuthForm from './AuthForm';
+import { emailSignInThunk, emailSignUpThunk } from '../../redux/modules/auth';
+import { checkDisplayNameThunk } from '../../redux/modules/users';
 
 const AuthFormContainer = () => {
 	const dispatch = useDispatch();

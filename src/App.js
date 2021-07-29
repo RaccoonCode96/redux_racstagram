@@ -1,4 +1,5 @@
-import InitContainer from './containers/InitContainer';
+import InitContainer from './components/Init/InitContainer';
+import './styles/main.scss';
 function App() {
 	return <InitContainer />;
 }

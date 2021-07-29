@@ -1,9 +1,10 @@
-import ShowError from '../components/showError';
-import SocialSignInContainer from '../containers/SocialSignInContainer';
-import AuthFormContainer from '../containers/AuthFormCotainer';
+import ShowError from '../../components/common/showError';
+import SocialSignInContainer from '../../components/SocialSignIn/SocialSignInContainer';
+import AuthFormContainer from '../../components/AuthForm/AuthFormCotainer';
 import { useDispatch, useSelector } from 'react-redux';
-import { resetAuth, setNewAccount } from '../redux/modules/auth';
+import { resetAuth, setNewAccount } from '../../redux/modules/auth';
 import { useEffect } from 'react';
+import './auth.scss';
 
 const Auth = () => {
 	const dispatch = useDispatch();
@@ -20,7 +21,7 @@ const Auth = () => {
 	}, [dispatch]);
 
 	return (
-		<>
+		<div className="auth">
 			<div className="auth_container">
 				<h2 className="auth_title">Racstagram</h2>
 				<div className="auth_form">
@@ -36,7 +37,7 @@ const Auth = () => {
 						: '계정이 없으신가요? 가입하기'}
 				</span>
 			</div>
-		</>
+		</div>
 	);
 };
 

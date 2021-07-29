@@ -3,7 +3,7 @@ import { faEllipsisH } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { useState } from 'react';
 import { Link } from 'react-router-dom';
-import Modal from '../components/Modal';
+import Modal from '../common/Modal';
 
 const Post = ({ post, deletePost, updatePost, currentUserId }) => {
 	const [isOn, setIsOn] = useState(false);

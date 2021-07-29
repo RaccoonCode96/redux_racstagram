@@ -2,11 +2,11 @@ import { useCallback } from 'react';
 import { useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useHistory } from 'react-router-dom';
-import ProfileUpdate from '../components/ProfileUpdate';
-import resize from '../hooks/resize';
-import { getImageUrlThunk } from '../redux/modules/image';
-import { updateProfileThunk } from '../redux/modules/profile';
-import { checkDisplayNameThunk } from '../redux/modules/users';
+import ProfileUpdate from './ProfileUpdate';
+import resize from '../../hooks/resize';
+import { getImageUrlThunk } from '../../redux/modules/image';
+import { updateProfileThunk } from '../../redux/modules/profile';
+import { checkDisplayNameThunk } from '../../redux/modules/users';
 
 const ProfileUpdateContainer = ({ profileInfo }) => {
 	const history = useHistory();

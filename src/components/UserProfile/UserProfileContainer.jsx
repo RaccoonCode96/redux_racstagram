@@ -2,9 +2,9 @@ import { useEffect } from 'react';
 import { useCallback, useState } from 'react';
 import { useSelector } from 'react-redux';
 import { useHistory } from 'react-router-dom';
-import ProfilePostImages from '../components/ProfilePostImages';
-import UserProfile from '../components/UserProfile';
-import PostContainer from './PostContainer';
+import ProfilePostImages from '../common/ProfilePostImages';
+import UserProfile from './UserProfile';
+import PostContainer from '../Post/PostContainer';
 
 const UserProfileContainer = ({ getInfoPosts, postsType, infoType }) => {
 	useEffect(() => {

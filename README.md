@@ -213,3 +213,83 @@
 
 - Container 구조 리팩토링, 이미지 리사이징
   - https://goforit.tistory.com/192
+
+<br/>
+
+### 2021.07.29 사항
+
+- 스타일링 작업 방식은 두가지 인것 같다.
+  - styles 폴더에 각각 기능에 맞는 스타일시트를 만들어서 나중에 main 이나 index 이름의 스타일 시트에 모두 모아서 app 전체에 import 시키는 방식
+  - 스타일시트를 각 컴포넌트 마다 구성하여 import 하는 방식
+    - 물론, 나중에 build 하는 경우에는 하나의 css 파일이 되겠지 만
+    - 개발 하면서 연관된 jsx, 기능, 스타일을 모아 component 별로 확인하는게 더 효율적이라고 생각함 (다른사람이 보기도 편할 듯 함)
+
+<br/>
+
+- SCSS 스타일링 작업을 위한 디렉구조 작업화
+- SCSS 스타일링을 각 컴포넌트에 import하는 구조로 작성하기 위해서 기존의 Component, Container 구조를 Component 폴더에 컴포넌트 별로 폴더를 만들어 Component, Container를 짝으로 구성해 놓았고, 해당 컴포넌트의 SCSS는 컴포넌트 폴더에 같이 첨부할 예정
+- react의 컴포넌트 프로그래밍의 컨셉에 맞게 스타일링도 컴포넌트에 결착하여 확인하기 편하게 만들고자 이렇게 구현하였다.
+
+<br/>
+
+- styles 폴더의 경우에는 공통적으로 사용하는 utils 역할의 scss 파일들이 보관 되어 있음
+  - main : 모든 앱에서 공통적으로 사용되는 스타일
+    - 예) font-family, box-sizing, a태그 text-decorate: none 등
+    - reset css를 import 하여 받음
+    - app.js에 직접적으로 연결 됨
+  - colors : 자주 사용될 색 관련 값을 가진 변수들
+  - mixins : 자주 사용될 수 있는 스타일 값 mixin들
+  - sizes : 자주 사용되는 size 값 변수들
+  - variables : 해당 변수들을 모두 import 하여 묶어주는 역할
+    - 다른 파일에서는 variables만 import 하여 사용할 수 있음
+
+<br/>
+
+```
+폴더 구조
+├─components
+│  ├─AuthForm
+│  ├─common
+│  ├─Init
+│  ├─Post
+│  ├─PostForm
+│  ├─PostUpdate
+│  ├─ProfileUpdate
+│  ├─SignOut
+│  ├─SocialSignIn
+│  └─UserProfile
+├─hooks
+├─pages
+│  ├─Auth
+│  ├─Home
+│  ├─Profile
+│  ├─Update
+│  ├─User
+│  └─Write
+├─redux
+│  └─modules
+└─styles
+
+─styles
+  main.scss
+  reset.css
+  _colors.scss
+  _mixins.scss
+  _sizes.scss
+  _variables.scss
+```
+
+<br/>
+
+- 완료한 스타일링
+  - [x] `styled Load Component`
+  - [x] `styled Navigation Component`
+
+<br/>
+
+- 폴더 구조 보기 command (window)
+  - `tree` : 해당 폴더의 파일이 아닌 폴더 구조만 그래프로 보여줌
+    - options
+      - /f : 파일 까지 보여줌
+
+<br/>

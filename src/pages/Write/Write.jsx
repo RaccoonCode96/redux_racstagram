@@ -1,8 +1,8 @@
 import { useEffect } from 'react';
 import { useDispatch } from 'react-redux';
-import Navigation from '../components/Navigation';
-import PostFormContainer from '../containers/PostFormContainer';
-import { resetPost } from '../redux/modules/post';
+import Navigation from '../../components/common/Navigation';
+import PostFormContainer from '../../components/PostForm/PostFormContainer';
+import { resetPost } from '../../redux/modules/post';
 
 const Write = () => {
 	const dispatch = useDispatch();

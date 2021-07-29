@@ -2,11 +2,11 @@ import { useEffect } from 'react';
 import { useCallback, useState } from 'react';
 import { useDispatch } from 'react-redux';
 import { useHistory } from 'react-router-dom';
-import PostForm from '../components/PostForm';
-import resize from '../hooks/resize';
-import { getImageUrlThunk } from '../redux/modules/image';
-import { createPostThunk } from '../redux/modules/post';
-import { getCurrentUserInfoThunk } from '../redux/modules/users';
+import PostForm from './PostForm';
+import resize from '../../hooks/resize';
+import { getImageUrlThunk } from '../../redux/modules/image';
+import { createPostThunk } from '../../redux/modules/post';
+import { getCurrentUserInfoThunk } from '../../redux/modules/users';
 
 const PostFormContainer = () => {
 	const history = useHistory();

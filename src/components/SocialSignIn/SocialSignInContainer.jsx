@@ -1,7 +1,7 @@
 import { useCallback } from 'react';
 import { useDispatch } from 'react-redux';
-import SocialSignIn from '../components/SocialSignIn';
-import { socialSignInThunk } from '../redux/modules/auth';
+import SocialSignIn from './SocialSignIn';
+import { socialSignInThunk } from '../../redux/modules/auth';
 
 const SocialSignInContainer = () => {
 	const dispatch = useDispatch();

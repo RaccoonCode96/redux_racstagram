@@ -1,10 +1,10 @@
 import { useCallback } from 'react';
 import { useDispatch } from 'react-redux';
 import { useParams } from 'react-router-dom';
-import Navigation from '../components/Navigation';
-import UserProfileContainer from '../containers/UserProfileContainer';
-import { getUserPostsThunk } from '../redux/modules/post';
-import { getUserInfoThunk } from '../redux/modules/users';
+import Navigation from '../../components/common/Navigation';
+import UserProfileContainer from '../../components/UserProfile/UserProfileContainer';
+import { getUserPostsThunk } from '../../redux/modules/post';
+import { getUserInfoThunk } from '../../redux/modules/users';
 
 const User = () => {
 	let { userName } = useParams();

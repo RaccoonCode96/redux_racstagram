@@ -1,10 +1,10 @@
 import { useCallback, useState } from 'react';
 import { useDispatch } from 'react-redux';
 import { useHistory } from 'react-router-dom';
-import PostUpdate from '../components/PostUpdate';
-import resize from '../hooks/resize';
-import { getImageUrlThunk } from '../redux/modules/image';
-import { updatePostThunk } from '../redux/modules/post';
+import PostUpdate from './PostUpdate';
+import resize from '../../hooks/resize';
+import { getImageUrlThunk } from '../../redux/modules/image';
+import { updatePostThunk } from '../../redux/modules/post';
 
 const PostUpdateContainer = ({ post }) => {
 	const history = useHistory();

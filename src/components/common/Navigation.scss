@@ -1,0 +1,32 @@
+@import '../../styles/_variables';
+
+.nav {
+	padding: 0 20px;
+	position: fixed;
+	height: $nav_height;
+	width: 100%;
+	border-bottom: solid 1px $default_border_color;
+	display: flex;
+	justify-content: space-between;
+	align-items: center;
+	z-index: 2;
+	background-color: $default_background_color;
+	.logo {
+		font-family: $logo_font;
+		font-size: 1.5rem;
+	}
+
+	.items {
+		display: flex;
+		align-items: center;
+	}
+
+	.item {
+		color: $default_border_color;
+		margin-right: 10px;
+
+		&:last-child {
+			margin-right: 0;
+		}
+	}
+}
