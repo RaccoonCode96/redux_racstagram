@@ -184,172 +184,32 @@
 - 뒤로가기 제한을 위한 history관리
   - https://goforit.tistory.com/188
 
+<br/>
+
 ### 2021.07.24 사항
 
-- `firebase firestore 보안 규칙 수정`
+- firebase 보안 규칙 수정, react 이벤트 버블링(stopPropagation 작동 에러), displayName 고유화를 위한 userName 중복 check 구현
+  - https://goforit.tistory.com/189
 
-  - users collection의 userDisplayName만 로그인 없이 read 할수 있도록 변경 함
-
-- `react 이벤트 버블링 현상`
-
-  - function component 사용시 event.stopPropagation를 사용해도 작동하지 않고 event를 상위에 전달하게 됨 event.preventDefault를 사용해야 전파를 아에 하지 않았음
-  - class component의 경우에는 event.stopPropagtion이 작동함
-  - react가 document에 단일 이벤트 리스너 구조인 것은 알지만, 왜 이런 현상이 일어나는지는 모르겠음
-
-- `displayName 고유화를 위한 checkDisplayName 구현`
-  - 회원가입, profile 수정시 DisplayName 중복 체크 확인 구현
-  - redux의 users의 checkDisplayName의 exist 프로퍼티인 배열값의 0번은 존재하는 이름인지를 표시, 1번은 검사를 실시한 이름을 뜻함
-
-```js
-const users = {
-  ...,
-  checkDisplayName: {
-    loading: false,
-    isCheck: false,
-    checkError: '',
-    exist: [false, ''],
-  }
-}
-```
-
-- 프로필 displayName 수정의 경우 자신이 쓰던 displayName에 대한 것도 고려 해야해서 까다로움
-
-  - 경우1) 중복확인이 필요하지 않은 경우
-    - 기존에 쓰던 displayName과 현재 입력창의 input이 같은 경우 `(input === prev)`
-  - 경우2) 중복확인이 필요한 경우
-    - 1.현재 input과 검사한 displayName(결과는 모르지만)과 다를 경우 `(input !== chekedName)`
-    - 2.검사한 displayName이 없는 경우(초기값 ''인 경우) -> `(checkedName === '')`
-      - 검사한 displayName이 ''이고 input과 같은 경우도 원하지 않기에 중복 확인이 필요하지만 어차피 chekedName 값 조건에서 필터링이 되기때문에 상관 없음
-  - 경우3) 중복 확인을 한 경우
-    - 중복O:
-      - 검사한 이름의 결과 값이 true 인 경우 `(checkedValue === true)`
-    - 중복X:
-      - 검사한 이름의 결과 값이 false 인 경우 `(checkedValue === false)`
-
-- `경우1과 경우3의 중복X 인 경우`
-  - input과 prev가 같은 경우와, 중복 확인하여 중복이 아닌 경우는 다음을 작업을 진행 해도 됨
-
-```js
-// 이름 중복 방어 코드
-// input과 과거 이름이 다른 경우
-if (prevDisplayName !== input) {
-	// 검사한 이름이 '' or 검사한 이름이 input과 다른 경우
-	if (!checkedName || checkedName !== input) {
-		window.alert('닉네임 중복 확인이 필요 합니다.');
-		return;
-	}
-	// 중복 검사 값이 true 인 경우
-	if (exist[0]) {
-		window.alert(`${exist[1]}은 이미 존재하는 닉네임 입니다.`);
-		return;
-	}
-}
-// input과 과거 이름이 같거나, 중복 검사 값이 false인 경우
-// update Name
-```
-
-- 로그인의 경우, 자신이 쓰던 displayName이 없어서 그나마 조금 조건이 덜 까다로움
-  - prev와 input 조건만 없음
+<br/>
 
 ### 2021.07.26 사항
 
-- 포스트 디테일 만들기
-  - 현재 유저의 profile에 있는 image 테이블의 이미지 클릭시 포스트를 자세히 볼 수 있는 스크롤 방식(피드와 같이)의 Component로 교체되어 보여줌
-  - 다른 유저의 profile image 테이블의 이미지 클릭시 포스트를 자세히 볼 수 있는 있는 스크롤 방식의 Component로 교체되어 보여줌
-  - 결국엔, 현재 유저 profile과 다른 유저 profile을 보는 방식이 똑같기 때문에 보일러 플레이트 코드가 발생함 -> 통합할 필요가 있음
-- 현재 리덕스 스토어 state의 구조를 조금 더 관리하여 변형할 필요가 있음
+- Post detail view 만들기, 보일러 플레이트 코드에 대한 고민
+  - https://goforit.tistory.com/190
+
+<br/>
 
 ### 2021.07.27 사항
 
 <br/>
 
-- 리덕스 스토어 구조 변경함
-- 최대한 코드 중복(보일러 플레이트 코드)을 줄일려고 했으나, 코드 중복을 줄일려고 하면 오히려 더 가독성이 떨어지는 것 같아서 고민이 많다.
-- useSelector의 위치의 중요성 증가 (렌더링 최적화) -> 상위 포지션이 아닌 적절한 하위 포지션에 두어야 필요 없는 렌더링을 제거 할 수 있음
-- useSelector를 사용하는 경우 만약 비동기 작업의 상황을 알려주는 state안에 값을 참조하여 가져오면 불필요한 렌더링이 많이 발생할 것 같다는 생각이 든다(pending, fullfilled 에 의한 loading, 완료 여부 값의 변화시 새로운 객체가 들어오기 때문에 같이 새롭게 변했다고 인지할 것 같다는 생각이 든다.)
-  - 물론, 실험을 해봐야 할겠지만 우려가 되는 부분이다.
-- history push를 통해서 데이터를 전달하는 방식으로 변경함
-  - 기존 updateSelector, postSelector를 push와 함께 경로 이동시 state를 전달하는 방식으로 변경
+- 리덕스 store state 구조 개편, useSelector에 대한 렌더링에 대한 고민, history를 활용한 정보 전달
+  - https://goforit.tistory.com/191
 
 <br/>
-
-### component, container 구조 재계획
-
-<br/>
-
-- Home
-  - allPostsContainer
-    - post
-
-<br/>
-
-- Profile
-- User
-  - ProfileContainer
-    - CurrentUserProfileContainer
-    - UserProfileContainer
-      - UserProfile
-      - ProfilePostImages
-  - PostContainer
-    - PostOnToggle
-      - CurrentUserPostsContainer
-      - UserPostsContainer
-        - Post
-
-<br/>
-
-- currentUser 와 user에 대한 container를 어떻게 제어 할 것인지가 중요 사항임
-- 그리고 postOnToggle을 어떻게 비집고 넣을 것인지 중요함 (modal 방식의 children 사용한 HOC 방식을 사용할지 고민중)
 
 ### 2021.07.28 사항
 
-- Home
-  - PostContainer : posts(페이지에 불러온 적절한 posts)
-    - Post
-
-<br/>
-
-- Profile
-- User
-  - UserProfileContainer : getInfoPosts(요청 함수), InfoType, PostsType(useSelector로 가져올 state)
-    - PostContainer : posts(페이지에 불러온 적절한 posts) , postsOnToggle (이미지 테이블과 글 디테일 뷰를 교체하는 함수)
-    - UserProfile : profileInfo(해당 페이지에 적절한 info), updateProfile(profile update 요청하는 함수)
-    - ProfilePostImages : posts(페이지에 불러온 적절한 posts) postsOnToggle (이미지 테이블과 글 디테일 뷰를 교체하는 함수)
-
-### 이미지 리사이징
-
-- canvas를 이용한 이미지 리사이징
-- file dataUrl을 가지고, Image 생성자를 통해서 Image인스턴스를 만들어서 해당 dataUrl을 src에 적용한 인스턴로 적용시킨 후 resize 함수에 넣어 size를 바꿈
-
-```js
-const resize = (img, maxSize) => {
-	let canvas = document.createElement('canvas'),
-		max_size = maxSize,
-		width = img.width,
-		height = img.height;
-	if (width > height) {
-		if (width > max_size) {
-			height *= max_size / width;
-			width = max_size;
-		}
-	} else {
-		if (height > max_size) {
-			width *= max_size / height;
-			height = max_size;
-		}
-	}
-	canvas.width = width;
-	canvas.height = height;
-	canvas.getContext('2d').drawImage(img, 0, 0, width, height);
-	const dataUrl = canvas.toDataURL('image/jpeg');
-	return dataUrl;
-};
-
-export default resize;
-```
-
-- 기본 post에 들어가는 이미지는 max 600 size로 비율을 맞추어 저장
-- profile 이미지의 경우 max 300 size로 비율을 맞추어 저장
-
-- 해당 글의 스크롤 위치를 계산할 수 있는 함수가 필요함
-  - 기본적인 글박스 height + 이미지 height
+- Container 구조 리팩토링, 이미지 리사이징
+  - https://goforit.tistory.com/192
