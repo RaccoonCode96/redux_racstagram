@@ -1,8 +1,19 @@
-import { Button, TextField } from '@material-ui/core';
+import { Button, CircularProgress, TextField } from '@material-ui/core';
 import './AuthForm.scss';
 import Alert from '@material-ui/lab/Alert';
 
-const AuthForm = ({ onChange, inputs, onSubmit, newAccount, check, exist }) => {
+const AuthForm = ({
+	onChange,
+	inputs,
+	onSubmit,
+	newAccount,
+	check,
+	exist,
+	emailSignIn,
+	emailSignUp,
+	socialSignIn,
+	checkDisplayName,
+}) => {
 	const { email, password, displayName } = inputs;
 
 	return (
@@ -57,7 +68,9 @@ const AuthForm = ({ onChange, inputs, onSubmit, newAccount, check, exist }) => {
 								중복 검사
 							</Button>
 						</div>
-						{!exist[1] || displayName !== exist[1] ? (
+						{checkDisplayName ? (
+							<CircularProgress />
+						) : !exist[1] || displayName !== exist[1] ? (
 							<Alert className="check_message" severity="warning">
 								중복 확인이 필요합니다.
 							</Alert>
@@ -74,15 +87,19 @@ const AuthForm = ({ onChange, inputs, onSubmit, newAccount, check, exist }) => {
 				) : (
 					<></>
 				)}
-				<Button
-					variant="contained"
-					color="primary"
-					className="auth_btn"
-					type="submit"
-					disableElevation
-				>
-					{newAccount ? '가입하기' : '로그인'}
-				</Button>
+				{emailSignIn || emailSignUp || socialSignIn ? (
+					<CircularProgress />
+				) : (
+					<Button
+						variant="contained"
+						color="primary"
+						className="auth_btn"
+						type="submit"
+						disableElevation
+					>
+						{newAccount ? '가입하기' : '로그인'}
+					</Button>
+				)}
 			</form>
 		</>
 	);

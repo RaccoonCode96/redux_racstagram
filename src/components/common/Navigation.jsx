@@ -8,36 +8,38 @@ const Navigation = () => {
 	return (
 		<>
 			<div className="nav">
-				<div className="logo">Racstagram</div>
-				<ul className="items">
-					<li className="item">
-						<Link to="/">
-							<FontAwesomeIcon
-								className="icon_home"
-								icon={faHome}
-								size={'2x'}
-							/>
-						</Link>
-					</li>
-					<li className="item">
-						<Link to="/write">
-							<FontAwesomeIcon
-								className="nav_NoPortrait"
-								icon={faPlusSquare}
-								size="2x"
-							/>
-						</Link>
-					</li>
-					<li className="item">
-						<Link to="/profile">
-							<FontAwesomeIcon
-								className="nav_NoPortrait"
-								icon={faUserCircle}
-								size="2x"
-							/>
-						</Link>
-					</li>
-				</ul>
+				<div className="nav_inner">
+					<div className="logo">Racstagram</div>
+					<ul className="items">
+						<li className="item">
+							<Link to="/">
+								<FontAwesomeIcon
+									className="icon_home"
+									icon={faHome}
+									size={'2x'}
+								/>
+							</Link>
+						</li>
+						<li className="item">
+							<Link to="/write">
+								<FontAwesomeIcon
+									className="nav_NoPortrait"
+									icon={faPlusSquare}
+									size="2x"
+								/>
+							</Link>
+						</li>
+						<li className="item">
+							<Link to="/profile">
+								<FontAwesomeIcon
+									className="nav_NoPortrait"
+									icon={faUserCircle}
+									size="2x"
+								/>
+							</Link>
+						</li>
+					</ul>
+				</div>
 			</div>
 		</>
 	);

@@ -7,7 +7,13 @@ import { checkDisplayNameThunk } from '../../redux/modules/users';
 
 const AuthFormContainer = () => {
 	const dispatch = useDispatch();
-	const exist = useSelector((state) => state.users.checkDisplayName.exist);
+	const { exist, loading } = useSelector(
+		(state) => state.users.checkDisplayName
+	);
+	const { emailSignUp, emailSignIn, socialSignIn } = useSelector(
+		(state) => state.auth
+	);
+
 	const newAccount = useSelector((state) => state.auth.newAccount);
 	const [inputs, setInputs] = useState({
 		email: '',
@@ -75,6 +81,10 @@ const AuthFormContainer = () => {
 			newAccount={newAccount}
 			check={check}
 			exist={exist}
+			emailSignIn={emailSignIn.loading}
+			emailSignUp={emailSignUp.loading}
+			socialSignIn={socialSignIn.loading}
+			checkDisplayName={loading}
 		/>
 	);
 };

@@ -293,3 +293,22 @@
       - /f : 파일 까지 보여줌
 
 <br/>
+
+### 2021.07.30 사항
+
+- material ui 도입
+  - material ui는 매우 깔끔하며 편하게 사용할 수 있어 좋다.
+  - input Element의 경우 material ui의 TextFiled Component를 사용하였음 (깔끔하고 좋았음)
+  - 하지만, button Element에 id, name 같은 property로 정보를 제공해야 하는 경우에는 material ui의 Button Component는 이를 지원하지 않음
+    - scss로 버튼 스타일을 직접 만들어 사용하였음
+
+<br/>
+
+- 로그인, 회원가입 창 스타일링 완료
+  - 로그인, 회원가입, userName 중복 요청하여 처리하는 중에는 material ui CircularProgress Component가 보이게 하였음
+
+<br/>
+
+- createPortal를 통해 Modal 재구현
+- modal 스타일링 구현
+- Error: Target container is not a DOM element. 에러 발생

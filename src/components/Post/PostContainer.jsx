@@ -41,7 +41,6 @@ const PostContainer = ({ postsOnToggle, posts }) => {
 
 	return (
 		<>
-			<div>Posts</div>
 			{postsOnToggle && <button onClick={postsOnToggle}>뒤로가기</button>}
 			{posts.map((post) => (
 				<Post

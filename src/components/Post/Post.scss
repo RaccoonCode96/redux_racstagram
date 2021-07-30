@@ -1,0 +1,61 @@
+@import '../../styles/_variables';
+
+.post {
+	height: fit-content;
+	@include container_bcg_border;
+	margin-bottom: 24px;
+
+	.writer {
+		height: $post_writer_height;
+		width: 100%;
+		display: flex;
+		justify-content: space-between;
+		align-items: center;
+		padding: 0 10px;
+
+		.user_info {
+			display: flex;
+			align-items: center;
+
+			.user_img {
+				border-radius: 50%;
+				margin-right: 10px;
+			}
+
+			.user_name {
+				font-weight: 400;
+				font-size: 0.9rem;
+				font-family: $default_font_family;
+			}
+		}
+
+		.menu {
+			background-color: transparent;
+			border: 0;
+		}
+	}
+
+	.post_img_container {
+		height: fit-content;
+
+		.post_img {
+			width: 100%;
+		}
+	}
+
+	.post_text_container {
+		height: $post_content_height;
+		padding: 16px;
+		font-family: $default_font_family;
+		font-size: 0.8rem;
+
+		.post_text {
+			height: 100%;
+		}
+
+		.post_text_userName {
+			margin-right: 7px;
+			font-weight: 500;
+		}
+	}
+}

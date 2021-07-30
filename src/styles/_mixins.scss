@@ -8,6 +8,12 @@
 	align-items: baseline;
 }
 
+@mixin container_bcg_border {
+	border: solid 1px $default_border_color;
+	border-radius: 3px;
+	background-color: $container_background_color;
+}
+
 @mixin blue_btn {
 	@include auth_block_size;
 	font-weight: 600;
