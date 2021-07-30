@@ -1,0 +1,43 @@
+@import '../../styles/_variables';
+
+.form {
+	width: 400px;
+	height: fit-content;
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+
+	.input {
+		@include auth_block_size;
+		margin-bottom: 15px;
+	}
+
+	& > .container {
+		width: 300px;
+		display: flex;
+		align-items: center;
+	}
+
+	.displayName_input {
+		margin-right: 10px;
+		width: 210px;
+	}
+
+	.displayName_btn {
+		height: 40px;
+		font-family: $default_font_family;
+		font-weight: 600;
+	}
+
+	.check_message {
+		margin: 20px 0 10px 0;
+		width: 300px;
+		font-family: $default_font_family;
+		font-weight: 600;
+	}
+
+	.auth_btn {
+		margin-top: 10px;
+		@include blue_btn;
+	}
+}

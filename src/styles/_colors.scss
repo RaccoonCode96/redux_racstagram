@@ -1,15 +1,17 @@
-@import '../../styles/_variables';
+@import '~open-color/open-color';
 
 /* Font Color */
 $default_color: #262626;
 $light_color: #fafafa;
 
 /* Background Color */
-$default_background_color: #fafafa;
+$container_background_color: #ffffff;
+$default_background_color: $oc-gray-0;
 $load_background_color: rgba(0, 0, 0, 0.3);
 
 /* Border Color*/
-$default_border_color: #dbdbdb;
+$default_border_color: $oc-gray-3;
+// #dbdbdb;
 
 /* Font Family */
 $default_font_family: 'Roboto', Arial, Helvetica, sans-serif;

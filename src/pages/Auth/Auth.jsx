@@ -4,7 +4,7 @@ import AuthFormContainer from '../../components/AuthForm/AuthFormCotainer';
 import { useDispatch, useSelector } from 'react-redux';
 import { resetAuth, setNewAccount } from '../../redux/modules/auth';
 import { useEffect } from 'react';
-import './auth.scss';
+import './Auth.scss';
 
 const Auth = () => {
 	const dispatch = useDispatch();
@@ -22,20 +22,28 @@ const Auth = () => {
 
 	return (
 		<div className="auth">
-			<div className="auth_container">
-				<h2 className="auth_title">Racstagram</h2>
-				<div className="auth_form">
-					<AuthFormContainer />
-				</div>
+			<div className="container">
+				<h2 className="title">Racstagram</h2>
+				<AuthFormContainer />
+				<ShowError className="error" />
 				{newAccount ? <></> : <SocialSignInContainer />}
-				<ShowError />
 			</div>
-			<div className="auth_mode_container">
-				<span className="auth_mode" onClick={toggleAccount}>
-					{newAccount
-						? '계정이 있으신가요? 로그인'
-						: '계정이 없으신가요? 가입하기'}
-				</span>
+			<div className="container">
+				{newAccount ? (
+					<div>
+						계정이 있으신가요?
+						<span className="mode" onClick={toggleAccount}>
+							로그인
+						</span>
+					</div>
+				) : (
+					<div>
+						계정이 없으신가요?
+						<span className="mode" onClick={toggleAccount}>
+							회원가입
+						</span>
+					</div>
+				)}
 			</div>
 		</div>
 	);

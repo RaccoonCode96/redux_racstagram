@@ -1,62 +1,88 @@
+import { Button, TextField } from '@material-ui/core';
+import './AuthForm.scss';
+import Alert from '@material-ui/lab/Alert';
+
 const AuthForm = ({ onChange, inputs, onSubmit, newAccount, check, exist }) => {
 	const { email, password, displayName } = inputs;
 
 	return (
 		<>
-			<form onSubmit={onSubmit}>
-				<input
-					className="auth_input"
+			<form onSubmit={onSubmit} className="form">
+				<TextField
+					variant="outlined"
 					name="email"
 					type="email"
-					placeholder="Email"
 					required
 					value={email}
 					onChange={onChange}
+					className="input"
+					label="Email"
+					size="small"
 				/>
-				<input
-					className="auth_input"
+				<TextField
+					className="input"
+					variant="outlined"
 					name="password"
 					type="password"
-					placeholder="Password"
+					label="Password"
+					size="small"
 					required
 					value={password}
 					onChange={onChange}
 				/>
 				{newAccount ? (
 					<>
-						<input
-							className="auth_input"
-							name="displayName"
-							type="text"
-							placeholder="Nickname"
-							required
-							value={displayName}
-							onChange={onChange}
-						/>
-						<span>
-							{!exist[1] || displayName !== exist[1]
-								? '중복 확인이 필요합니다.'
-								: exist[0]
-								? `${exist[1]}는 이미 존재하는 이름 입니다!`
-								: 'OK!'}
-						</span>
-						<button
-							onClick={(event) => {
-								event.preventDefault();
-								check(displayName);
-							}}
-						>
-							닉네임 중복 검사
-						</button>
+						<div className="container">
+							<TextField
+								className="displayName_input"
+								variant="outlined"
+								name="displayName"
+								label="User Name"
+								type="text"
+								size="small"
+								required
+								value={displayName}
+								onChange={onChange}
+							/>
+							<Button
+								className="displayName_btn"
+								variant="outlined"
+								color="primary"
+								size="small"
+								onClick={(event) => {
+									event.preventDefault();
+									check(displayName);
+								}}
+							>
+								중복 검사
+							</Button>
+						</div>
+						{!exist[1] || displayName !== exist[1] ? (
+							<Alert className="check_message" severity="warning">
+								중복 확인이 필요합니다.
+							</Alert>
+						) : exist[0] ? (
+							<Alert className="check_message" severity="error">
+								{exist[1]}는 이미 존재하는 이름 입니다!
+							</Alert>
+						) : (
+							<Alert className="check_message" severity="success">
+								OK!
+							</Alert>
+						)}
 					</>
 				) : (
 					<></>
 				)}
-				<input
+				<Button
+					variant="contained"
+					color="primary"
 					className="auth_btn"
 					type="submit"
-					value={newAccount ? '가입하기' : '로그인'}
-				/>
+					disableElevation
+				>
+					{newAccount ? '가입하기' : '로그인'}
+				</Button>
 			</form>
 		</>
 	);
