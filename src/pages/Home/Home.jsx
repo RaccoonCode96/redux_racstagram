@@ -17,7 +17,6 @@ const Home = () => {
 	}, [getPosts]);
 	return (
 		<>
-			<div className="modal_location"></div>
 			<Navigation />
 			<div className="page">
 				<div className="inner">
@@ -27,6 +26,7 @@ const Home = () => {
 					<div className="side">side</div>
 				</div>
 			</div>
+			<div className="modal_root"></div>
 		</>
 	);
 };

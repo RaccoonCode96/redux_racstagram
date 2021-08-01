@@ -1,11 +1,20 @@
+import { useState } from 'react';
+import { useEffect } from 'react';
 import ReactDOM from 'react-dom';
 import './Modal.scss';
 
-const Modal = ({ children, isOn }) => {
-	const modal = document.querySelector('.modal_location');
+const Modal = ({ children, toggle, isOn }) => {
+	const [hasMounted, setHasMounted] = useState(false);
+	useEffect(() => {
+		setHasMounted(true);
+	}, []);
+	if (!hasMounted) {
+		return <></>;
+	}
+	const modal = document.querySelector('.modal_root');
 	return ReactDOM.createPortal(
 		isOn ? (
-			<div className="modal">
+			<div className="modal" onClick={toggle}>
 				<div className="modal_container">{children}</div>
 			</div>
 		) : (

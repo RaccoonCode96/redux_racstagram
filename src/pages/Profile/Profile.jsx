@@ -22,6 +22,7 @@ const Profile = () => {
 				infoType={'currentUserInfo'}
 			/>
 			<SignOutContainer />
+			<div className="modal_root"></div>
 		</>
 	);
 };

@@ -53,7 +53,7 @@ const Post = ({ post, deletePost, updatePost, currentUserId }) => {
 					</div>
 				</>
 			</div>
-			<Modal isOn={isOn}>
+			<Modal isOn={isOn} toggle={toggle}>
 				{currentUserId === post.userId ? (
 					<>
 						<button

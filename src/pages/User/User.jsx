@@ -23,6 +23,7 @@ const User = () => {
 				infoType={'userInfo'}
 				postsType={'userPosts'}
 			/>
+			<div className="modal_root"></div>
 		</>
 	);
 };
