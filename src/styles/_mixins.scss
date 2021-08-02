@@ -22,7 +22,7 @@
 	cursor: pointer;
 }
 
-@mixin black_oulined_btn {
+@mixin black_outlined_btn {
 	@include auth_block_size;
 	background-color: $container_background_color;
 	border: 1px solid $default_color;

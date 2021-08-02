@@ -1,6 +1,6 @@
 import { useEffect } from 'react';
 import { useCallback, useState } from 'react';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { useHistory } from 'react-router-dom';
 import PostForm from './PostForm';
 import resize from '../../hooks/resize';
@@ -10,6 +10,7 @@ import { getCurrentUserInfoThunk } from '../../redux/modules/users';
 
 const PostFormContainer = () => {
 	const history = useHistory();
+	const currentUserInfo = useSelector((state) => state.users.currentUserInfo);
 	const dispatch = useDispatch();
 
 	const [inputs, setInputs] = useState({
@@ -17,6 +18,7 @@ const PostFormContainer = () => {
 		text: '',
 		preventSubmit: false,
 	});
+
 	const onChange = useCallback(
 		(event) => {
 			const { name, value, files } = event.target;
@@ -65,7 +67,14 @@ const PostFormContainer = () => {
 		dispatch(getCurrentUserInfoThunk());
 	}, [dispatch]);
 
-	return <PostForm onChange={onChange} inputs={inputs} onSubmit={onSubmit} />;
+	return (
+		<PostForm
+			onChange={onChange}
+			inputs={inputs}
+			onSubmit={onSubmit}
+			currentUserInfo={currentUserInfo}
+		/>
+	);
 };
 
 export default PostFormContainer;

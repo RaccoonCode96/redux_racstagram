@@ -389,7 +389,8 @@ outSide of Brother {current: undefined}
 outSide of Parents {current: undefined}
 outSide of Child: {current: undefined}
 
------ 모두 실행 된 이후에 모든 Element가 생성 됨-------
+----- 모두 실행 된 이후에 모든 Element가 생성 됨 ---------------------------
+----- 그리고 useEffect의 실행이 stack의 돌아오는 방식으로 실행됨 ------------
 
 Brother : {current: div}
 Child :  {current: div}
@@ -414,3 +415,30 @@ App :  {current: div}
 - 다른 사람들의 경우에는 직접적으로 Document.createElement로 createPortal의 target을 만들고 unmount시 제거하는 방향으로 가라고 했다.
   - 하지만, 현제 프로젝트 상황상 재사용 가능한 컴포넌트로 사용하다 보니, 많은 post 하나 하나에서 발생하는 modal target이 생성되기 때문에 HTML이 지저분해지는 결과를 초래한다.
   - 그래서, 일단 target을
+
+<br/>
+
+### 2021.08.02 사항
+
+<br/>
+
+- nav와 side 영역을 `position : sticky` 속성으로 변경함
+  - side 영역의 경우 `display : flex`와 `position : fixed`를 같이 쓰는 경우 absolute 와 같이 공간을 차지하지 않게 됨으로 `position : sticky`로 변경 함
+  - sticky를 사용하면 nav의 fixed 때문에 사용했던, padding을 사용할 필요가 없어짐
+- 반응형 웹을 위한, side 영역은 일정 width 값 이하로 좁아지는 경우 `flex-flow: wrap` 을 통해서 main 영역의 밑으로 가게 함
+- 또한, side가 밑으로 이동하였을 경우 main이 화면 중앙에 위치할 수 있도록 `justify-content: center` 값을 줌
+
+<br/>
+
+- write 페이지 스타일링
+  - 반응형 웹을 위한 이미지 비율 조정 문제 발생
+    - 보통은 height를 없애고 padding을 %값을 주어 div의 일정 비율을 유지할 수 있게 할 수 있음
+  - media query와 flex-flow wrap을 이용해서 일정 크기 이하로 되면, 아래에 붙어 크기가 맞게 구현함
+  - 이미지가 없으면 기본 검정 화면에 카메라 아이콘을 눌러, 이미지 첨부 가능
+  - material ui의 textarea인 textFiled를 사용하려고 했지만, 상황상 이미지 height에 따른 textFiled height를 주기가 어려워서 직접 textarea 태그를 이용해서 동적인 height를 가지게 함
+
+<br/>
+
+- validation 구현 필요함
+  - input 같은 경우, display none 적용시 browser에서 제공하는 validation 말풍선이 뜨지 않기 때문에 따로 구현 필요함
+- 글 작성 시간 (클라이언트 단에서 뿌리는데 시간 조심해야 함)

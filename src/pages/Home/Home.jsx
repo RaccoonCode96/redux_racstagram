@@ -4,7 +4,6 @@ import { useDispatch, useSelector } from 'react-redux';
 import Navigation from '../../components/common/Navigation';
 import PostContainer from '../../components/Post/PostContainer';
 import { getAllPostsThunk } from '../../redux/modules/post';
-import './Home.scss';
 
 const Home = () => {
 	const posts = useSelector((state) => state.post.allPosts);

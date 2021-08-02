@@ -1,0 +1,110 @@
+@import '../../styles/_variables';
+
+.post_form {
+	width: 100%;
+	height: fit-content;
+	flex-wrap: wrap;
+	display: flex;
+	justify-content: center;
+
+	.image_container {
+		max-width: $main_width;
+		width: 100%;
+		height: fit-content;
+
+		.preview_image {
+			width: 100%;
+		}
+
+		.icon_cancel {
+			font-size: 1.2rem;
+			color: $oc-gray-9;
+		}
+
+		.none_image {
+			background-color: #000000;
+			width: 100%;
+			padding: 40.25%;
+			display: flex;
+			justify-content: center;
+			align-items: center;
+		}
+
+		#file_input {
+			display: none;
+		}
+
+		.icon_camera {
+			color: $oc-gray-3;
+			font-size: 5rem;
+			cursor: pointer;
+		}
+	}
+
+	.text_container {
+		width: $side_width + $main_side_gap;
+		@include container_bcg_border;
+		max-height: 100%;
+		display: flex;
+		flex-direction: column;
+	}
+
+	.profile_container {
+		padding: 0 10px;
+		height: 50px;
+		width: 100%;
+		display: flex;
+		align-items: center;
+		justify-content: space-between;
+
+		.profile {
+			display: flex;
+			align-items: center;
+
+			.user_image {
+				width: 30px;
+				height: 30px;
+				border-radius: 50%;
+				margin-right: 10px;
+			}
+
+			.user_name {
+				font-family: $default_font_family;
+			}
+		}
+	}
+
+	.text_input {
+		height: 100%;
+		resize: none;
+		border-radius: 0;
+		border: none;
+		border-top: solid 1px $default_border_color;
+		border-bottom: solid 1px $default_border_color;
+	}
+
+	.btn_blue {
+		width: 100%;
+		height: 40px;
+		background-color: $oc-blue-3;
+		border: none;
+		cursor: pointer;
+		color: #fff;
+		&:hover {
+			background-color: $oc-indigo-9;
+			transition: 0.2s;
+		}
+	}
+
+	@media screen and (max-width: $inner_width) {
+		.text_container {
+			max-width: $main_width;
+			height: fit-content;
+			width: 100%;
+		}
+
+		.text_input {
+			height: 200px;
+		}
+	}
+}

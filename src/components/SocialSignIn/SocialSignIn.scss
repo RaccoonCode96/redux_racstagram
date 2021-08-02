@@ -23,7 +23,7 @@
 	flex-direction: column;
 
 	.auth_btn {
-		@include black_oulined_btn;
+		@include black_outlined_btn;
 		margin-bottom: 10px;
 
 		&:last-child {
