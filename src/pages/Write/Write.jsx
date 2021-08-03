@@ -20,6 +20,7 @@ const Write = () => {
 					<PostFormContainer />
 				</div>
 			</div>
+			<div className="modal_root"></div>
 		</>
 	);
 };

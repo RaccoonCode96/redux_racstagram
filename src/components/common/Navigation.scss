@@ -3,11 +3,11 @@
 .nav {
 	display: flex;
 	height: $nav_height;
+	z-index: 10;
 	width: 100%;
 	background-color: $container_background_color;
 	position: sticky;
 	top: 0;
-	// z-index: 2;
 	border-bottom: solid 1px $default_border_color;
 
 	.nav_inner {
@@ -35,9 +35,21 @@
 		.item {
 			color: $default_border_color;
 			margin-right: 10px;
+			position: relative;
+			.nav_menu_location {
+				bottom: -100px;
+				right: 0;
+			}
 
 			&:last-child {
 				margin-right: 0;
+			}
+
+			.nav_profile_image {
+				cursor: pointer;
+				width: 27px;
+				height: 27px;
+				border-radius: 50%;
 			}
 		}
 	}

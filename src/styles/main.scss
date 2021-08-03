@@ -58,6 +58,7 @@ input {
 
 .side {
 	position: sticky;
+	z-index: 0;
 	top: $nav_height + $inner_padding;
 	max-width: $side_width;
 	width: 100%;

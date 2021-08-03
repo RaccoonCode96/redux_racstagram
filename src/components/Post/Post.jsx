@@ -2,6 +2,7 @@ import { faEllipsisH } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { useState } from 'react';
 import { Link } from 'react-router-dom';
+import Confirm from '../common/Confirm';
 import Modal from '../common/Modal';
 import './Post.scss';
 
@@ -9,6 +10,10 @@ const Post = ({ post, deletePost, updatePost, currentUserId }) => {
 	const [isOn, setIsOn] = useState(false);
 	const toggle = () => {
 		setIsOn(!isOn);
+	};
+	const [confirmIsOn, setConfirmIsOn] = useState(false);
+	const confirmToggle = () => {
+		setConfirmIsOn(!confirmIsOn);
 	};
 	return (
 		<>
@@ -32,7 +37,7 @@ const Post = ({ post, deletePost, updatePost, currentUserId }) => {
 							/>
 							<h4 className="user_name">{post.userDisplayName}</h4>
 						</Link>
-						<button className="menu" onClick={toggle}>
+						<button className="post_menu" onClick={toggle}>
 							<FontAwesomeIcon icon={faEllipsisH} size="1x" />
 						</button>
 					</div>
@@ -53,17 +58,29 @@ const Post = ({ post, deletePost, updatePost, currentUserId }) => {
 					</div>
 				</>
 			</div>
-			<Modal isOn={isOn} toggle={toggle}>
+			<Modal isOn={isOn} toggle={toggle} rowNum={3}>
 				{currentUserId === post.userId ? (
 					<>
-						<button
-							className="item"
-							onClick={() => {
-								deletePost(post);
-							}}
-						>
+						<button className="item" onClick={confirmToggle}>
 							삭제하기
 						</button>
+						<Confirm
+							isOn={confirmIsOn}
+							toggle={confirmToggle}
+							message={'정말 삭제하시겠습니까?'}
+						>
+							<button
+								className="confirm_item"
+								onClick={(e) => {
+									deletePost(post);
+								}}
+							>
+								예
+							</button>
+							<button className="confirm_item" onClick={confirmToggle}>
+								아니오
+							</button>
+						</Confirm>
 						<button
 							className="item"
 							onClick={() => {

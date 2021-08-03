@@ -4,6 +4,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import Navigation from '../../components/common/Navigation';
 import PostContainer from '../../components/Post/PostContainer';
 import { getAllPostsThunk } from '../../redux/modules/post';
+import { getCurrentUserInfoThunk } from '../../redux/modules/users';
 
 const Home = () => {
 	const posts = useSelector((state) => state.post.allPosts);
@@ -11,9 +12,14 @@ const Home = () => {
 	const getPosts = useCallback(() => {
 		dispatch(getAllPostsThunk());
 	}, [dispatch]);
+	const getCurrentUserInfo = useCallback(() => {
+		dispatch(getCurrentUserInfoThunk());
+	}, [dispatch]);
+
 	useEffect(() => {
 		getPosts();
-	}, [getPosts]);
+		getCurrentUserInfo();
+	}, [getPosts, getCurrentUserInfo]);
 	return (
 		<>
 			<Navigation />

@@ -3,8 +3,9 @@ import { useEffect } from 'react';
 import ReactDOM from 'react-dom';
 import './Modal.scss';
 
-const Modal = ({ children, toggle, isOn }) => {
+const Modal = ({ children, toggle, isOn, rowNum }) => {
 	const [hasMounted, setHasMounted] = useState(false);
+	const set = { transform: `translate(-200px ,${-(48 * rowNum) / 2}px)` };
 	useEffect(() => {
 		setHasMounted(true);
 	}, []);
@@ -14,8 +15,11 @@ const Modal = ({ children, toggle, isOn }) => {
 	const modal = document.querySelector('.modal_root');
 	return ReactDOM.createPortal(
 		isOn ? (
-			<div className="modal" onClick={toggle}>
-				<div className="modal_container">{children}</div>
+			<div className="modal">
+				<div className="modal_background" onClick={toggle}></div>
+				<div className="modal_container" style={set}>
+					{children}
+				</div>
 			</div>
 		) : (
 			<></>

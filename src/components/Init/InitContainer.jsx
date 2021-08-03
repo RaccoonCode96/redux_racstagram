@@ -8,7 +8,6 @@ import { setCurrentUser } from '../../redux/modules/profile';
 const InitContainer = () => {
 	const isInit = useSelector((state) => state.init.isInit);
 	const dispatch = useDispatch();
-
 	const isSignInOut = useCallback(() => {
 		authService.onAuthStateChanged(async (user) => {
 			if (user) {

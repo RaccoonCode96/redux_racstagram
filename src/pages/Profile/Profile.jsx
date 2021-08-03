@@ -1,5 +1,4 @@
 import UserProfileContainer from '../../components/UserProfile/UserProfileContainer';
-import SignOutContainer from '../../components/SignOut/SignOutContainer';
 import { useCallback } from 'react';
 import { useDispatch } from 'react-redux';
 import { getCurrentUserInfoThunk } from '../../redux/modules/users';
@@ -21,7 +20,6 @@ const Profile = () => {
 				postsType={'currentUserPosts'}
 				infoType={'currentUserInfo'}
 			/>
-			<SignOutContainer />
 			<div className="modal_root"></div>
 		</>
 	);
