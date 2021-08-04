@@ -20,7 +20,7 @@ const ProfileUpdate = ({ onChange, inputs, onSubmit, check, exist }) => {
 					value={userIntro}
 					wrap="hard"
 					maxLength={120}
-					cols="20"
+					cols="4"
 					rows="2"
 					onChange={onChange}
 					required

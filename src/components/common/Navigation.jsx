@@ -23,7 +23,9 @@ const Navigation = () => {
 		<>
 			<div className="nav">
 				<div className="nav_inner">
-					<div className="logo">Racstagram</div>
+					<div className="logo">
+						<Link to="/">Racstagram</Link>
+					</div>
 					<ul className="items">
 						<li className="item">
 							<Link to="/">

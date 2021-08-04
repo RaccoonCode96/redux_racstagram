@@ -1,3 +1,4 @@
+@use "sass:math";
 @import '../../styles/_variables';
 
 .modal {
@@ -18,7 +19,7 @@
 		$width: 400px;
 		top: 50%;
 		left: 50%;
-		transform: translateX(-$width/2);
+		transform: translateX(math.div(-$width, 2));
 		width: $width;
 		height: fit-content;
 		display: flex;

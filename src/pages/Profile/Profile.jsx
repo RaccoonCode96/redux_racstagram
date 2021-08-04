@@ -15,11 +15,15 @@ const Profile = () => {
 	return (
 		<>
 			<Navigation />
-			<UserProfileContainer
-				getInfoPosts={getInfoPosts}
-				postsType={'currentUserPosts'}
-				infoType={'currentUserInfo'}
-			/>
+			<div className="page">
+				<div className="inner">
+					<UserProfileContainer
+						getInfoPosts={getInfoPosts}
+						postsType={'currentUserPosts'}
+						infoType={'currentUserInfo'}
+					/>
+				</div>
+			</div>
 			<div className="modal_root"></div>
 		</>
 	);
