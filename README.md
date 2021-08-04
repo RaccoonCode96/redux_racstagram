@@ -37,6 +37,7 @@
 <br/>
 
 - [x] `로딩 화면 또는 Component` : 앱 실행 초기화 작업시 로딩 또는 다른 작업시 사용할 로딩 화면 및 Component
+  - [x] 스타일링 완료
 
 <br/>
 
@@ -65,24 +66,27 @@
 <br/>
 
 - [x] `글 작성 화면` : 글을 작성하는 화면
+  - [x] `이미지 리사이징`
 
 <br/>
 
-- [ ] `현재 유저 프로필 화면` : 로그인한 현재 유저의 게시물과 대략적인 프로필를 표시하는 화면
+- [x] `현재 유저 프로필 화면` : 로그인한 현재 유저의 게시물과 대략적인 프로필를 표시하는 화면
   - [x] `유저 프로필 수정하기` : 유저 프로필을 수정하는 화면 (userImage, userDisplayname, userIntro)
-  - [ ] `작성 글` : 유저가 작성한 작성 글의 image 표 -> 클릭시 post detail
+  - [x] `작성 글` : 유저가 작성한 작성 글의 image 표 -> 클릭시 post detail
+    - [x] `작성 글 detail view` : image 표에서 해당 이미지 클릭시 해당 글 detail view 화면
   - [x] `로그아웃`
 
 <br/>
 
-- [ ] `다른 유저 프로필 화면` : 다른 유저가 작성한 글의 유저 이름을 클릭하여 해당 유저의 프로필 화면 구현
-  - [ ] `프로필 보기` : userImage, userDisplayname, userIntro
-  - [ ] `작성 글` : 유저가 작성한 작성 글의 image 표 -> 클릭시 post detail
+- [x] `다른 유저 프로필 화면` : 다른 유저가 작성한 글의 유저 이름을 클릭하여 해당 유저의 프로필 화면 구현
+  - [x] `프로필 보기` : userImage, userDisplayname, userIntro
+  - [x] `작성 글` : 유저가 작성한 작성 글의 image 표 -> 클릭시 post detail
+    - [x] `작성 글 detail view` : image 표에서 해당 이미지 클릭시 해당 글 detail view 화면
 
 <br/>
 
 - [x] `네비게이션 바` : 앱로고 - 피드(Home)탭 - 글 작성탭 - 현재 유저 프로필(프로필 수정, 프로필 이동, 로그아웃) 탭
-  - [ ] Navigation-profile 눌렀을 때 로그아웃, 프로필 수정, 프로필 이동 드롭 다운 필요
+  - [x] Navigation-profile 눌렀을 때 로그아웃, 프로필 수정, 프로필 이동 드롭 다운 필요
 
 <br/>
 <br/>
