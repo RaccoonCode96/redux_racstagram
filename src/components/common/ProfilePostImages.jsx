@@ -27,7 +27,7 @@ const ProfilePostImages = ({ posts, postsOnToggle }) => {
 									/>
 								</div>
 							) : (
-								<div className="none_image" key={i}></div>
+								<div className="none_image" key={i.toString()}></div>
 							)
 						)}
 					</div>
