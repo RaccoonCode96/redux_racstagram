@@ -1,0 +1,15 @@
+@import '../../styles/_variables';
+
+.user_profile_container {
+	width: 100%;
+	padding: 0 20px;
+	display: flex;
+	flex-direction: column;
+	align-items: stretch;
+}
+
+@media screen and (max-width: $media_width) {
+	.user_profile_container {
+		padding: 0;
+	}
+}

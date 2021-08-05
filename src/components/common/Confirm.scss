@@ -1,3 +1,4 @@
+@use 'sass:math';
 @import '../../styles/_variables';
 
 .confirm {
@@ -19,7 +20,7 @@
 		position: fixed;
 		top: 50%;
 		left: 50%;
-		transform: translate(-$width/2, -$height/2);
+		transform: translate(math.div(-$width, 2), math.div(-$height, 2));
 		width: $width;
 		height: $height;
 		display: flex;

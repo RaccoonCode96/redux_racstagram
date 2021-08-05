@@ -1,0 +1,42 @@
+@import '../../styles/_variables';
+
+.post_table {
+	border-top: solid 1px $default_border_color;
+	padding-top: 30px;
+	display: flex;
+	flex-direction: column;
+	gap: 28px;
+
+	.posts_row {
+		display: flex;
+		gap: 28px;
+		.post_image_container {
+			overflow: hidden;
+			width: 100%;
+			padding-bottom: 25%;
+			position: relative;
+			cursor: pointer;
+			.post_image {
+				width: 100%;
+				height: 100%;
+				position: absolute;
+				object-fit: cover;
+				top: 0;
+				left: 0;
+			}
+		}
+		.none_image {
+			width: 100%;
+		}
+	}
+}
+
+@media screen and (max-width: $media-width) {
+	.post_table {
+		gap: 3px;
+		padding: 3px;
+		.posts_row {
+			gap: 3px;
+		}
+	}
+}

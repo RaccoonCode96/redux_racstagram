@@ -24,6 +24,8 @@
 		background-color: $container_background_color;
 		.logo {
 			font-family: $logo_font;
+			cursor: pointer;
+			font-weight: 600;
 			font-size: 1.5rem;
 		}
 
@@ -34,8 +36,16 @@
 
 		.item {
 			color: $default_border_color;
-			margin-right: 10px;
+			margin-right: 15px;
 			position: relative;
+			height: fit-content;
+			.icon_home {
+				font-size: 2rem;
+			}
+
+			.icon_write {
+				font-size: 2rem;
+			}
 			.nav_menu_location {
 				bottom: -100px;
 				right: 0;
@@ -46,10 +56,12 @@
 			}
 
 			.nav_profile_image {
+				padding: 2px;
 				cursor: pointer;
-				width: 27px;
-				height: 27px;
+				width: 30px;
+				height: 30px;
 				border-radius: 50%;
+				border: solid 1px $default-color;
 			}
 		}
 	}

@@ -251,3 +251,15 @@
 
 - Material UI findDOMNode Error, Drop Menu UI 구현 (드롭 메뉴), Modal UI 재구현, Confirm UI 구현
   - https://goforit.tistory.com/198
+
+<br/>
+
+### 2021.08.04 사항
+
+- 페이지 반응형 Navigation Icon
+- Profile 페이지 스타일링 구현
+- 인스타그램의 Image Table 구현하기
+- SCSS '/' (나누기 연산자) 기능 Deprecated 경고 해결
+- 반응형 웹을 위한 작업 중 요소 쌓임 구조 변경 필요에 의한 useWindowSize 사용
+- a 태그 클릭시 새탭으로 열기(target: '\_blank')
+  - https://goforit.tistory.com/199

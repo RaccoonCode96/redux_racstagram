@@ -1,15 +1,36 @@
+import './ProfilePostImages.scss';
 const ProfilePostImages = ({ posts, postsOnToggle }) => {
+	const devidePosts = (posts) => {
+		const arr = [...posts];
+		let tmp = [];
+		const length = posts.length;
+		for (let i = 0; i <= length / 3; i++) {
+			tmp = [...tmp, [...arr.splice(0, 3)]];
+		}
+		return tmp;
+	};
+
 	return (
 		<>
-			<div>
-				{posts.map((post) => (
-					<img
-						onClick={postsOnToggle}
-						key={post.postId}
-						src={post.postImageUrl}
-						alt={'postImageUrl'}
-						width={'200px'}
-					></img>
+			<div className="post_table">
+				{devidePosts(posts).map((row, index) => (
+					<div className="posts_row" key={index.toString()}>
+						{[0, 1, 2].map((i) =>
+							row[i] ? (
+								<div className="post_image_container" key={i.toString()}>
+									<img
+										onClick={postsOnToggle}
+										key={row[i].postId.toString()}
+										src={row[i].postImageUrl}
+										alt={'postImageUrl'}
+										className="post_image"
+									/>
+								</div>
+							) : (
+								<div className="none_image" key={i.toString()}></div>
+							)
+						)}
+					</div>
 				))}
 			</div>
 		</>
