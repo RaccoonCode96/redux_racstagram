@@ -252,26 +252,14 @@
 - Material UI findDOMNode Error, Drop Menu UI 구현 (드롭 메뉴), Modal UI 재구현, Confirm UI 구현
   - https://goforit.tistory.com/198
 
+<br/>
+
 ### 2021.08.04 사항
 
-- pathName에 따른 Navigation 아이콘 Filled, Outlined 형태 변환 구현
-- sass 나누기로 '/' 표기법 폐지 예정에 따른 `math.div()` 활용
-
-  - `@use 'sass:math'` 를 sass 파일 최상단에 올려서 작성 해야함
-
-- 필요한 부분
-
-  - user Intro 부분에 userName이 아니라 subName이 있음
-  - 웹사이트
-  - 소개
-  - 게시물 수
-
-- textarea 줄수 제한 필요
-- rel 속성 - noreferrer, noopener, nofollow (a 태그 새탭 설정시 -> target \_blank)
-
-  - https://3rabbitz.com/blog_ko/08d34c69855fbcad
-
-- profile 페이지 스타일링 구현
-  - 반응형 ui
-  - profilePostImages 스타일링 구현
-- key는 항상 string 값이여야 함
+- 페이지 반응형 Navigation Icon
+- Profile 페이지 스타일링 구현
+- 인스타그램의 Image Table 구현하기
+- SCSS '/' (나누기 연산자) 기능 Deprecated 경고 해결
+- 반응형 웹을 위한 작업 중 요소 쌓임 구조 변경 필요에 의한 useWindowSize 사용
+- a 태그 클릭시 새탭으로 열기(target: '\_blank')
+  - https://goforit.tistory.com/199
