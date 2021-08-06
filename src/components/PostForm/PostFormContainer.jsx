@@ -10,14 +10,17 @@ import { getCurrentUserInfoThunk } from '../../redux/modules/users';
 
 const PostFormContainer = () => {
 	const history = useHistory();
-	const currentUserInfo = useSelector((state) => state.users.currentUserInfo);
 	const dispatch = useDispatch();
-
+	const currentUserInfo = useSelector((state) => state.users.currentUserInfo);
 	const [inputs, setInputs] = useState({
 		imageBase64: '',
 		text: '',
 		preventSubmit: false,
 	});
+	const [postFormError, setPostFormError] = useState('');
+	const errorToggle = useCallback(() => {
+		setPostFormError(!postFormError);
+	}, [postFormError]);
 
 	const onChange = useCallback(
 		(event) => {
@@ -53,10 +56,18 @@ const PostFormContainer = () => {
 	const onSubmit = useCallback(
 		async (event) => {
 			event.preventDefault();
-			if (inputs.preventSubmit === false && inputs.imageBase64) {
+			const { text, imageBase64 } = inputs;
+			if (!text) {
+				setPostFormError('내용을 입력해 주세요.');
+				return;
+			} else if (!imageBase64) {
+				setPostFormError('사진을 올려 주세요.');
+				return;
+			}
+			if (inputs.preventSubmit === false && imageBase64) {
 				setInputs({ ...inputs, preventSubmit: true });
-				await dispatch(getImageUrlThunk(inputs.imageBase64));
-				await dispatch(createPostThunk(inputs.text));
+				await dispatch(getImageUrlThunk(imageBase64));
+				await dispatch(createPostThunk(text));
 				history.replace('/');
 			}
 		},
@@ -73,6 +84,8 @@ const PostFormContainer = () => {
 			inputs={inputs}
 			onSubmit={onSubmit}
 			currentUserInfo={currentUserInfo}
+			postFormError={postFormError}
+			errorToggle={errorToggle}
 		/>
 	);
 };
