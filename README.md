@@ -263,3 +263,69 @@
 - 반응형 웹을 위한 작업 중 요소 쌓임 구조 변경 필요에 의한 useWindowSize 사용
 - a 태그 클릭시 새탭으로 열기(target: '\_blank')
   - https://goforit.tistory.com/199
+
+<br/>
+
+### 2021.08.05 사항
+
+- Profile 페이지, User 페이지 통합
+- Presentaional 컴포넌트 역할인 PostUpdate와 PostForm 통합(PostForm 재사용)
+- PostForm 컴포넌트에 input 요소들의 required 속성으로 인한 validation error 해결
+- Post, Auth 페이지 컴포넌트 관련 input들 input 유무 체크하여 내부 적인 alert표시 구현
+  - https://goforit.tistory.com/200
+
+<br/>
+
+## 다음에 필요한 사항
+
+<br/>
+
+- [ ] profile 정보 요청 시기 조정
+  - 더 빠른 연산을 위해서, 화면이 render 되고 profile에 관련된 정보를 가져오지 말고 profile 보기위해 버튼을 눌렀을 때 부터 미리 profile 정보를 요청하게 하자
+
+<br/>
+
+- [ ] Post Detail View로 이동시 해당 글의 scrollX 위치로 이동하게 구현하기 (스타일링 이후에 scroll 위치 계산이 필요한 작업임)
+
+<br/>
+
+- [ ] validation 구현 필요함
+  - input 같은 경우, display none 적용시 browser에서 제공하는 validation 말풍선이 뜨지 않기 때문에 따로 구현 필요함
+  - required를 사용하지 말고, submit 함수 단에서 input값이 들어 왔는지 체크하여 validation error 구현 필요
+  - [x] post 관련한 input의 check 대략적인 (PostUpdateContainer, postFormContainer)
+  - [x] auth 관련한 input의 check 대략적인 조건 구현
+  - [ ] 각 input 별로 데이터 형태에 따른 구체적인 조건 설정이 필요함
+    - [ ] 이메일, 패스워드, 유저 네임, 글 내용의 형식(조건, 제한) 지정 필요
+
+<br/>
+
+- [ ] 글 작성 시간 (클라이언트 단에서 뿌리는 경우 로컬 시간 변경으로 조작 가능한지 테스트 필요함)
+
+<br/>
+
+- [ ] User Profile 데이터 베이스 추가 필드 구현 필요
+  - 이름 (subName) : 사용자 이름이 아닌 '부가적인 이름'
+  - 웹사이트 (webSite) : 자신의 사이트로 이동시킬 사이트
+  - 소개 (intro) : 자신의 소개 Coment(기존에 있었음)
+  - 게시글 수 (Post Count) : 유저의 게시글 수
+
+<br/>
+
+- [ ] profileUpdateContainer과 postFormContainer 통합 시도
+
+<br/>
+
+- [ ] 효과적인 렌더링 제한을 위해서 container에 있는 함수들을 hook으로 만들어 구현하기
+
+<br/>
+<br/>
+<br/>
+
+# 나중에 구현하고 싶은 기술
+
+<br/>
+
+- side 바에 유저 랜덤 추천 및 푸터 정보
+- 유저 이름 검색을 통한 프로필 보기 (이름 검색)
+- 무한 스크롤
+- 게시글 장소 태그로 장소 지도 보기 (지도 API)
