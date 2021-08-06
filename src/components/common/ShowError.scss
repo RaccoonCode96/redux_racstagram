@@ -1,0 +1,10 @@
+@import '../../styles/_variables';
+
+.show_error {
+	width: 300px;
+	margin-top: 20px;
+	.message {
+		width: 100%;
+		font-weight: 600;
+	}
+}
