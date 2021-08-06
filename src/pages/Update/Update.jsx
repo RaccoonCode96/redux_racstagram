@@ -19,11 +19,16 @@ const Update = () => {
 	return (
 		<>
 			<Navigation />
-			{type === 'profile' ? (
-				<ProfileUpdateContainer profileInfo={profileInfo} />
-			) : (
-				<PostUpdateContainer post={post} />
-			)}
+			<div className="page">
+				<div className="inner">
+					{type === 'profile' ? (
+						<ProfileUpdateContainer profileInfo={profileInfo} />
+					) : (
+						<PostUpdateContainer post={post} />
+					)}
+				</div>
+			</div>
+			<div className="modal_root"></div>
 		</>
 	);
 };
