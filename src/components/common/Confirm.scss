@@ -37,11 +37,11 @@
 		}
 		.confirm_items {
 			display: flex;
-			justify-content: space-between;
+			justify-content: center;
 			align-items: center;
 			height: 100%;
 			margin: $common_margin;
-
+			gap: 10px;
 			.confirm_item {
 				cursor: pointer;
 				width: 175px;
