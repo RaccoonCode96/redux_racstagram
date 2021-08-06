@@ -12,7 +12,6 @@ import {
 
 // Initial State
 const initialState = {
-	newAccount: false,
 	errorSelector: '',
 	emailSignUp: {
 		isSignUp: false,
@@ -153,10 +152,6 @@ const auth = createSlice({
 		selectError: (state, { payload }) => ({
 			...state,
 			errorSelector: payload,
-		}),
-		setNewAccount: (state, { payload }) => ({
-			...state,
-			newAccount: payload,
 		}),
 	},
 	extraReducers: {
