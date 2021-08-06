@@ -47,52 +47,51 @@
 		max-height: 100%;
 		display: flex;
 		flex-direction: column;
-	}
-
-	.profile_container {
-		padding: 0 10px;
-		height: 50px;
-		width: 100%;
-		display: flex;
-		align-items: center;
-		justify-content: space-between;
-
-		.profile {
+		& > .profile_image_container {
+			padding: 0 10px;
+			height: 50px;
+			width: 100%;
 			display: flex;
 			align-items: center;
+			justify-content: space-between;
 
-			.user_image {
-				width: 30px;
-				height: 30px;
-				border-radius: 50%;
-				margin-right: 10px;
-			}
+			.profile {
+				display: flex;
+				align-items: center;
 
-			.user_name {
-				font-family: $default_font_family;
+				.user_image {
+					width: 30px;
+					height: 30px;
+					border-radius: 50%;
+					margin-right: 10px;
+				}
+
+				.user_name {
+					font-family: $default_font_family;
+				}
 			}
 		}
-	}
 
-	.text_input {
-		height: 100%;
-		resize: none;
-		border-radius: 0;
-		border: none;
-		border-top: solid 1px $default_border_color;
-		border-bottom: solid 1px $default_border_color;
-	}
+		.text_input {
+			height: 100%;
+			resize: none;
+			border-radius: 0;
+			border: none;
+			border-top: solid 1px $default_border_color;
+			border-bottom: solid 1px $default_border_color;
+		}
 
-	.btn_blue {
-		width: 100%;
-		height: 40px;
-		background-color: $oc-blue-3;
-		border: none;
-		cursor: pointer;
-		color: #fff;
-		&:hover {
-			background-color: $oc-indigo-9;
-			transition: 0.2s;
+		.btn_blue {
+			width: 100%;
+			height: 40px;
+			background-color: $oc-blue-3;
+			border: none;
+			cursor: pointer;
+			color: #fff;
+			&:hover {
+				background-color: $oc-indigo-9;
+				transition: 0.2s;
+			}
 		}
 	}
 
@@ -101,10 +100,9 @@
 			max-width: $main_width;
 			height: fit-content;
 			width: 100%;
-		}
-
-		.text_input {
-			height: 200px;
+			.text_input {
+				height: 200px;
+			}
 		}
 	}
 }
