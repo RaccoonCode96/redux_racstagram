@@ -1,14 +1,15 @@
 import { useCallback, useState } from 'react';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { useHistory } from 'react-router-dom';
-import PostUpdate from './PostUpdate';
 import resize from '../../hooks/resize';
 import { getImageUrlThunk } from '../../redux/modules/image';
 import { updatePostThunk } from '../../redux/modules/post';
+import PostForm from '../PostForm/PostForm';
 
 const PostUpdateContainer = ({ post }) => {
 	const history = useHistory();
 	const dispatch = useDispatch();
+	const currentUserInfo = useSelector((state) => state.users.currentUserInfo);
 	const { postImageUrl, postText, postId, userId } = post;
 	const [inputs, setInputs] = useState({
 		imageBase64: postImageUrl,
@@ -19,6 +20,10 @@ const PostUpdateContainer = ({ post }) => {
 		userId,
 		preventSubmit: false,
 	});
+	const [postFormError, setPostFormError] = useState('');
+	const errorToggle = useCallback(() => {
+		setPostFormError(!postFormError);
+	}, [postFormError]);
 
 	const onChange = useCallback(
 		(event) => {
@@ -52,9 +57,14 @@ const PostUpdateContainer = ({ post }) => {
 	const onSubmit = useCallback(
 		async (event) => {
 			event.preventDefault();
-			// 이미지가 있고 없고 분류 처리 필요
 			const { preventSubmit, imageBase64, prevImageUrl, text, prevText } =
 				inputs;
+			// validation
+			if (!text) {
+				setPostFormError('내용을 입력해 주세요.');
+				return;
+			}
+			// 변화가 없는 경우
 			if (
 				preventSubmit === true ||
 				(text === prevText && imageBase64 === prevImageUrl)
@@ -74,7 +84,17 @@ const PostUpdateContainer = ({ post }) => {
 		},
 		[dispatch, inputs, history]
 	);
-	return <PostUpdate onChange={onChange} inputs={inputs} onSubmit={onSubmit} />;
+	return (
+		<PostForm
+			onChange={onChange}
+			inputs={inputs}
+			onSubmit={onSubmit}
+			currentUserInfo={currentUserInfo}
+			postFormError={postFormError}
+			errorToggle={errorToggle}
+		/>
+	);
+	// <PostUpdate onChange={onChange} inputs={inputs} onSubmit={onSubmit} />;
 };
 
 export default PostUpdateContainer;
