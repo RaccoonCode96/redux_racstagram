@@ -48,6 +48,9 @@ input {
 	flex-flow: wrap;
 	justify-content: center;
 	gap: $main_side_gap;
+	@media screen and (max-width: $media-width) {
+		padding: 0;
+	}
 }
 
 .main {
