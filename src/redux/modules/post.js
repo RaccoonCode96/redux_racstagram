@@ -400,4 +400,4 @@ const post = createSlice({
 export default post.reducer;
 
 // actionCreator
-export const { resetPost } = post.actions;
+export const { resetPost, setPostFormError } = post.actions;
