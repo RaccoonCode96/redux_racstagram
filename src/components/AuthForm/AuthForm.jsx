@@ -23,7 +23,6 @@ const AuthForm = ({
 					variant="outlined"
 					name="email"
 					type="email"
-					required
 					value={email}
 					onChange={onChange}
 					className="input"
@@ -37,7 +36,6 @@ const AuthForm = ({
 					type="password"
 					label="Password"
 					size="small"
-					required
 					value={password}
 					onChange={onChange}
 				/>
@@ -51,7 +49,6 @@ const AuthForm = ({
 								label="User Name"
 								type="text"
 								size="small"
-								required
 								value={displayName}
 								onChange={onChange}
 							/>
