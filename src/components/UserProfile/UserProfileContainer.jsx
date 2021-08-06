@@ -1,27 +1,46 @@
 import { useEffect } from 'react';
-import { useCallback, useState } from 'react';
-import { useSelector } from 'react-redux';
-import { useHistory } from 'react-router-dom';
+import { useCallback } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
+import { useHistory, useLocation, useParams } from 'react-router-dom';
+import {
+	getCurrentUserPostsThunk,
+	getUserPostsThunk,
+} from '../../redux/modules/post';
+import {
+	getCurrentUserInfoThunk,
+	getUserInfoThunk,
+} from '../../redux/modules/users';
 import ProfilePostImages from '../common/ProfilePostImages';
 import UserProfile from './UserProfile';
-import PostContainer from '../Post/PostContainer';
 import './UserProfileContainer.scss';
 
-const UserProfileContainer = ({ getInfoPosts, postsType, infoType }) => {
-	const posts = useSelector((state) => state.post[postsType]);
-	const profileInfo = useSelector((state) => state.users[infoType]);
+const UserProfileContainer = () => {
+	const { pathname } = useLocation();
+	const { userName } = useParams();
+	const dispatch = useDispatch();
 	const history = useHistory();
-	const [postOn, setPostOn] = useState({ isOn: false, scrollY: 0 });
-	const postsOnToggle = useCallback(() => {
-		setPostOn({ ...postOn, isOn: !postOn.isOn });
-	}, [setPostOn, postOn]);
+
+	const currentUserPosts = useSelector((state) => state.post.currentUserPosts);
+	const currentUserInfo = useSelector((state) => state.users.currentUserInfo);
+	const userPosts = useSelector((state) => state.post.userPosts);
+	const userInfo = useSelector((state) => state.users.userInfo);
+
+	const getInfoPosts = useCallback(async () => {
+		if (pathname === '/profile') {
+			dispatch(getCurrentUserInfoThunk());
+			dispatch(getCurrentUserPostsThunk());
+		} else if (pathname === `/user/${userName}`) {
+			dispatch(getUserInfoThunk(userName));
+			dispatch(getUserPostsThunk(userName));
+		}
+	}, [dispatch, pathname, userName]);
 
 	const updateProfile = useCallback(() => {
 		history.push({
 			pathname: '/update',
-			state: { profileInfo, post: [], type: 'profile' },
+			state: { profileInfo: currentUserInfo, post: [], type: 'profile' },
 		});
-	}, [history, profileInfo]);
+	}, [history, currentUserInfo]);
 
 	useEffect(() => {
 		getInfoPosts();
@@ -29,17 +48,15 @@ const UserProfileContainer = ({ getInfoPosts, postsType, infoType }) => {
 
 	return (
 		<div className="user_profile_container">
-			{postOn.isOn ? (
-				<PostContainer posts={posts} postsOnToggle={postsOnToggle} />
-			) : (
-				<>
-					<UserProfile
-						profileInfo={profileInfo}
-						updateProfile={updateProfile}
-					/>
-					<ProfilePostImages posts={posts} postsOnToggle={postsOnToggle} />
-				</>
-			)}
+			<>
+				<UserProfile
+					profileInfo={pathname === '/profile' ? currentUserInfo : userInfo}
+					updateProfile={updateProfile}
+				/>
+				<ProfilePostImages
+					posts={pathname === '/profile' ? currentUserPosts : userPosts}
+				/>
+			</>
 		</div>
 	);
 };
