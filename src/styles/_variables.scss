@@ -2,6 +2,7 @@
 @import './_sizes';
 @import './_mixins';
 @import '~open-color/open-color';
-/* 
-@import '../../styles/_variables';
- */
+
+/* Font Family */
+$default_font_family: 'Roboto', 'Noto Sans KR', Arial, Helvetica, sans-serif;
+$logo_font: 'Satisfy', cursive;
