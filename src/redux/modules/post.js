@@ -168,7 +168,7 @@ export const createPostThunk = createAsyncThunk(
 				postDate: Date.now(),
 				userId: currentUser.uid,
 				userPhotoUrl: currentUserInfo.userPhotoUrl,
-				userDisplayName: currentUserInfo.userDisplayName,
+				userDisplayName: currentUserInfo.displayName,
 				postImageUrl: imageUrl,
 			};
 			await dbService.collection('posts').add(post);
