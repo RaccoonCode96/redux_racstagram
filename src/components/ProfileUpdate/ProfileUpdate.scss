@@ -1,0 +1,140 @@
+@import '../../styles/_variables';
+
+.update_profile {
+	font-family: $default_font_family;
+	@include container_bcg_border;
+	width: 100%;
+	height: fit-content;
+	display: flex;
+	flex-direction: column;
+	padding: 30px 130px;
+	@media screen and (max-width: $media_width) {
+		padding: 30px 20px;
+	}
+
+	.update_profile_container {
+		padding: 10px;
+		margin-bottom: 10px;
+		display: flex;
+
+		.preview_image {
+			border-radius: 50%;
+			width: 70px;
+			height: 70px;
+			object-fit: cover;
+			margin-right: 30px;
+		}
+
+		#file_input_profile {
+			display: none;
+		}
+
+		.current_info {
+			display: flex;
+			flex-direction: column;
+			justify-content: center;
+
+			.current_dispaly_name {
+				font-size: 1.2rem;
+				margin-bottom: 10px;
+			}
+
+			.change_profile_image {
+				cursor: pointer;
+				font-weight: 600;
+				color: $oc-blue-5;
+				font-size: 0.9rem;
+			}
+
+			.icon_camera {
+				margin-right: 10px;
+			}
+		}
+	}
+
+	.info_container {
+		width: 100%;
+		display: flex;
+		flex-direction: column;
+		gap: 20px;
+		align-items: center;
+
+		.label {
+			margin-top: 3px;
+			padding: 0 20px;
+			width: 150px;
+			text-align: right;
+			font-weight: 500;
+			@media screen and (max-width: $media_width) {
+				text-align: left;
+				padding: 0;
+			}
+		}
+
+		.row {
+			width: 100%;
+			display: flex;
+			@media screen and (max-width: $media_width) {
+				flex-direction: column;
+				gap: 10px;
+			}
+		}
+
+		.text_input {
+			@include default_input_style;
+			height: 35px;
+		}
+
+		.check_display_name_container {
+			width: 100%;
+			display: flex;
+			.block {
+				width: 150px;
+				@media screen and (max-width: $media_width) {
+					width: 0;
+				}
+			}
+			.alert {
+				flex-grow: 1;
+			}
+		}
+
+		.user_intro {
+			.input_user_intro {
+				flex-grow: 1;
+				height: 100px;
+				resize: none;
+			}
+		}
+
+		.display_name {
+			.display_name_container {
+				display: flex;
+				flex-grow: 1;
+				.input_display_name {
+					flex-grow: 1;
+					margin-right: 10px;
+				}
+
+				.check_display_name {
+					@include black_outlined_btn;
+					width: 100px;
+				}
+			}
+		}
+
+		.input_website,
+		.input_sub_name {
+			flex-grow: 1;
+		}
+
+		.update_btn {
+			@include blue_btn;
+			width: 370px;
+			height: 30px;
+			@media screen and (max-width: 410px) {
+				width: 100%;
+			}
+		}
+	}
+}
