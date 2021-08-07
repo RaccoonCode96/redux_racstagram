@@ -52,6 +52,11 @@ const UserProfileContainer = () => {
 				<UserProfile
 					profileInfo={pathname === '/profile' ? currentUserInfo : userInfo}
 					updateProfile={updateProfile}
+					postCount={
+						pathname === '/profile'
+							? currentUserPosts?.length
+							: userPosts?.length
+					}
 				/>
 				<ProfilePostImages
 					posts={pathname === '/profile' ? currentUserPosts : userPosts}
