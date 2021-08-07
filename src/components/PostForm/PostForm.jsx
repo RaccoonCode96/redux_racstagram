@@ -14,7 +14,7 @@ const PostForm = ({
 	errorToggle,
 }) => {
 	const { text, imageBase64 } = inputs;
-	const { userPhotoUrl, userDisplayName } = currentUserInfo;
+	const { userPhotoUrl, displayName } = currentUserInfo;
 	const { pathname } = useLocation();
 
 	return (
@@ -29,7 +29,7 @@ const PostForm = ({
 						/>
 					) : (
 						<div className="none_image">
-							<label htmlFor="file_input">
+							<label htmlFor="file_input_post">
 								<FontAwesomeIcon className="icon_camera" icon={faCamera} />
 							</label>
 						</div>
@@ -37,8 +37,8 @@ const PostForm = ({
 					<input
 						type="file"
 						name="file"
-						id="file_input"
-						accept="image/*"
+						id="file_input_post"
+						accept=".jpg, .png"
 						onChange={onChange}
 					/>
 				</div>
@@ -50,16 +50,16 @@ const PostForm = ({
 								alt="Creator_Profile"
 								className="user_image"
 							/>
-							<span className="user_name">{userDisplayName}</span>
+							<span className="user_name">{displayName}</span>
 						</div>
-						<label htmlFor="file_input" className="small_file_input_btn">
+						<label htmlFor="file_input_post" className="small_file_input_btn">
 							<FontAwesomeIcon className="icon_camera" icon={faCamera} />
 						</label>
 					</div>
 					<textarea
 						name="text"
 						value={text}
-						placeholder="내용을 작성해 주세요"
+						placeholder="내용을 작성해 주세요."
 						wrap="hard"
 						maxLength={120}
 						onChange={onChange}
