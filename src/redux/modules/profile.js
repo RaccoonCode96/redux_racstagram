@@ -24,7 +24,14 @@ export const updateProfileThunk = createAsyncThunk(
 		const {
 			image: { imageUrl },
 		} = await thunkAPI.getState();
-		const { displayName, imageBase64, prevImageUrl, userIntro } = inputs;
+		const {
+			displayName,
+			imageBase64,
+			prevImageUrl,
+			userIntro,
+			subDisplayName,
+			website,
+		} = inputs;
 
 		// 이전 storage 이미지 파일 제거 처리 (초반 외부 image URL인 경우 에러 제외)
 		if (prevImageUrl !== imageBase64) {
@@ -37,8 +44,10 @@ export const updateProfileThunk = createAsyncThunk(
 					thunkAPI.dispatch(
 						setCurrentUserInfoThunk({
 							userIntro,
-							userDisplayName: displayName,
+							displayName,
 							userPhotoUrl: imageUrl,
+							subDisplayName,
+							website,
 						})
 					),
 					thunkAPI.dispatch(
