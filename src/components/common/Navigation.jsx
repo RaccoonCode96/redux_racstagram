@@ -8,6 +8,7 @@ import HomeOutlinedIcon from '@material-ui/icons/HomeOutlined';
 import HomeIcon from '@material-ui/icons/Home';
 import AddBoxIcon from '@material-ui/icons/AddBox';
 import AddBoxOutlinedIcon from '@material-ui/icons/AddBoxOutlined';
+import { AccountCircleOutlined, LockOutlined } from '@material-ui/icons';
 
 const Navigation = () => {
 	const [isOn, setisOn] = useState(false);
@@ -46,24 +47,30 @@ const Navigation = () => {
 							</Link>
 						</li>
 						<li className="item">
-							<img
-								src={userPhotoUrl}
-								onClick={toggle}
-								alt="user_image"
-								className="nav_profile_image"
-								style={
-									pathname === '/profile' ? { border: '' } : { border: 'none' }
-								}
-							/>
+							{userPhotoUrl && (
+								<img
+									src={userPhotoUrl}
+									onClick={toggle}
+									alt="user_image"
+									className="nav_profile_image"
+									style={
+										pathname === '/profile' || isOn
+											? { border: '' }
+											: { border: 'none' }
+									}
+								/>
+							)}
 							<Menu toggle={toggle} isOn={isOn} location={'nav_menu_location'}>
 								<Link to="/profile" className="menu_item">
+									<AccountCircleOutlined />
 									프로필
 								</Link>
 								<div className="menu_item">
+									<LockOutlined />
 									<SignOutContainer />
 								</div>
 								<div className="menu_item" onClick={toggle}>
-									나가기
+									<div className="last_item_text">나가기</div>
 								</div>
 							</Menu>
 						</li>
