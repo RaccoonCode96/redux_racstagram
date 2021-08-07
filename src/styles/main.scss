@@ -1,5 +1,6 @@
 @import url('https://fonts.googleapis.com/css2?family=Satisfy&display=swap');
 @import url('https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400;500;700&display=swap');
 @import 'reset.css';
 @import './_variables';
 
@@ -45,7 +46,6 @@ input {
 	padding: $inner_padding 0 0 0;
 	height: 100%;
 	margin: 0px auto;
-	flex-flow: wrap;
 	justify-content: center;
 	gap: $main_side_gap;
 	@media screen and (max-width: $media-width) {
@@ -68,11 +68,17 @@ input {
 	height: 80vh;
 	margin-bottom: 30px;
 	@include container_bcg_border;
+	@media screen and (max-width: 935px) {
+		height: 0;
+		width: 0;
+		position: static;
+		display: none;
+	}
 }
 
 textarea {
 	border-color: $default_border_color;
-	padding: 15px;
+	padding: 5px 10px;
 	&:hover {
 		border-color: $oc-gray-5;
 		transition: 0.2s;
