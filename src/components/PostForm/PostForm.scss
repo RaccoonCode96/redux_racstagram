@@ -30,7 +30,7 @@
 			align-items: center;
 		}
 
-		#file_input {
+		#file_input_post {
 			display: none;
 		}
 
@@ -69,6 +69,10 @@
 				.user_name {
 					font-family: $default_font_family;
 				}
+			}
+
+			.small_file_input_btn {
+				cursor: pointer;
 			}
 		}
 
