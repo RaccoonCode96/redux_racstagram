@@ -10,15 +10,20 @@
 
 <br/>
 
-이 프로젝트는 기존에 React & firebase를 통해서 만든 인스타그램 클론 프로젝트 리팩토링 프로젝트 입니다.
+이 프로젝트는 기존에 React & firebase를 통해서 만든 인스타그램 클론 프로젝트 리팩토링 프로젝트 입니다. (해당 프로젝트는 프로젝트 카테고리에서 확인 가능합니다.)
 
 <br/>
+
+## 상태 관리
 
 해당 프로젝트에서는 `redux-toolkit(Slice 모델)`을 사용하여 상태관리를 구현하고 있습니다.
 
 <br/>
 
-더불어 나중에, styled component나 sass 중에 채택하여 css 작업을 할 예정 입니다.
+## 스타일
+
+현재 SCSS를 채택하여 css 작업을 진행중에 있으며, 부분적으로 Material UI를 사용하고 있습니다.
+대부분의 경우에는, Material UI와 React 호환성 문제로 대부분은 SCSS로 직접 구현하고 있습니다.
 
 <br/>
 
@@ -35,6 +40,7 @@
 체크는 현재 기능적으로 구현된 상황을 의미합니다.
 
 <br/>
+
 - [x] `로딩 화면 또는 Component` : 앱 실행 초기화 작업시 로딩 또는 다른 작업시 사용할 로딩 화면 및 Component
   - [x] 스타일링 완료
 
@@ -276,6 +282,18 @@
 
 <br/>
 
+### 2021.08.06 사항
+
+- 드롭 메뉴 스타일 변경
+- Auth Error Code를 통한 Message 설정
+- Profile 수정 페이지 스타일링 및 website, subDisplayName input 추가
+- 정규 표현식을 통한 사용자 website Url 포맷팅
+- 게시글 개수 표시 구현
+- Noto Sans KR 폰트 적용
+  - https://goforit.tistory.com/201
+
+<br/>
+
 ## 다음에 필요한 사항
 
 <br/>
@@ -303,15 +321,11 @@
 
 <br/>
 
-- [ ] User Profile 데이터 베이스 추가 필드 구현 필요
-  - 이름 (subName) : 사용자 이름이 아닌 '부가적인 이름'
-  - 웹사이트 (webSite) : 자신의 사이트로 이동시킬 사이트
-  - 소개 (intro) : 자신의 소개 Coment(기존에 있었음)
-  - 게시글 수 (Post Count) : 유저의 게시글 수
+- [ ] profileUpdateContainer과 postFormContainer 통합 시도
 
 <br/>
 
-- [ ] profileUpdateContainer과 postFormContainer 통합 시도
+- [ ] 스켈레톤 UI 필요
 
 <br/>
 
