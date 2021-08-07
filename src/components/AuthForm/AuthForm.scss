@@ -1,7 +1,7 @@
 @import '../../styles/_variables';
 
-.form {
-	width: 400px;
+.auth_form {
+	width: 100%;
 	height: fit-content;
 	display: flex;
 	flex-direction: column;
@@ -9,11 +9,12 @@
 
 	.input {
 		@include auth_block_size;
+		width: 100%;
 		margin-bottom: 15px;
 	}
 
 	& > .container {
-		width: 300px;
+		width: 100%;
 		display: flex;
 		align-items: center;
 	}
@@ -37,6 +38,7 @@
 	}
 
 	.auth_btn {
+		width: 100%;
 		margin-top: 10px;
 		@include blue_btn;
 	}

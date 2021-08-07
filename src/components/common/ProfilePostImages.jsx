@@ -1,5 +1,21 @@
+import { useCallback } from 'react';
+import { useHistory, useLocation, useParams } from 'react-router-dom';
 import './ProfilePostImages.scss';
-const ProfilePostImages = ({ posts, postsOnToggle }) => {
+const ProfilePostImages = ({ posts }) => {
+	const { userName } = useParams();
+	const location = useLocation();
+	const history = useHistory();
+
+	const goPosts = useCallback(() => {
+		if (location.pathname === '/profile') {
+			history.push({ pathname: '/profile/posts', state: { posts } });
+		} else if (location.pathname === `/user/${userName}`) {
+			history.push({ pathname: `/user/${userName}/posts`, state: { posts } });
+		} else {
+			console.log('invalid location request');
+		}
+	}, [history, userName, location, posts]);
+
 	const devidePosts = (posts) => {
 		const arr = [...posts];
 		let tmp = [];
@@ -17,9 +33,12 @@ const ProfilePostImages = ({ posts, postsOnToggle }) => {
 					<div className="posts_row" key={index.toString()}>
 						{[0, 1, 2].map((i) =>
 							row[i] ? (
-								<div className="post_image_container" key={i.toString()}>
+								<div
+									className="post_image_container"
+									onClick={goPosts}
+									key={i.toString()}
+								>
 									<img
-										onClick={postsOnToggle}
 										key={row[i].postId.toString()}
 										src={row[i].postImageUrl}
 										alt={'postImageUrl'}

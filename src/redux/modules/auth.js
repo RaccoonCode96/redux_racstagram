@@ -12,7 +12,6 @@ import {
 
 // Initial State
 const initialState = {
-	newAccount: false,
 	errorSelector: '',
 	emailSignUp: {
 		isSignUp: false,
@@ -86,7 +85,7 @@ export const emailSignInThunk = createAsyncThunk(
 			if (displayName) {
 				await thunkAPI.dispatch(
 					setCurrentUserInfoThunk({
-						userDisplayName: displayName,
+						displayName,
 						userPhotoUrl: DEFAULT_USER_IMAGE,
 					})
 				);
@@ -130,7 +129,7 @@ export const socialSignInThunk = createAsyncThunk(
 				await thunkAPI.dispatch(
 					setCurrentUserInfoThunk({
 						userPhotoUrl: photoURL || DEFAULT_USER_IMAGE,
-						userDisplayName: displayName || DEFAULT_USER_DISPLAYNAME,
+						displayName: displayName || DEFAULT_USER_DISPLAYNAME,
 					})
 				);
 			}
@@ -153,10 +152,6 @@ const auth = createSlice({
 		selectError: (state, { payload }) => ({
 			...state,
 			errorSelector: payload,
-		}),
-		setNewAccount: (state, { payload }) => ({
-			...state,
-			newAccount: payload,
 		}),
 	},
 	extraReducers: {

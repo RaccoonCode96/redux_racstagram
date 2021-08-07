@@ -168,7 +168,7 @@ export const createPostThunk = createAsyncThunk(
 				postDate: Date.now(),
 				userId: currentUser.uid,
 				userPhotoUrl: currentUserInfo.userPhotoUrl,
-				userDisplayName: currentUserInfo.userDisplayName,
+				userDisplayName: currentUserInfo.displayName,
 				postImageUrl: imageUrl,
 			};
 			await dbService.collection('posts').add(post);
@@ -400,4 +400,4 @@ const post = createSlice({
 export default post.reducer;
 
 // actionCreator
-export const { resetPost } = post.actions;
+export const { resetPost, setPostFormError } = post.actions;

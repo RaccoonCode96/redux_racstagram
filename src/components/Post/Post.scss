@@ -4,6 +4,10 @@
 	height: fit-content;
 	@include container_bcg_border;
 	margin-bottom: 24px;
+	@media screen and (max-width: $media-width) {
+		margin: 0;
+		border-top: 0;
+	}
 
 	.writer {
 		height: $post_writer_height;
@@ -51,6 +55,7 @@
 
 		.post_text {
 			height: 100%;
+			font-weight: 300;
 		}
 
 		.post_text_userName {

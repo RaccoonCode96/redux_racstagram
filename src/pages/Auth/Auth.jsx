@@ -1,17 +1,19 @@
-import ShowError from '../../components/common/showError';
+import ShowError from '../../components/common/ShowError';
 import SocialSignInContainer from '../../components/SocialSignIn/SocialSignInContainer';
 import AuthFormContainer from '../../components/AuthForm/AuthFormCotainer';
-import { useDispatch, useSelector } from 'react-redux';
-import { resetAuth, setNewAccount } from '../../redux/modules/auth';
+import { useDispatch } from 'react-redux';
+import { resetAuth, selectError } from '../../redux/modules/auth';
 import { useEffect } from 'react';
 import './Auth.scss';
+import { useState } from 'react';
 
 const Auth = () => {
 	const dispatch = useDispatch();
-	const newAccount = useSelector((state) => state.auth.newAccount);
+	const [newAccount, setNewAccount] = useState(false);
 
 	const toggleAccount = () => {
-		dispatch(setNewAccount(!newAccount));
+		setNewAccount(!newAccount);
+		dispatch(selectError(''));
 	};
 
 	useEffect(() => {
@@ -24,7 +26,7 @@ const Auth = () => {
 		<div className="auth">
 			<div className="container">
 				<h2 className="title">Racstagram</h2>
-				<AuthFormContainer />
+				<AuthFormContainer newAccount={newAccount} />
 				<ShowError className="error" />
 				{newAccount ? <></> : <SocialSignInContainer />}
 			</div>

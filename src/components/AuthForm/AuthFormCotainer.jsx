@@ -2,10 +2,15 @@ import { useCallback } from 'react';
 import { useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import AuthForm from './AuthForm';
-import { emailSignInThunk, emailSignUpThunk } from '../../redux/modules/auth';
+import {
+	emailSignInThunk,
+	emailSignUpThunk,
+	selectError,
+} from '../../redux/modules/auth';
 import { checkDisplayNameThunk } from '../../redux/modules/users';
+import { useEffect } from 'react';
 
-const AuthFormContainer = () => {
+const AuthFormContainer = ({ newAccount }) => {
 	const dispatch = useDispatch();
 	const { exist, loading } = useSelector(
 		(state) => state.users.checkDisplayName
@@ -14,13 +19,19 @@ const AuthFormContainer = () => {
 		(state) => state.auth
 	);
 
-	const newAccount = useSelector((state) => state.auth.newAccount);
 	const [inputs, setInputs] = useState({
 		email: '',
 		password: '',
 		displayName: '',
 	});
-
+	useEffect(() => {
+		// 로그인 창 또는 회원 가입 창 변경시 (Account 변경) input 초기화
+		setInputs({
+			email: '',
+			password: '',
+			displayName: '',
+		});
+	}, [newAccount]);
 	const onChange = useCallback(
 		(event) => {
 			const { name, value } = event.target;
@@ -47,15 +58,28 @@ const AuthFormContainer = () => {
 	const onSubmit = useCallback(
 		(event) => {
 			event.preventDefault();
+			const { email, password, displayName } = inputs;
+			// input check
+			if (!email) {
+				dispatch(selectError('Email를 입력해 주세요.'));
+				return;
+			} else if (!password) {
+				dispatch(selectError('Password를 입력해 주세요.'));
+				return;
+			} else if (newAccount && !displayName) {
+				dispatch(selectError('User Name을 입력해 주세요.'));
+				return;
+			}
+
 			if (newAccount === false) {
 				dispatch(emailSignInThunk(inputs));
 			} else {
 				if (!exist[1] || exist[1] !== inputs.displayName) {
-					window.alert('닉네임 중복 확인이 필요 합니다.');
+					dispatch(selectError('닉네임 중복 확인이 필요 합니다.'));
 					return;
 				}
 				if (exist[0]) {
-					window.alert(`${exist[1]}는 존재하는 닉네임 입니다.`);
+					dispatch(selectError(`${exist[1]}는 존재하는 닉네임 입니다.`));
 					return;
 				}
 				dispatch(emailSignUpThunk(inputs));

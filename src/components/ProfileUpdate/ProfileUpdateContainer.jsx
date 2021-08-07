@@ -12,18 +12,23 @@ const ProfileUpdateContainer = ({ profileInfo }) => {
 	const history = useHistory();
 	const dispatch = useDispatch();
 
-	const { userPhotoUrl, userDisplayName, userIntro } = profileInfo;
+	const { userPhotoUrl, displayName, userIntro, subDisplayName, website } =
+		profileInfo;
 
 	const exist = useSelector((state) => state.users.checkDisplayName.exist);
 
 	const [inputs, setInputs] = useState({
-		prevIntro: userIntro,
 		userIntro,
-		prevDisplayName: userDisplayName,
-		displayName: userDisplayName,
-		prevImageUrl: userPhotoUrl,
+		displayName,
 		imageBase64: userPhotoUrl,
+		subDisplayName,
+		website,
+		prevIntro: userIntro,
+		prevDisplayName: displayName,
+		prevImageUrl: userPhotoUrl,
+		prevSubDisplayName: subDisplayName,
 		preventSubmit: false,
+		prevWebsite: website,
 	});
 
 	const onChange = useCallback(
@@ -62,6 +67,16 @@ const ProfileUpdateContainer = ({ profileInfo }) => {
 					...inputs,
 					displayName: value,
 				});
+			} else if (name === 'subDisplayName') {
+				setInputs({
+					...inputs,
+					subDisplayName: value,
+				});
+			} else if (name === 'website') {
+				setInputs({
+					...inputs,
+					website: value,
+				});
 			}
 		},
 		[inputs]
@@ -71,13 +86,17 @@ const ProfileUpdateContainer = ({ profileInfo }) => {
 		async (event) => {
 			event.preventDefault();
 			const {
-				preventSubmit,
 				imageBase64,
-				prevImageUrl,
-				displayName,
-				prevDisplayName,
 				userIntro,
+				displayName,
+				subDispalyName,
+				website,
+				prevImageUrl,
 				prevIntro,
+				prevDisplayName,
+				prevSubDisplayName,
+				prevWebsite,
+				preventSubmit,
 			} = inputs;
 
 			// 이름 중복 방어 코드
@@ -96,7 +115,9 @@ const ProfileUpdateContainer = ({ profileInfo }) => {
 				preventSubmit === true ||
 				(imageBase64 === prevImageUrl &&
 					displayName === prevDisplayName &&
-					prevIntro === userIntro)
+					userIntro === prevIntro &&
+					subDispalyName === prevSubDisplayName &&
+					website === prevWebsite)
 			) {
 				history.replace('/profile');
 				return;

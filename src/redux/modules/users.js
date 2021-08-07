@@ -6,8 +6,10 @@ import { dbService } from '../../fBase';
 const initialState = {
 	currentUserInfo: {
 		userPhotoUrl: '',
-		userDisplayName: '',
 		userIntro: '',
+		displayName: '',
+		subDisplayName: '',
+		website: '',
 	},
 	userInfo: {
 		userId: '',
@@ -45,7 +47,7 @@ export const checkDisplayNameThunk = createAsyncThunk(
 		try {
 			const { docs } = await dbService
 				.collection('users')
-				.where('userDisplayName', '==', userName)
+				.where('displayName', '==', userName)
 				.get();
 			const res = [!!docs[0], userName];
 			return res;
@@ -55,33 +57,13 @@ export const checkDisplayNameThunk = createAsyncThunk(
 	}
 );
 
-// export const getSeletedUserPostThunk = createAsyncThunk(
-// 	'redux-racstagram/users/getSeletedUserPostThunk',
-// 	async (userName, thunkAPI) => {
-// 		try {
-// 			const { docs } = await dbService
-// 				.collection('posts')
-// 				.where('userDisplayName', '==', userName)
-// 				.orderBy('postDate', 'desc')
-// 				.get();
-// 			const postList = docs.map((doc) => ({
-// 				postId: doc.id,
-// 				...doc.data(),
-// 			}));
-// 			return postList;
-// 		} catch ({ code, message }) {
-// 			return thunkAPI.rejectWithValue({ code, message });
-// 		}
-// 	}
-// );
-
 export const getUserInfoThunk = createAsyncThunk(
 	'redux-racstagram/users/getUserInfoThunk',
 	async (userName, thunkAPI) => {
 		try {
 			const { docs } = await dbService
 				.collection('users')
-				.where('userDisplayName', '==', userName)
+				.where('displayName', '==', userName)
 				.get();
 			const res = { ...docs[0].data(), userId: docs[0].id };
 			return res;
@@ -98,7 +80,8 @@ export const setCurrentUserInfoThunk = createAsyncThunk(
 		const {
 			profile: { currentUser },
 		} = thunkAPI.getState();
-		const { userPhotoUrl, userDisplayName, userIntro } = payload;
+		const { userPhotoUrl, displayName, userIntro, subDisplayName, website } =
+			payload;
 		try {
 			await dbService
 				.collection('users')
@@ -106,8 +89,10 @@ export const setCurrentUserInfoThunk = createAsyncThunk(
 				.set(
 					{
 						...(userPhotoUrl && { userPhotoUrl }),
-						...(userDisplayName && { userDisplayName }),
+						...(displayName && { displayName }),
 						...(userIntro && { userIntro }),
+						...(subDisplayName && { subDisplayName }),
+						...(website && { website }),
 					},
 					{ merge: true }
 				);

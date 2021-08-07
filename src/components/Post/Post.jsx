@@ -23,8 +23,8 @@ const Post = ({ post, deletePost, updatePost, currentUserId }) => {
 						<Link
 							to={
 								currentUserId === post.userId
-									? `profile`
-									: `user/${post.userDisplayName}`
+									? `/profile`
+									: `/user/${post.userDisplayName}`
 							}
 							className="user_info"
 						>
