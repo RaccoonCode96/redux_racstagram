@@ -6,15 +6,21 @@ const ProfilePostImages = ({ posts }) => {
 	const location = useLocation();
 	const history = useHistory();
 
-	const goPosts = useCallback(() => {
-		if (location.pathname === '/profile') {
-			history.push({ pathname: '/profile/posts', state: { posts } });
-		} else if (location.pathname === `/user/${userName}`) {
-			history.push({ pathname: `/user/${userName}/posts`, state: { posts } });
-		} else {
-			console.log('invalid location request');
-		}
-	}, [history, userName, location, posts]);
+	const goPosts = useCallback(
+		(postNum) => {
+			if (location.pathname === '/profile') {
+				history.push({ pathname: '/profile/posts', state: { posts, postNum } });
+			} else if (location.pathname === `/user/${userName}`) {
+				history.push({
+					pathname: `/user/${userName}/posts`,
+					state: { posts, postNum },
+				});
+			} else {
+				console.log('invalid location request');
+			}
+		},
+		[history, userName, location, posts]
+	);
 
 	const devidePosts = (posts) => {
 		const arr = [...posts];
@@ -35,7 +41,9 @@ const ProfilePostImages = ({ posts }) => {
 							row[i] ? (
 								<div
 									className="post_image_container"
-									onClick={goPosts}
+									onClick={() => {
+										goPosts(3 * index + i);
+									}}
 									key={i.toString()}
 								>
 									<img
@@ -57,11 +65,3 @@ const ProfilePostImages = ({ posts }) => {
 };
 
 export default ProfilePostImages;
-
-/*
-뒤로가기 버튼 제어시 사용되는 상위 컴포넌트의 함수와 state 
-const [postOn, setPostOn] = useState({ isOn: false, scrollY: 0 });
-const postsOnToggle = useCallback(() => {
-  setPostOn({ ...postOn, isOn: !postOn.isOn });
-}, [setPostOn, postOn]); 
-*/
