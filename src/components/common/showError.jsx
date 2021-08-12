@@ -10,6 +10,8 @@ const ShowError = () => {
 			errorSelector === 'auth/wrong-password'
 		) {
 			return '가입하지 않은 아이디이거나, 잘못된 비밀번호입니다.';
+		} else if (errorSelector === 'auth/email-already-in-use') {
+			return '이미 가입된 이메일 입니다.';
 		} else {
 			return errorSelector;
 		}

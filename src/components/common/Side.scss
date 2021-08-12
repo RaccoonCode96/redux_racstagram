@@ -1,0 +1,59 @@
+@import '../../styles/_variables';
+
+.side {
+	font-family: $default_font_family;
+	padding: 10px;
+	font-weight: 500;
+	font-size: 0.9rem;
+	.recommend {
+		margin-bottom: 10px;
+		color: $oc-gray-6;
+	}
+	.user {
+		width: 100%;
+		display: flex;
+		padding: 5px;
+		align-items: center;
+		justify-content: space-between;
+		.user_info {
+			display: flex;
+			align-items: center;
+			gap: 10px;
+
+			.user_image {
+				width: 40px;
+				height: 40px;
+				border-radius: 50%;
+				object-fit: cover;
+			}
+			.user_name {
+				color: $text-color;
+			}
+		}
+		.visit {
+			color: $oc-indigo-5;
+			font-weight: 600;
+		}
+	}
+
+	.footer {
+		font-size: 0.7rem;
+		margin-top: 30px;
+		color: $oc-gray-5;
+		font-weight: 500;
+		.copy {
+			margin-bottom: 10px;
+		}
+		.link {
+			color: $oc-gray-5;
+
+			&::after {
+				content: '•';
+				margin: 0 5px;
+			}
+			&:last-child::after {
+				content: none;
+			}
+		}
+	}
+}

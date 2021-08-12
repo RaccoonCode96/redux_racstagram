@@ -294,16 +294,42 @@
 
 <br/>
 
+### 2021.08.08 사항
+
+- Post Detail View로 이동시 해당 글의 scrollTop 위치로 이동하게 구현하기
+  - 다른 유저 및 자신의 프로필에 있는 post Image table에서 특정 이미지 클릭시 해당 글위치로 이동 함
+  - https://goforit.tistory.com/203
+
+### 2021.08.09사항
+
+- 본인을 제외한 랜덤 유저 추천 기능 구현
+- side 컴포넌트 스타일링 (회원 추천 + 푸터)
+  - https://goforit.tistory.com/204
+
+### 2021.08.11사항
+
+- 무한스크롤 구현 (IntersectionObserver)
+- 불필요한 데이터 요청 제거 및 데이터 요청 시기 조정
+- 코드 중복 제거를 위한 통합에 대한 고찰
+- https://goforit.tistory.com/205
+
 ## 다음에 필요한 사항
 
 <br/>
 
-- [ ] profile 정보 요청 시기 조정
-  - 더 빠른 연산을 위해서, 화면이 render 되고 profile에 관련된 정보를 가져오지 말고 profile 보기위해 버튼을 눌렀을 때 부터 미리 profile 정보를 요청하게 하자
+- [ ] propType으로 type 지정
 
 <br/>
 
-- [ ] Post Detail View로 이동시 해당 글의 scrollX 위치로 이동하게 구현하기 (스타일링 이후에 scroll 위치 계산이 필요한 작업임)
+- [ ] sementic tag 적절한 태그로 수정하기 (검토)
+
+<br/>
+
+- [ ] 랜덤 유저 개선하기 : useRandom 제외 값 지정하게 변경하기
+
+<br/>
+
+- [ ] 새게시글 보기 버튼 또는 로고 클릭시 데이터 진입점 갱신 기능 구현하기
 
 <br/>
 
@@ -330,6 +356,10 @@
 <br/>
 
 - [ ] 효과적인 렌더링 제한을 위해서 container에 있는 함수들을 hook으로 만들어 구현하기
+
+<br/>
+
+- [ ] route '/profile' pathName을 '/user/:userName' pathName 사용하게 통합하여 pathname에 대한 조건을 줄여 보자
 
 <br/>
 <br/>

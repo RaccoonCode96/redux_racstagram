@@ -23,11 +23,13 @@ const UserProfile = ({ profileInfo, updateProfile, postCount }) => {
 		<>
 			<div className="profile_container">
 				<div className="profile_image_container">
-					<img
-						src={userPhotoUrl}
-						alt="userPhotoUrl"
-						className="profile_image"
-					/>
+					{userPhotoUrl && (
+						<img
+							src={userPhotoUrl}
+							alt="userPhotoUrl"
+							className="profile_image"
+						/>
+					)}
 				</div>
 				<div className="profile_info">
 					<div className="profile_info_top">

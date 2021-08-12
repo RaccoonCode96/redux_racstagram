@@ -6,6 +6,7 @@ import { resetPost } from './post';
 import { resetProfile } from './profile';
 import {
 	getCurrentUserInfoThunk,
+	getUserMaxCountThunk,
 	resetUsers,
 	setCurrentUserInfoThunk,
 } from './users';
@@ -83,10 +84,15 @@ export const emailSignInThunk = createAsyncThunk(
 			const { email, password, displayName } = data;
 			await authService.signInWithEmailAndPassword(email, password);
 			if (displayName) {
+				const {
+					users: { userMaxCount },
+				} = thunkAPI.getState();
+				await thunkAPI.dispatch(getUserMaxCountThunk());
 				await thunkAPI.dispatch(
 					setCurrentUserInfoThunk({
 						displayName,
 						userPhotoUrl: DEFAULT_USER_IMAGE,
+						count: userMaxCount + 1,
 					})
 				);
 			}
@@ -119,17 +125,28 @@ export const socialSignInThunk = createAsyncThunk(
 				user: { photoURL, displayName },
 			} = await authService.signInWithPopup(provider);
 
-			// 기존 사용자 정보 가져올지 검사
 			await thunkAPI.dispatch(getCurrentUserInfoThunk());
 			const {
 				users: { currentUserInfo },
 			} = await thunkAPI.getState();
 
-			if (!(currentUserInfo.userDisplayName && currentUserInfo.userPhotoUrl)) {
+			// 소셜 로그인을 통한 최초 로그인인 경우
+			if (
+				!(
+					currentUserInfo.displayName &&
+					currentUserInfo.userPhotoUrl &&
+					currentUserInfo.count
+				)
+			) {
+				await thunkAPI.dispatch(getUserMaxCountThunk());
+				const {
+					users: { userMaxCount },
+				} = thunkAPI.getState();
 				await thunkAPI.dispatch(
 					setCurrentUserInfoThunk({
 						userPhotoUrl: photoURL || DEFAULT_USER_IMAGE,
 						displayName: displayName || DEFAULT_USER_DISPLAYNAME,
+						count: userMaxCount + 1,
 					})
 				);
 			}

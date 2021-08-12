@@ -1,16 +1,14 @@
-import { useEffect } from 'react';
 import { useCallback, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { useHistory } from 'react-router-dom';
 import PostForm from './PostForm';
 import resize from '../../hooks/resize';
 import { getImageUrlThunk } from '../../redux/modules/image';
-import { createPostThunk } from '../../redux/modules/post';
-import { getCurrentUserInfoThunk } from '../../redux/modules/users';
+import { createPostThunk, getAllPostsThunk } from '../../redux/modules/post';
+import { useHistory } from 'react-router-dom';
 
 const PostFormContainer = () => {
-	const history = useHistory();
 	const dispatch = useDispatch();
+	const history = useHistory();
 	const currentUserInfo = useSelector((state) => state.users.currentUserInfo);
 	const [inputs, setInputs] = useState({
 		imageBase64: '',
@@ -68,15 +66,12 @@ const PostFormContainer = () => {
 				setInputs({ ...inputs, preventSubmit: true });
 				await dispatch(getImageUrlThunk(imageBase64));
 				await dispatch(createPostThunk(text));
+				await dispatch(getAllPostsThunk());
 				history.replace('/');
 			}
 		},
 		[dispatch, inputs, history]
 	);
-
-	useEffect(() => {
-		dispatch(getCurrentUserInfoThunk());
-	}, [dispatch]);
 
 	return (
 		<PostForm

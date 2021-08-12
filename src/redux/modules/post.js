@@ -27,6 +27,11 @@ const initialState = {
 		loading: false,
 		getError: '',
 	},
+	getMorePosts: {
+		isGet: false,
+		loading: false,
+		getError: '',
+	},
 	getUserPosts: {
 		isGet: false,
 		loading: false,
@@ -183,15 +188,49 @@ export const createPostThunk = createAsyncThunk(
 	}
 );
 
+export const getMorePostsThunk = createAsyncThunk(
+	'redux-racstagram/post/getMorePostsThunk',
+	async ({ postDate, type, userName }, thunkAPI) => {
+		try {
+			const {
+				profile: { currentUser },
+			} = await thunkAPI.getState();
+			let query = await dbService
+				.collection('posts')
+				.orderBy('postDate', 'desc');
+
+			if (type === 'allPosts') {
+			} else if (type === 'userPosts') {
+				query = await query.where('userDisplayName', '==', userName);
+			} else if (type === 'currentUserPosts') {
+				query = await query.where('userId', '==', currentUser.uid);
+			}
+
+			const { docs } = await query.startAfter(postDate).limit(5).get();
+			const posts = docs.map((doc) => ({
+				postId: doc.id,
+				...doc.data(),
+			}));
+			if (!posts.length) {
+				throw new Error(`none of data to take`);
+			}
+			return { posts, type };
+		} catch ({ code, message }) {
+			return thunkAPI.rejectWithValue({ code, message });
+		}
+	}
+);
+
 export const getAllPostsThunk = createAsyncThunk(
 	'redux-racstagram/post/getAllPostsThunk',
 	async (_, thunkAPI) => {
 		try {
-			const array = await dbService
+			const { docs } = await dbService
 				.collection('posts')
 				.orderBy('postDate', 'desc')
+				.limit(6)
 				.get();
-			const posts = array.docs.map((doc) => ({
+			const posts = docs.map((doc) => ({
 				postId: doc.id,
 				...doc.data(),
 			}));
@@ -210,6 +249,7 @@ export const getUserPostsThunk = createAsyncThunk(
 				.collection('posts')
 				.where('userDisplayName', '==', userName)
 				.orderBy('postDate', 'desc')
+				.limit(6)
 				.get();
 			const posts = docs.map((doc) => ({
 				postId: doc.id,
@@ -229,12 +269,13 @@ export const getCurrentUserPostsThunk = createAsyncThunk(
 			const {
 				profile: { currentUser },
 			} = thunkAPI.getState();
-			const array = await dbService
+			const { docs } = await dbService
 				.collection('posts')
 				.where('userId', '==', currentUser.uid)
 				.orderBy('postDate', 'desc')
+				.limit(6)
 				.get();
-			const posts = await array.docs.map((doc) => ({
+			const posts = docs.map((doc) => ({
 				postId: doc.id,
 				...doc.data(),
 			}));
@@ -252,6 +293,10 @@ const post = createSlice({
 	reducers: {
 		resetPost: (state) => ({
 			...initialState,
+		}),
+		resetGetMorePosts: (state) => ({
+			...state,
+			getMorePosts: { ...initialState.getMorePosts },
 		}),
 	},
 	extraReducers: {
@@ -312,6 +357,51 @@ const post = createSlice({
 			...state,
 			getAllPosts: {
 				...state.getAllPosts,
+				loading: false,
+				getError: payload,
+			},
+		}),
+		[getMorePostsThunk.pending]: (state) => ({
+			...state,
+			getMorePosts: { ...state.getMorePosts, loading: true },
+		}),
+		[getMorePostsThunk.fulfilled]: (state, { payload }) => {
+			if (payload.type === 'allPosts') {
+				return {
+					...state,
+					allPosts: [...state.allPosts, ...payload.posts],
+					getMorePosts: {
+						...state.getMorePosts,
+						loading: false,
+						isGet: true,
+					},
+				};
+			} else if (payload.type === 'currentUserPosts') {
+				return {
+					...state,
+					currentUserPosts: [...state.currentUserPosts, ...payload.posts],
+					getMorePosts: {
+						...state.getMorePosts,
+						loading: false,
+						isGet: true,
+					},
+				};
+			} else if (payload.type === 'userPosts') {
+				return {
+					...state,
+					userPosts: [...state.userPosts, ...payload.posts],
+					getMorePosts: {
+						...state.getMorePosts,
+						loading: false,
+						isGet: true,
+					},
+				};
+			}
+		},
+		[getMorePostsThunk.rejected]: (state, { payload }) => ({
+			...state,
+			getMorePosts: {
+				...state.getMorePosts,
 				loading: false,
 				getError: payload,
 			},
@@ -400,4 +490,4 @@ const post = createSlice({
 export default post.reducer;
 
 // actionCreator
-export const { resetPost, setPostFormError } = post.actions;
+export const { resetPost, setPostFormError, resetGetMorePosts } = post.actions;

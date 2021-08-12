@@ -1,34 +1,29 @@
 import { useEffect } from 'react';
-import { useCallback } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import Navigation from '../../components/common/Navigation';
+import Side from '../../components/common/Side';
 import PostContainer from '../../components/Post/PostContainer';
-import { getAllPostsThunk } from '../../redux/modules/post';
-import { getCurrentUserInfoThunk } from '../../redux/modules/users';
+import { resetGetMorePosts } from '../../redux/modules/post';
 
 const Home = () => {
-	const posts = useSelector((state) => state.post.allPosts);
+	const allPosts = useSelector((state) => state.post.allPosts);
 	const dispatch = useDispatch();
-	const getPosts = useCallback(() => {
-		dispatch(getAllPostsThunk());
-	}, [dispatch]);
-	const getCurrentUserInfo = useCallback(() => {
-		dispatch(getCurrentUserInfoThunk());
-	}, [dispatch]);
 
 	useEffect(() => {
-		getPosts();
-		getCurrentUserInfo();
-	}, [getPosts, getCurrentUserInfo]);
+		return () => {
+			dispatch(resetGetMorePosts());
+		};
+	}, [dispatch]);
+
 	return (
 		<>
 			<Navigation />
 			<div className="page">
 				<div className="inner">
 					<div className="main">
-						<PostContainer posts={posts} />
+						<PostContainer posts={allPosts} />
 					</div>
-					<div className="side">side</div>
+					<Side />
 				</div>
 			</div>
 			<div className="modal_root"></div>

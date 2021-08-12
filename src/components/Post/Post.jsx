@@ -5,6 +5,7 @@ import { Link } from 'react-router-dom';
 import Confirm from '../common/Confirm';
 import Modal from '../common/Modal';
 import './Post.scss';
+import React from 'react';
 
 const Post = ({ post, deletePost, updatePost, currentUserId }) => {
 	const [isOn, setIsOn] = useState(false);
@@ -101,4 +102,4 @@ const Post = ({ post, deletePost, updatePost, currentUserId }) => {
 	);
 };
 
-export default Post;
+export default React.memo(Post);

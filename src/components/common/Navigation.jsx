@@ -1,3 +1,4 @@
+import React from 'react';
 import { useState } from 'react';
 import { useSelector } from 'react-redux';
 import { Link, useLocation } from 'react-router-dom';
@@ -81,4 +82,4 @@ const Navigation = () => {
 	);
 };
 
-export default Navigation;
+export default React.memo(Navigation);

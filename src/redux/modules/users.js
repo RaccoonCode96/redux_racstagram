@@ -17,12 +17,19 @@ const initialState = {
 		userDisplayName: '',
 		userIntro: '',
 	},
+	randomUserInfo: [],
+	userMaxCount: 0,
 	getCurrentUserInfo: {
 		isGet: false,
 		loading: false,
 		getError: '',
 	},
 	getUserInfo: {
+		isGet: false,
+		loading: false,
+		getError: '',
+	},
+	getRandomUserInfo: {
 		isGet: false,
 		loading: false,
 		getError: '',
@@ -38,9 +45,65 @@ const initialState = {
 		checkError: '',
 		exist: [false, ''],
 	},
+	getUserMaxCount: {
+		isGet: false,
+		loading: false,
+		getError: '',
+	},
 };
 
 // async
+export const getUserMaxCountThunk = createAsyncThunk(
+	'redux-racstagram/users/getUserMaxCountThunk',
+	async (_, thunkAPI) => {
+		try {
+			const { docs } = await dbService
+				.collection('users')
+				.orderBy('count', 'desc')
+				.limit(1)
+				.get();
+			const res = docs[0].data();
+			return res.count;
+		} catch ({ code, message }) {
+			return thunkAPI.rejectWithValue({ code, message });
+		}
+	}
+);
+export const getRandomUserInfoThunk = createAsyncThunk(
+	'redux-racstagram/users/getRandomUserInfoThunk',
+	async (_, thunkAPI) => {
+		try {
+			// await Promise.all([
+			// 	// thunkAPI.dispatch(getUserMaxCountThunk()),
+			// 	thunkAPI.dispatch(getCurrentUserInfoThunk()),
+			// ]);
+			const {
+				users: {
+					currentUserInfo: { displayName },
+					// userMaxCount,
+				},
+			} = await thunkAPI.getState();
+			// const random = await useRandom(2, userMaxCount);
+			const { docs } = await dbService
+				.collection('users')
+				.where('displayName', '!=', displayName)
+				.limit(2)
+				.get();
+			// const { docs } = await query
+			// 	.where('count', 'in', [random[0], random[1]])
+			// 	.get();
+
+			const res = docs.map((doc) => {
+				const { displayName, userPhotoUrl } = doc.data();
+				return { displayName, userPhotoUrl };
+			});
+			return res;
+		} catch ({ code, message }) {
+			return thunkAPI.rejectWithValue({ code, message });
+		}
+	}
+);
+
 export const checkDisplayNameThunk = createAsyncThunk(
 	'redux-racstagram/users/checkDisplayNameThunk',
 	async (userName, thunkAPI) => {
@@ -80,8 +143,14 @@ export const setCurrentUserInfoThunk = createAsyncThunk(
 		const {
 			profile: { currentUser },
 		} = thunkAPI.getState();
-		const { userPhotoUrl, displayName, userIntro, subDisplayName, website } =
-			payload;
+		const {
+			userPhotoUrl,
+			displayName,
+			userIntro,
+			subDisplayName,
+			website,
+			count,
+		} = payload;
 		try {
 			await dbService
 				.collection('users')
@@ -93,6 +162,7 @@ export const setCurrentUserInfoThunk = createAsyncThunk(
 						...(userIntro && { userIntro }),
 						...(subDisplayName && { subDisplayName }),
 						...(website && { website }),
+						...(count && { count }),
 					},
 					{ merge: true }
 				);
@@ -210,6 +280,48 @@ const users = createSlice({
 			...state,
 			getCurrentUserInfo: {
 				...state.getCurrentUserInfo,
+				loading: false,
+				getError: payload,
+			},
+		}),
+		[getRandomUserInfoThunk.pending]: (state) => ({
+			...state,
+			getRandomUserInfo: { ...state.getRandomUserInfo, loading: true },
+		}),
+		[getRandomUserInfoThunk.fulfilled]: (state, { payload }) => ({
+			...state,
+			randomUserInfo: payload,
+			getRandomUserInfo: {
+				...state.getRandomUserInfo,
+				loading: false,
+				isGet: true,
+			},
+		}),
+		[getRandomUserInfoThunk.rejected]: (state, { payload }) => ({
+			...state,
+			getRandomUserInfo: {
+				...state.getRandomUserInfo,
+				loading: false,
+				getError: payload,
+			},
+		}),
+		[getUserMaxCountThunk.pending]: (state) => ({
+			...state,
+			getUserMaxCount: { ...state.getUserMaxCount, loading: true },
+		}),
+		[getUserMaxCountThunk.fulfilled]: (state, { payload }) => ({
+			...state,
+			userMaxCount: payload,
+			getUserMaxCount: {
+				...state.getUserMaxCount,
+				loading: false,
+				isGet: true,
+			},
+		}),
+		[getUserMaxCountThunk.rejected]: (state, { payload }) => ({
+			...state,
+			getUserMaxCount: {
+				...state.getUserMaxCount,
 				loading: false,
 				getError: payload,
 			},

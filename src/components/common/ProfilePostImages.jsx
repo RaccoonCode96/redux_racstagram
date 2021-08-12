@@ -1,20 +1,41 @@
-import { useCallback } from 'react';
+import { CircularProgress } from '@material-ui/core';
+import { useCallback, useEffect, useRef } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
 import { useHistory, useLocation, useParams } from 'react-router-dom';
+import { getMorePostsThunk } from '../../redux/modules/post';
 import './ProfilePostImages.scss';
 const ProfilePostImages = ({ posts }) => {
 	const { userName } = useParams();
-	const location = useLocation();
+	const { pathname } = useLocation();
 	const history = useHistory();
+	const dispatch = useDispatch();
+	const target = useRef(null);
+	const { getError, loading } = useSelector((state) => state.post.getMorePosts);
 
-	const goPosts = useCallback(() => {
-		if (location.pathname === '/profile') {
-			history.push({ pathname: '/profile/posts', state: { posts } });
-		} else if (location.pathname === `/user/${userName}`) {
-			history.push({ pathname: `/user/${userName}/posts`, state: { posts } });
-		} else {
-			console.log('invalid location request');
+	const getMorePosts = useCallback(() => {
+		const postDate = posts[posts.length - 1]?.postDate;
+		if (pathname === '/profile') {
+			dispatch(getMorePostsThunk({ postDate, type: 'currentUserPosts' }));
+		} else if (pathname === `/user/${userName}`) {
+			dispatch(getMorePostsThunk({ postDate, type: 'userPosts', userName }));
 		}
-	}, [history, userName, location, posts]);
+	}, [dispatch, pathname, posts, userName]);
+
+	const goPosts = useCallback(
+		(postNum) => {
+			if (pathname === '/profile') {
+				history.push({ pathname: '/profile/posts', state: { postNum } });
+			} else if (pathname === `/user/${userName}`) {
+				history.push({
+					pathname: `/user/${userName}/posts`,
+					state: { postNum },
+				});
+			} else {
+				console.log('invalid location request');
+			}
+		},
+		[history, userName, pathname]
+	);
 
 	const devidePosts = (posts) => {
 		const arr = [...posts];
@@ -26,6 +47,37 @@ const ProfilePostImages = ({ posts }) => {
 		return tmp;
 	};
 
+	const _onIntersect = useCallback(
+		([{ isIntersecting }]) => {
+			if (getError.message) {
+				return;
+			}
+			if (isIntersecting) {
+				getMorePosts();
+			}
+		},
+		[getMorePosts, getError]
+	);
+
+	useEffect(() => {
+		let observer;
+		// 더이상 불러올 자료가 없는 경우
+		if (getError.message) {
+			observer && observer.disconnect();
+
+			// target이 있고,
+		} else if (target && posts.length) {
+			observer = new IntersectionObserver(_onIntersect, {
+				rootMargin: `10px`,
+				threshold: 0.5,
+			});
+			observer.observe(target.current);
+		}
+		return () => {
+			observer && observer.disconnect();
+		};
+	}, [getError, _onIntersect, posts]);
+
 	return (
 		<>
 			<div className="post_table">
@@ -35,11 +87,13 @@ const ProfilePostImages = ({ posts }) => {
 							row[i] ? (
 								<div
 									className="post_image_container"
-									onClick={goPosts}
-									key={i.toString()}
+									onClick={() => {
+										goPosts(3 * index + i);
+									}}
+									key={`postTable/${row[i].postId.toString()}`}
 								>
 									<img
-										key={row[i].postId.toString()}
+										// key={row[i].postId.toString()}
 										src={row[i].postImageUrl}
 										alt={'postImageUrl'}
 										className="post_image"
@@ -52,16 +106,10 @@ const ProfilePostImages = ({ posts }) => {
 					</div>
 				))}
 			</div>
+			<div ref={target}></div>
+			{loading && <CircularProgress />}
 		</>
 	);
 };
 
 export default ProfilePostImages;
-
-/*
-뒤로가기 버튼 제어시 사용되는 상위 컴포넌트의 함수와 state 
-const [postOn, setPostOn] = useState({ isOn: false, scrollY: 0 });
-const postsOnToggle = useCallback(() => {
-  setPostOn({ ...postOn, isOn: !postOn.isOn });
-}, [setPostOn, postOn]); 
-*/

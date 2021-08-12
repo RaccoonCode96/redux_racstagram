@@ -6,10 +6,7 @@ import {
 	getCurrentUserPostsThunk,
 	getUserPostsThunk,
 } from '../../redux/modules/post';
-import {
-	getCurrentUserInfoThunk,
-	getUserInfoThunk,
-} from '../../redux/modules/users';
+import { getUserInfoThunk } from '../../redux/modules/users';
 import ProfilePostImages from '../common/ProfilePostImages';
 import UserProfile from './UserProfile';
 import './UserProfileContainer.scss';
@@ -26,14 +23,13 @@ const UserProfileContainer = () => {
 	const userInfo = useSelector((state) => state.users.userInfo);
 
 	const getInfoPosts = useCallback(async () => {
-		if (pathname === '/profile') {
-			dispatch(getCurrentUserInfoThunk());
+		if (pathname === '/profile' && !currentUserPosts.length) {
 			dispatch(getCurrentUserPostsThunk());
 		} else if (pathname === `/user/${userName}`) {
 			dispatch(getUserInfoThunk(userName));
 			dispatch(getUserPostsThunk(userName));
 		}
-	}, [dispatch, pathname, userName]);
+	}, [dispatch, pathname, userName, currentUserPosts]);
 
 	const updateProfile = useCallback(() => {
 		history.push({
