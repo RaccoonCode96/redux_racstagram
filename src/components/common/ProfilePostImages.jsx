@@ -14,7 +14,7 @@ const ProfilePostImages = ({ posts }) => {
 
 	const getMorePosts = useCallback(() => {
 		const postDate = posts[posts.length - 1]?.postDate;
-		if (pathname === '/profile') {
+		if (pathname === '/profile' && posts.length) {
 			dispatch(getMorePostsThunk({ postDate, type: 'currentUserPosts' }));
 		} else if (pathname === `/user/${userName}`) {
 			dispatch(getMorePostsThunk({ postDate, type: 'userPosts', userName }));
@@ -52,11 +52,11 @@ const ProfilePostImages = ({ posts }) => {
 			if (getError.message) {
 				return;
 			}
-			if (isIntersecting) {
+			if (isIntersecting && posts.length) {
 				getMorePosts();
 			}
 		},
-		[getMorePosts, getError]
+		[getMorePosts, getError, posts]
 	);
 
 	useEffect(() => {
