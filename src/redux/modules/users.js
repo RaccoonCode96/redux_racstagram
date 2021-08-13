@@ -1,5 +1,6 @@
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
 import { dbService } from '../../fBase';
+import useRandom from '../../hooks/useRandom';
 
 // Initial State
 
@@ -73,25 +74,18 @@ export const getRandomUserInfoThunk = createAsyncThunk(
 	'redux-racstagram/users/getRandomUserInfoThunk',
 	async (_, thunkAPI) => {
 		try {
-			// await Promise.all([
-			// 	// thunkAPI.dispatch(getUserMaxCountThunk()),
-			// 	thunkAPI.dispatch(getCurrentUserInfoThunk()),
-			// ]);
+			await thunkAPI.dispatch(getUserMaxCountThunk());
 			const {
 				users: {
-					currentUserInfo: { displayName },
-					// userMaxCount,
+					currentUserInfo: { count },
+					userMaxCount,
 				},
 			} = await thunkAPI.getState();
-			// const random = await useRandom(2, userMaxCount);
+			const random = useRandom(2, userMaxCount, count);
 			const { docs } = await dbService
 				.collection('users')
-				.where('displayName', '!=', displayName)
-				.limit(2)
+				.where('count', 'in', random)
 				.get();
-			// const { docs } = await query
-			// 	.where('count', 'in', [random[0], random[1]])
-			// 	.get();
 
 			const res = docs.map((doc) => {
 				const { displayName, userPhotoUrl } = doc.data();
