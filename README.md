@@ -300,11 +300,15 @@
   - 다른 유저 및 자신의 프로필에 있는 post Image table에서 특정 이미지 클릭시 해당 글위치로 이동 함
   - https://goforit.tistory.com/203
 
+<br/>
+
 ### 2021.08.09사항
 
 - 본인을 제외한 랜덤 유저 추천 기능 구현
 - side 컴포넌트 스타일링 (회원 추천 + 푸터)
   - https://goforit.tistory.com/204
+
+<br/>
 
 ### 2021.08.11사항
 
@@ -312,6 +316,18 @@
 - 불필요한 데이터 요청 제거 및 데이터 요청 시기 조정
 - 코드 중복 제거를 위한 통합에 대한 고찰
 - https://goforit.tistory.com/205
+
+<br/>
+
+### 2021.08.13 사항
+
+- 스크롤 위치 기억 useScroll 구현
+  - useEffect의 return 부분(unmount 관리)의 함수 실행 요청에서 컴포넌트 내부의 값을 참조하고자 하면 이미 다른 페이지로 이동하여 그 페이지의 내부 값을 참조하게 되어서 before unmount가 필요했다.
+  - 기존의 useEffect unmount의 경우는 unmount 이후에 실행됨
+  - useEffect의 디테일한 라이프사이클을 구현하고 싶었는데 useLayoutEffect를 찾아냄
+- 랜덤 유저 개선 (useRandom 개선)
+
+<br/>
 
 ## 다음에 필요한 사항
 
@@ -325,7 +341,7 @@
 
 <br/>
 
-- [ ] 랜덤 유저 개선하기 : useRandom 제외 값 지정하게 변경하기
+- [x] 랜덤 유저 개선하기 : useRandom 제외 값 지정하게 변경하기
 
 <br/>
 
