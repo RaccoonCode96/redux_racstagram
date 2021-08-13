@@ -1,6 +1,6 @@
 import React from 'react';
 import { useState } from 'react';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { Link, useLocation } from 'react-router-dom';
 import './Navigation.scss';
 import SignOutContainer from '../SignOut/SignOutContainer';
@@ -10,6 +10,8 @@ import HomeIcon from '@material-ui/icons/Home';
 import AddBoxIcon from '@material-ui/icons/AddBox';
 import AddBoxOutlinedIcon from '@material-ui/icons/AddBoxOutlined';
 import { AccountCircleOutlined, LockOutlined } from '@material-ui/icons';
+import { getAllPostsThunk } from '../../redux/modules/post';
+import { getRandomUserInfoThunk } from '../../redux/modules/users';
 
 const Navigation = () => {
 	const [isOn, setisOn] = useState(false);
@@ -20,13 +22,22 @@ const Navigation = () => {
 	const toggle = (event) => {
 		setisOn(!isOn);
 	};
+	const dispatch = useDispatch();
+
+	const refresh = () => {
+		dispatch(getAllPostsThunk());
+		dispatch(getRandomUserInfoThunk());
+		// window.scrollTo(0, 0);
+	};
 
 	return (
 		<>
 			<div className="nav">
 				<div className="nav_inner">
 					<div className="logo">
-						<Link to="/">Racstagram</Link>
+						<Link to="/" onClick={refresh}>
+							Racstagram
+						</Link>
 					</div>
 					<ul className="items">
 						<li className="item">
