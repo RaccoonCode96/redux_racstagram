@@ -29,7 +29,7 @@ const AppRouter = () => {
 	}, [dispatch, isLoggedIn]);
 	useEffect(() => {
 		getInitInfo();
-	});
+	}, [getInitInfo]);
 	return (
 		<BrowserRouter>
 			<Switch>

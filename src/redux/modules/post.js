@@ -22,6 +22,7 @@ const initialState = {
 	allPosts: [],
 	userPosts: [],
 	currentUserPosts: [],
+	prevScrollY: 0,
 	getAllPosts: {
 		isGet: false,
 		loading: false,
@@ -249,7 +250,7 @@ export const getUserPostsThunk = createAsyncThunk(
 				.collection('posts')
 				.where('userDisplayName', '==', userName)
 				.orderBy('postDate', 'desc')
-				.limit(6)
+				.limit(9)
 				.get();
 			const posts = docs.map((doc) => ({
 				postId: doc.id,
@@ -273,7 +274,7 @@ export const getCurrentUserPostsThunk = createAsyncThunk(
 				.collection('posts')
 				.where('userId', '==', currentUser.uid)
 				.orderBy('postDate', 'desc')
-				.limit(6)
+				.limit(9)
 				.get();
 			const posts = docs.map((doc) => ({
 				postId: doc.id,
@@ -297,6 +298,10 @@ const post = createSlice({
 		resetGetMorePosts: (state) => ({
 			...state,
 			getMorePosts: { ...initialState.getMorePosts },
+		}),
+		setPrevScrollY: (state, { payload }) => ({
+			...state,
+			prevScrollY: payload,
 		}),
 	},
 	extraReducers: {
@@ -490,4 +495,9 @@ const post = createSlice({
 export default post.reducer;
 
 // actionCreator
-export const { resetPost, setPostFormError, resetGetMorePosts } = post.actions;
+export const {
+	resetPost,
+	setPostFormError,
+	resetGetMorePosts,
+	setPrevScrollY,
+} = post.actions;

@@ -300,11 +300,15 @@
   - 다른 유저 및 자신의 프로필에 있는 post Image table에서 특정 이미지 클릭시 해당 글위치로 이동 함
   - https://goforit.tistory.com/203
 
+<br/>
+
 ### 2021.08.09사항
 
 - 본인을 제외한 랜덤 유저 추천 기능 구현
 - side 컴포넌트 스타일링 (회원 추천 + 푸터)
   - https://goforit.tistory.com/204
+
+<br/>
 
 ### 2021.08.11사항
 
@@ -313,23 +317,31 @@
 - 코드 중복 제거를 위한 통합에 대한 고찰
 - https://goforit.tistory.com/205
 
+<br/>
+
+### 2021.08.13 사항
+
+- 랜덤 유저 추천 개선(useRandom 구현)
+- 스크롤 위치 기억(useScroll 구현), useLayoutEffect
+  - https://goforit.tistory.com/206
+
+<br/>
+
 ## 다음에 필요한 사항
 
-<br/>
-
-- [ ] propType으로 type 지정
+- [ ] 댓글 좋아요 기능
 
 <br/>
 
-- [ ] sementic tag 적절한 태그로 수정하기 (검토)
+- [ ] 자동 input 체크 (이름 중복 확인시)
 
 <br/>
 
-- [ ] 랜덤 유저 개선하기 : useRandom 제외 값 지정하게 변경하기
+- [ ] 새 게시글 보기 버튼 또는 로고 클릭시 데이터 진입점 갱신 기능 구현하기
 
 <br/>
 
-- [ ] 새게시글 보기 버튼 또는 로고 클릭시 데이터 진입점 갱신 기능 구현하기
+- [x] 랜덤 유저 개선하기 : useRandom 제외 값 지정하게 변경하기
 
 <br/>
 
@@ -343,15 +355,15 @@
 
 <br/>
 
-- [ ] 글 작성 시간 (클라이언트 단에서 뿌리는 경우 로컬 시간 변경으로 조작 가능한지 테스트 필요함)
-
-<br/>
-
-- [ ] profileUpdateContainer과 postFormContainer 통합 시도
-
-<br/>
-
 - [ ] 스켈레톤 UI 필요
+
+<br/>
+
+- [ ] propType으로 type 지정 또는 typeScript 도입
+
+<br/>
+
+- [ ] sementic tag 적절한 태그로 수정하기 (검토)
 
 <br/>
 
@@ -362,6 +374,14 @@
 - [ ] route '/profile' pathName을 '/user/:userName' pathName 사용하게 통합하여 pathname에 대한 조건을 줄여 보자
 
 <br/>
+
+- [ ] profileUpdateContainer과 postFormContainer 통합 시도
+
+<br/>
+
+- [ ] 글 작성 시간 (클라이언트 단에서 뿌리는 경우 로컬 시간 변경으로 조작 가능한지 테스트 필요함)
+
+<br/>
 <br/>
 <br/>
 
@@ -369,7 +389,9 @@
 
 <br/>
 
-- side 바에 유저 랜덤 추천 및 푸터 정보
-- 유저 이름 검색을 통한 프로필 보기 (이름 검색)
-- 무한 스크롤
-- 게시글 장소 태그로 장소 지도 보기 (지도 API)
+- [x] side 바에 유저 랜덤 추천 및 푸터 정보
+- [x] 무한 스크롤
+- [ ] 댓글 기능
+- [ ] 좋아요 기능
+- [ ] 유저 이름 검색을 통한 프로필 보기 (이름 검색)
+- [ ] 게시글 장소 태그로 장소 지도 보기 (지도 API)
