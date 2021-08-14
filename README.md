@@ -321,31 +321,27 @@
 
 ### 2021.08.13 사항
 
-- 스크롤 위치 기억 useScroll 구현
-  - useEffect의 return 부분(unmount 관리)의 함수 실행 요청에서 컴포넌트 내부의 값을 참조하고자 하면 이미 다른 페이지로 이동하여 그 페이지의 내부 값을 참조하게 되어서 before unmount가 필요했다.
-  - 기존의 useEffect unmount의 경우는 unmount 이후에 실행됨
-  - useEffect의 디테일한 라이프사이클을 구현하고 싶었는데 useLayoutEffect를 찾아냄
-- 랜덤 유저 개선 (useRandom 개선)
+- 랜덤 유저 추천 개선(useRandom 구현)
+- 스크롤 위치 기억(useScroll 구현), useLayoutEffect
+  - https://goforit.tistory.com/206
 
 <br/>
 
 ## 다음에 필요한 사항
 
-<br/>
-
-- [ ] propType으로 type 지정
+- [ ] 댓글 좋아요 기능
 
 <br/>
 
-- [ ] sementic tag 적절한 태그로 수정하기 (검토)
+- [ ] 자동 input 체크 (이름 중복 확인시)
+
+<br/>
+
+- [ ] 새 게시글 보기 버튼 또는 로고 클릭시 데이터 진입점 갱신 기능 구현하기
 
 <br/>
 
 - [x] 랜덤 유저 개선하기 : useRandom 제외 값 지정하게 변경하기
-
-<br/>
-
-- [ ] 새게시글 보기 버튼 또는 로고 클릭시 데이터 진입점 갱신 기능 구현하기
 
 <br/>
 
@@ -359,15 +355,15 @@
 
 <br/>
 
-- [ ] 글 작성 시간 (클라이언트 단에서 뿌리는 경우 로컬 시간 변경으로 조작 가능한지 테스트 필요함)
-
-<br/>
-
-- [ ] profileUpdateContainer과 postFormContainer 통합 시도
-
-<br/>
-
 - [ ] 스켈레톤 UI 필요
+
+<br/>
+
+- [ ] propType으로 type 지정 또는 typeScript 도입
+
+<br/>
+
+- [ ] sementic tag 적절한 태그로 수정하기 (검토)
 
 <br/>
 
@@ -378,6 +374,14 @@
 - [ ] route '/profile' pathName을 '/user/:userName' pathName 사용하게 통합하여 pathname에 대한 조건을 줄여 보자
 
 <br/>
+
+- [ ] profileUpdateContainer과 postFormContainer 통합 시도
+
+<br/>
+
+- [ ] 글 작성 시간 (클라이언트 단에서 뿌리는 경우 로컬 시간 변경으로 조작 가능한지 테스트 필요함)
+
+<br/>
 <br/>
 <br/>
 
@@ -385,7 +389,9 @@
 
 <br/>
 
-- side 바에 유저 랜덤 추천 및 푸터 정보
-- 유저 이름 검색을 통한 프로필 보기 (이름 검색)
-- 무한 스크롤
-- 게시글 장소 태그로 장소 지도 보기 (지도 API)
+- [x] side 바에 유저 랜덤 추천 및 푸터 정보
+- [x] 무한 스크롤
+- [ ] 댓글 기능
+- [ ] 좋아요 기능
+- [ ] 유저 이름 검색을 통한 프로필 보기 (이름 검색)
+- [ ] 게시글 장소 태그로 장소 지도 보기 (지도 API)
