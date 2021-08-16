@@ -6,6 +6,7 @@ import post from './post';
 import profile from './profile';
 import users from './users';
 import image from './image';
+import comment from './comment';
 // import modal from './modal';
 const reducer = combineReducers({
 	init,
@@ -14,6 +15,7 @@ const reducer = combineReducers({
 	profile,
 	users,
 	image,
+	comment,
 	// modal,
 });
 
