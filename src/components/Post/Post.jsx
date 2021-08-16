@@ -6,6 +6,7 @@ import Confirm from '../common/Confirm';
 import Modal from '../common/Modal';
 import './Post.scss';
 import React from 'react';
+import PostControlContainer from '../PostControl/PostControlContainer';
 
 const Post = ({ post, deletePost, updatePost, currentUserId }) => {
 	const [isOn, setIsOn] = useState(false);
@@ -51,6 +52,7 @@ const Post = ({ post, deletePost, updatePost, currentUserId }) => {
 							/>
 						)}
 					</div>
+					<PostControlContainer post={post} />
 					<div className="post_text_container">
 						<div className="post_text">
 							<span className="post_text_userName">{post.userDisplayName}</span>

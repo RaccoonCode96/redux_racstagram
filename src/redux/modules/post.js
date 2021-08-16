@@ -1,5 +1,6 @@
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
 import { dbService } from '../../fBase';
+import { deleteCommentsThunk } from './comment';
 import { deleteImageUrlThunk, resetImage } from './image';
 
 /* 
@@ -140,20 +141,19 @@ export const deletePostThunk = createAsyncThunk(
 			const {
 				profile: { currentUser },
 			} = await thunkAPI.getState();
-			let result = '';
 			const { postId, postImageUrl, userId } = post;
 			// 유저 방어 코드
 			if (userId === currentUser.uid) {
 				await dbService.collection('posts').doc(postId).delete();
+				thunkAPI.dispatch(deleteCommentsThunk(postId));
 				if (postImageUrl !== '') {
 					await thunkAPI.dispatch(deleteImageUrlThunk(postImageUrl));
 				}
-				result = postId;
 			} else {
 				throw new Error('Invalid user access!');
 			}
 			await thunkAPI.dispatch(resetImage());
-			return result;
+			return true;
 		} catch ({ code, message }) {
 			return thunkAPI.rejectWithValue({ code, message });
 		}

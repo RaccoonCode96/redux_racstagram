@@ -1,0 +1,27 @@
+@import '../../styles/_variables';
+
+.comment_form {
+	@include container_bcg_border;
+	// position: sticky;
+	// top: 0;
+	// left: 0;
+	display: flex;
+	padding: 10px;
+	@media screen and (max-width: $media-width) {
+		border: none;
+	}
+
+	.comment_input {
+		flex-grow: 1;
+		margin-right: 10px;
+	}
+
+	.comment_submit {
+		width: 80px;
+		@include blue_btn;
+		&:disabled {
+			background-color: $oc-gray-6;
+			cursor: default;
+		}
+	}
+}

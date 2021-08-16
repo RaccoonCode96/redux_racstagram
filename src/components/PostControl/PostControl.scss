@@ -1,0 +1,16 @@
+@import '../../styles/_variables';
+
+.post_control_container {
+	display: flex;
+	gap: 15px;
+	padding: 8px 16px;
+	.post_control_btn {
+		border: none;
+		background-color: transparent;
+		padding: 0;
+		cursor: pointer;
+	}
+	.icon {
+		font-size: 1.5rem;
+	}
+}

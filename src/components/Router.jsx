@@ -3,6 +3,7 @@ import { useCallback } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { Route, BrowserRouter, Switch, Redirect } from 'react-router-dom';
 import Auth from '../pages/Auth/Auth';
+import Comments from '../pages/Comments/Comments';
 import Home from '../pages/Home/Home';
 import Posts from '../pages/Posts/Posts';
 import Profile from '../pages/Profile/Profile';
@@ -42,6 +43,7 @@ const AppRouter = () => {
 						<Route path="/profile/posts" exact component={Posts} />
 						<Route path="/user/:userName" exact component={Profile} />
 						<Route path="/user/:userName/posts" exact component={Posts} />
+						<Route path="/:postId/comments" exact component={Comments} />
 						<Redirect from="*" to="/" />
 					</>
 				) : (

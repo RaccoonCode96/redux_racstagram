@@ -94,6 +94,19 @@
   - [x] Navigation-profile 눌렀을 때 로그아웃, 프로필 수정, 프로필 이동 드롭 다운 필요
 
 <br/>
+
+- [x] `무한 스크롤`
+  - [x] 유저 스크롤 위치 기억 (뒤로가기가 아닌 페이지 변해도 기억 함)
+
+<br/>
+
+- [x] `랜덤 유저 추천`
+
+<br/>
+
+- [ ] `댓글 기능`
+
+<br/>
 <br/>
 <br/>
 
@@ -327,9 +340,31 @@
 
 <br/>
 
+### 2021.08.14 사항
+
+- 댓글 기능을 위한 Component 및 페이지 Component 설계
+- Comments DB 설계
+- Redux Comment Slice 설계 및 Read, Create 구현
+  - https://goforit.tistory.com/207
+
+<br/>
+
+### 2021.08.15 사항
+
+- 댓글 관련 컴포넌트 스타일링
+- 컴포넌트에 Comment Read, Create 연결 하기
+- Comment delete 구현하기
+  - https://goforit.tistory.com/208
+
+<br/>
+
 ## 다음에 필요한 사항
 
-- [ ] 댓글 좋아요 기능
+- [ ] 댓글 좋아요 기능 -> 진행중
+  - [x] 기본적인 comments page, comment, commentForm 스타일링
+  - [x] comment read, create 요청 함수 컴포넌트에 연결 하기
+  - [ ] post의 comments view 구현과 이에 맞게 comment create, read, delete 수정하기
+  - [ ] comment update 구현하기
 
 <br/>
 
@@ -338,10 +373,6 @@
 <br/>
 
 - [ ] 새 게시글 보기 버튼 또는 로고 클릭시 데이터 진입점 갱신 기능 구현하기
-
-<br/>
-
-- [x] 랜덤 유저 개선하기 : useRandom 제외 값 지정하게 변경하기
 
 <br/>
 
@@ -389,9 +420,7 @@
 
 <br/>
 
-- [x] side 바에 유저 랜덤 추천 및 푸터 정보
-- [x] 무한 스크롤
-- [ ] 댓글 기능
+- [ ] 댓글 기능 -> 구현중
 - [ ] 좋아요 기능
 - [ ] 유저 이름 검색을 통한 프로필 보기 (이름 검색)
 - [ ] 게시글 장소 태그로 장소 지도 보기 (지도 API)
