@@ -1,5 +1,6 @@
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
 import { dbService } from '../../fBase';
+import { getAllPostsThunk } from './post';
 
 // Initial State
 const initialState = {
@@ -37,10 +38,35 @@ export const setCommentThunk = createAsyncThunk(
 				userPhotoUrl: currentUserInfo.userPhotoUrl,
 				commentDate: Date.now(),
 				comment,
-				count: comments[0] ? comments[0].count + 1 : 0,
+				count: comments[0] ? comments[0].count + 1 : 1,
 			};
-			await dbService.collection('comments').doc().set(commentObj);
+			const doc = dbService.collection('comments').doc();
+			const commentId = doc.id;
+			await doc.set(commentObj);
+			const postDoc = dbService.collection('posts').doc(postId);
+			const postDocSnap = await postDoc.get();
+			const { commentArray } = { ...postDocSnap.data() };
+			const commentEl = {
+				commentId,
+				commentDisplayName: commentObj.userDisplayName,
+				commentDate: commentObj.commentDate,
+				comment,
+				count: commentObj.count,
+			};
+			if (commentArray.length === 2) {
+				commentArray.unshift(commentEl);
+				commentArray.pop();
+			} else {
+				commentArray.unshift(commentEl);
+			}
+			await postDoc.set(
+				{
+					commentArray,
+				},
+				{ merge: true }
+			);
 			thunkAPI.dispatch(getCommentsThunk(postId));
+			thunkAPI.dispatch(getAllPostsThunk());
 			return true;
 		} catch ({ code, message }) {
 			return thunkAPI.rejectWithValue({ code, message });
