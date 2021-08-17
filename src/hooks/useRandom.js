@@ -1,7 +1,10 @@
 const useRandom = (count, range, except) => {
+	if (count > range - 1 || except === undefined) {
+		return [];
+	}
 	const randomSet = new Set();
 	while (randomSet.size < count) {
-		const temp = Math.floor(Math.random() * (range + 1));
+		const temp = Math.floor(Math.random() * range) + 1;
 		if (temp === except) {
 			continue;
 		}
