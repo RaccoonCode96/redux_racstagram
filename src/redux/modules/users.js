@@ -63,7 +63,7 @@ export const getUserMaxCountThunk = createAsyncThunk(
 				.orderBy('count', 'desc')
 				.limit(1)
 				.get();
-			const res = docs[0].data();
+			const res = docs.length ? docs[0].data() : { count: -1 };
 			return res.count;
 		} catch ({ code, message }) {
 			return thunkAPI.rejectWithValue({ code, message });
@@ -81,6 +81,10 @@ export const getRandomUserInfoThunk = createAsyncThunk(
 					userMaxCount,
 				},
 			} = await thunkAPI.getState();
+
+			if (userMaxCount === -1) {
+				return [];
+			}
 			const random = useRandom(2, userMaxCount, count);
 			const { docs } = await dbService
 				.collection('users')
