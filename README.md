@@ -358,69 +358,11 @@
 
 <br/>
 
-## 다음에 필요한 사항
+### 2021.08.16사항
 
-- [ ] 댓글 좋아요 기능 -> 진행중
-  - [x] 기본적인 comments page, comment, commentForm 스타일링
-  - [x] comment read, create 요청 함수 컴포넌트에 연결 하기
-  - [ ] post의 comments view 구현과 이에 맞게 comment create, read, delete 수정하기
-  - [ ] comment update 구현하기
-
-<br/>
-
-- [ ] 자동 input 체크 (이름 중복 확인시)
-
-<br/>
-
-- [ ] 새 게시글 보기 버튼 또는 로고 클릭시 데이터 진입점 갱신 기능 구현하기
-
-<br/>
-
-- [ ] validation 구현 필요함
-  - input 같은 경우, display none 적용시 browser에서 제공하는 validation 말풍선이 뜨지 않기 때문에 따로 구현 필요함
-  - required를 사용하지 말고, submit 함수 단에서 input값이 들어 왔는지 체크하여 validation error 구현 필요
-  - [x] post 관련한 input의 check 대략적인 (PostUpdateContainer, postFormContainer)
-  - [x] auth 관련한 input의 check 대략적인 조건 구현
-  - [ ] 각 input 별로 데이터 형태에 따른 구체적인 조건 설정이 필요함
-    - [ ] 이메일, 패스워드, 유저 네임, 글 내용의 형식(조건, 제한) 지정 필요
-
-<br/>
-
-- [ ] 스켈레톤 UI 필요
-
-<br/>
-
-- [ ] propType으로 type 지정 또는 typeScript 도입
-
-<br/>
-
-- [ ] sementic tag 적절한 태그로 수정하기 (검토)
-
-<br/>
-
-- [ ] 효과적인 렌더링 제한을 위해서 container에 있는 함수들을 hook으로 만들어 구현하기
-
-<br/>
-
-- [ ] route '/profile' pathName을 '/user/:userName' pathName 사용하게 통합하여 pathname에 대한 조건을 줄여 보자
-
-<br/>
-
-- [ ] profileUpdateContainer과 postFormContainer 통합 시도
-
-<br/>
-
-- [ ] 글 작성 시간 (클라이언트 단에서 뿌리는 경우 로컬 시간 변경으로 조작 가능한지 테스트 필요함)
-
-<br/>
-<br/>
-<br/>
-
-# 나중에 구현하고 싶은 기술
-
-<br/>
-
-- [ ] 댓글 기능 -> 구현중
-- [ ] 좋아요 기능
-- [ ] 유저 이름 검색을 통한 프로필 보기 (이름 검색)
-- [ ] 게시글 장소 태그로 장소 지도 보기 (지도 API)
+- 최신 댓글 최대 2개 보이기 구현
+- 댓글 총 개수 보이기 구현
+- useRandom hook 유지 보수
+- 신규 유저 가입시 count 넘버링 버그 해결
+- 로직 수정에 따른 React devServer 반영 문제
+  - https://goforit.tistory.com/209
