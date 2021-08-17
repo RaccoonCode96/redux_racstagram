@@ -92,7 +92,7 @@ export const emailSignInThunk = createAsyncThunk(
 					setCurrentUserInfoThunk({
 						displayName,
 						userPhotoUrl: DEFAULT_USER_IMAGE,
-						count: userMaxCount + 1,
+						count: userMaxCount === -1 ? 1 : userMaxCount + 1,
 					})
 				);
 			}
@@ -146,7 +146,7 @@ export const socialSignInThunk = createAsyncThunk(
 					setCurrentUserInfoThunk({
 						userPhotoUrl: photoURL || DEFAULT_USER_IMAGE,
 						displayName: displayName || DEFAULT_USER_DISPLAYNAME,
-						count: userMaxCount + 1,
+						count: userMaxCount === -1 ? 1 : userMaxCount + 1,
 					})
 				);
 			}
