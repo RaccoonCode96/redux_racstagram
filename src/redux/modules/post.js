@@ -176,6 +176,7 @@ export const createPostThunk = createAsyncThunk(
 				userPhotoUrl: currentUserInfo.userPhotoUrl,
 				userDisplayName: currentUserInfo.displayName,
 				postImageUrl: imageUrl,
+				commentArray: [],
 			};
 			await dbService.collection('posts').add(post);
 			await thunkAPI.dispatch(resetImage());
