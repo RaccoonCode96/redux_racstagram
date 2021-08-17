@@ -49,21 +49,33 @@
 		}
 	}
 
-	.post_text_container {
-		height: $post_content_height;
+	.post_content_container {
 		padding: 5px 16px 16px 16px;
 		font-family: $default_font_family;
-		font-size: 0.8rem;
+		font-size: 0.9rem;
+		display: flex;
+		flex-direction: column;
+		gap: 10px;
 
-		.post_text {
-			height: 100%;
-			font-weight: 300;
-			color: $text-color;
+		.post_text_container {
+			.post_text {
+				height: fit-content;
+				font-weight: 400;
+				color: $text-color;
+				white-space: pre-wrap;
+				word-break: break-all;
+				line-height: 1rem;
+			}
 		}
 
-		.post_text_userName {
-			margin-right: 7px;
-			font-weight: 500;
+		.post_comments {
+			.comments_count {
+				background-color: transparent;
+				border: none;
+				padding: 0;
+				cursor: pointer;
+				color: $text-light-color;
+			}
 		}
 	}
 }
