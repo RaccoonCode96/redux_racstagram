@@ -26,11 +26,13 @@ const AuthFormContainer = ({ newAccount }) => {
 	});
 	useEffect(() => {
 		// 로그인 창 또는 회원 가입 창 변경시 (Account 변경) input 초기화
-		setInputs({
-			email: '',
-			password: '',
-			displayName: '',
-		});
+		return () => {
+			setInputs({
+				email: '',
+				password: '',
+				displayName: '',
+			});
+		};
 	}, [newAccount]);
 	const onChange = useCallback(
 		(event) => {
