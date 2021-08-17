@@ -105,3 +105,10 @@ textarea {
 	outline-color: $oc-gray-5;
 	border-radius: 3px;
 }
+
+.user_name {
+	font-family: $default_font_family;
+	color: $text-color;
+	margin-right: 5px;
+	font-weight: 500;
+}
