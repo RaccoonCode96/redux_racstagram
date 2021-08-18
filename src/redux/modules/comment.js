@@ -20,6 +20,16 @@ const initialState = {
 		isDelete: false,
 		deleteError: '',
 	},
+	deleteComment: {
+		loading: false,
+		isDelete: false,
+		deleteError: '',
+	},
+	updateComment: {
+		loading: false,
+		isUpdate: false,
+		updateError: '',
+	},
 };
 
 // async
@@ -30,9 +40,13 @@ export const setCommentThunk = createAsyncThunk(
 			const {
 				users: { currentUserInfo },
 				comment: { comments },
+				profile: {
+					currentUser: { uid },
+				},
 			} = thunkAPI.getState();
 
 			const commentObj = {
+				userId: uid,
 				postId,
 				userDisplayName: currentUserInfo.displayName,
 				userPhotoUrl: currentUserInfo.userPhotoUrl,
@@ -40,31 +54,26 @@ export const setCommentThunk = createAsyncThunk(
 				comment,
 				count: comments[0] ? comments[0].count + 1 : 1,
 			};
-			const doc = dbService.collection('comments').doc();
-			const commentId = doc.id;
-			await doc.set(commentObj);
-			const postDoc = dbService.collection('posts').doc(postId);
-			const postDocSnap = await postDoc.get();
-			const { commentArray } = { ...postDocSnap.data() };
-			const commentEl = {
-				commentId,
-				commentDisplayName: commentObj.userDisplayName,
-				commentDate: commentObj.commentDate,
-				comment,
-				count: commentObj.count,
-			};
-			if (commentArray.length === 2) {
-				commentArray.unshift(commentEl);
-				commentArray.pop();
-			} else {
-				commentArray.unshift(commentEl);
-			}
-			await postDoc.set(
-				{
-					commentArray,
-				},
-				{ merge: true }
-			);
+			await dbService.collection('comments').doc().set(commentObj);
+
+			const { docs } = await dbService
+				.collection('comments')
+				.where('postId', '==', postId)
+				.orderBy('commentDate', 'desc')
+				.limit(2)
+				.get();
+			const commentArray = docs.map((doc) => ({
+				comment: doc.data().comment,
+				commentDate: doc.data().commentDate,
+				commentDisplayName: doc.data().userDisplayName,
+				commentId: doc.id,
+				count: doc.data().count,
+			}));
+			await dbService
+				.collection('posts')
+				.doc(postId)
+				.set({ commentArray }, { merge: true });
+
 			thunkAPI.dispatch(getCommentsThunk(postId));
 			thunkAPI.dispatch(getAllPostsThunk());
 			return true;
@@ -113,6 +122,40 @@ export const deleteCommentsThunk = createAsyncThunk(
 	}
 );
 
+export const deleteCommentThunk = createAsyncThunk(
+	'redux-racstagram/comment/deleteCommentThunk',
+	async ({ commentId, postId }, thunkAPI) => {
+		try {
+			// comments의 comment delete
+			await dbService.collection('comments').doc(commentId).delete();
+			const { docs } = await dbService
+				.collection('comments')
+				.where('postId', '==', postId)
+				.orderBy('commentDate', 'desc')
+				.limit(2)
+				.get();
+
+			// delete 이후 최신 comment 가져와서 다시 post 설정
+			const commentArray = docs.map((doc) => ({
+				comment: doc.data().comment,
+				commentDate: doc.data().commentDate,
+				commentDisplayName: doc.data().userDisplayName,
+				commentId: doc.id,
+				count: doc.data().count,
+			}));
+			await dbService
+				.collection('posts')
+				.doc(postId)
+				.set({ commentArray }, { merge: true });
+			thunkAPI.dispatch(getCommentsThunk(postId));
+			thunkAPI.dispatch(getAllPostsThunk());
+			return true;
+		} catch ({ code, message }) {
+			return thunkAPI.rejectWithValue({ code, message });
+		}
+	}
+);
+
 // slice
 
 const comment = createSlice({
@@ -120,6 +163,26 @@ const comment = createSlice({
 	initialState,
 	reducers: {},
 	extraReducers: {
+		[deleteCommentThunk.pending]: (state) => ({
+			...state,
+			deleteComment: { ...state.deleteComment, loading: true },
+		}),
+		[deleteCommentThunk.fulfilled]: (state, { payload }) => ({
+			...state,
+			deleteComment: {
+				...state.deleteComment,
+				loading: false,
+				isDelete: payload,
+			},
+		}),
+		[deleteCommentThunk.rejected]: (state, { payload }) => ({
+			...state,
+			deleteComment: {
+				...state.deleteComment,
+				loading: false,
+				deleteError: payload,
+			},
+		}),
 		[deleteCommentsThunk.pending]: (state) => ({
 			...state,
 			deleteComments: { ...state.deleteComments, loading: true },
