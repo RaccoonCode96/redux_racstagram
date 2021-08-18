@@ -77,6 +77,29 @@ input {
 	@media screen and (max-width: $media-width) {
 		margin: 0;
 	}
+
+	.post_text_container {
+		padding: 16px;
+		border-bottom: solid 1px $default_border_color;
+		display: flex;
+
+		.post_user_image {
+			border-radius: 50%;
+			width: 32px;
+			height: 32px;
+			margin-right: 20px;
+		}
+
+		.post_info {
+			flex-grow: 1;
+			color: $text-color;
+			.post_text {
+				white-space: pre-wrap;
+				word-break: break-all;
+				line-height: 1rem;
+			}
+		}
+	}
 }
 
 .side {
