@@ -26,7 +26,14 @@ const Post = ({ post, deletePost, updatePost, currentUserId }) => {
 	const goComments = useCallback(async () => {
 		await dispatch(getCommentsThunk(post.postId));
 		history.push({ pathname: `/${post.postId}/comments`, state: { post } });
-	}, []);
+	}, [dispatch, post, history]);
+
+	const shortText = post.postText.slice(0, 35).split(/(\r\n|\n|\r)/gm)[0];
+	const moreBtnCheck = () => {
+		// 35자 넘거나, 개행이 있는 경우 더보기 버튼 표시
+		return post.postText > 35 || /(\r\n|\n|\r)/gm.test(post.postText);
+	};
+	const [isMore, setMore] = useState(false);
 
 	return (
 		<>
@@ -69,7 +76,19 @@ const Post = ({ post, deletePost, updatePost, currentUserId }) => {
 							<Link to={`/user/${post.userDisplayName}`} className="user_name">
 								{post.userDisplayName}
 							</Link>
-							<span className="post_text">{post.postText}</span>
+							<span className="post_text">
+								{isMore ? post.postText : shortText}
+							</span>
+							{moreBtnCheck() && !isMore && (
+								<button
+									className="more_text_btn"
+									onClick={(e) => {
+										setMore(true);
+									}}
+								>
+									...더 보기
+								</button>
+							)}
 						</div>
 						<div className="post_comments">
 							{post.commentArray[0] && (
