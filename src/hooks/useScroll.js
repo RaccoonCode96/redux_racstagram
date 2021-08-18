@@ -12,7 +12,7 @@ const useScroll = () => {
 		return () => {
 			dispatch(setPrevScrollY(window.scrollY));
 		};
-	}, []);
+	}, [dispatch, prevScrollY]);
 };
 
 export default useScroll;
