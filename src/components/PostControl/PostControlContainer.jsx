@@ -10,7 +10,7 @@ const PostControlContainer = ({ post }) => {
 	const goComments = useCallback(async () => {
 		await dispatch(getCommentsThunk(post.postId));
 		history.push({ pathname: `/${post.postId}/comments`, state: { post } });
-	}, []);
+	}, [dispatch, history, post]);
 	return <PostControl goComments={goComments} />;
 };
 
