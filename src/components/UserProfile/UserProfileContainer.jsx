@@ -1,4 +1,4 @@
-import { useEffect } from 'react';
+import { useLayoutEffect } from 'react';
 import { useCallback } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useHistory, useLocation, useParams } from 'react-router-dom';
@@ -22,7 +22,7 @@ const UserProfileContainer = () => {
 	const userPosts = useSelector((state) => state.post.userPosts);
 	const userInfo = useSelector((state) => state.users.userInfo);
 
-	const getInfoPosts = useCallback(async () => {
+	const getInfoPosts = useCallback(() => {
 		if (pathname === '/profile' && !currentUserPosts.length) {
 			dispatch(getCurrentUserPostsThunk());
 		} else if (pathname === `/user/${userName}`) {
@@ -38,7 +38,7 @@ const UserProfileContainer = () => {
 		});
 	}, [history, currentUserInfo]);
 
-	useEffect(() => {
+	useLayoutEffect(() => {
 		getInfoPosts();
 	}, [getInfoPosts]);
 
