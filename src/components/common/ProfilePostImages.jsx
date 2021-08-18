@@ -16,7 +16,7 @@ const ProfilePostImages = ({ posts }) => {
 		const postDate = posts[posts.length - 1]?.postDate;
 		if (pathname === '/profile' && posts.length) {
 			dispatch(getMorePostsThunk({ postDate, type: 'currentUserPosts' }));
-		} else if (pathname === `/user/${userName}`) {
+		} else if (pathname === `/user/${userName}` && posts.length) {
 			dispatch(getMorePostsThunk({ postDate, type: 'userPosts', userName }));
 		}
 	}, [dispatch, pathname, posts, userName]);
