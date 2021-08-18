@@ -1,4 +1,4 @@
-import { useEffect } from 'react';
+import { useLayoutEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import Navigation from '../../components/common/Navigation';
 import Side from '../../components/common/Side';
@@ -12,7 +12,7 @@ const Home = () => {
 
 	useScroll();
 
-	useEffect(() => {
+	useLayoutEffect(() => {
 		return () => {
 			dispatch(resetGetMorePosts());
 		};
