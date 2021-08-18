@@ -1,14 +1,14 @@
 @import '../../styles/_variables';
 
 .comment_container {
-	padding: 16px 12px 0 12px;
+	padding: 16px 16px 0 16px;
 	display: flex;
-	gap: 10px;
 
 	.user_image {
 		border-radius: 50%;
 		width: 32px;
 		height: 32px;
+		margin-right: 20px;
 	}
 
 	.comment_info {
@@ -17,15 +17,27 @@
 		align-items: center;
 		font-family: $default_font_family;
 		color: $text_color;
-		gap: 10px;
-		font-size: 0.9rem;
 
 		.comment_user_name {
 			font-weight: 500;
 			display: inline-flex;
+			margin-right: 5px;
 		}
 
 		.comment {
+			white-space: pre-wrap;
+			word-break: break-all;
+		}
+	}
+
+	.delete_comment_btn {
+		border: none;
+		background-color: transparent;
+		cursor: pointer;
+
+		.icon {
+			font-size: 1.2rem;
+			color: $text_light_color;
 		}
 	}
 }
