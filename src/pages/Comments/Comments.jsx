@@ -4,6 +4,7 @@ import Comment from '../../components/Comment/Comment';
 import CommentFormContainer from '../../components/CommentForm/CommentFormContainer';
 import Navigation from '../../components/common/Navigation';
 import Side from '../../components/common/Side';
+import { Link } from 'react-router-dom';
 
 const Comments = () => {
 	const {
@@ -19,8 +20,28 @@ const Comments = () => {
 					<main className="main comments_main">
 						<CommentFormContainer postId={post.postId} />
 						<ul className="comments">
+							<li className="post_text_container">
+								<img
+									className="post_user_image"
+									src={post.userPhotoUrl}
+									alt="postUser_image"
+								/>
+								<div className="post_info">
+									<Link
+										to={`/user/${post.userDisplayName}`}
+										className="user_name"
+									>
+										{post.userDisplayName}
+									</Link>
+									<span className="post_text">{post.postText}</span>
+								</div>
+							</li>
 							{comments.map((commentObj) => (
-								<Comment commentObj={commentObj} key={commentObj.commentId} />
+								<Comment
+									postId={post.postId}
+									commentObj={commentObj}
+									key={commentObj.commentId}
+								/>
 							))}
 						</ul>
 					</main>
