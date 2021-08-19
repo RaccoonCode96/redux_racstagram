@@ -23,13 +23,13 @@ const UserProfileContainer = () => {
 	const userInfo = useSelector((state) => state.users.userInfo);
 
 	const getInfoPosts = useCallback(() => {
-		if (pathname === '/profile' && !currentUserPosts.length) {
+		if (pathname === '/profile') {
 			dispatch(getCurrentUserPostsThunk());
 		} else if (pathname === `/user/${userName}`) {
 			dispatch(getUserInfoThunk(userName));
 			dispatch(getUserPostsThunk(userName));
 		}
-	}, [dispatch, pathname, userName, currentUserPosts]);
+	}, [dispatch, pathname, userName]);
 
 	const updateProfile = useCallback(() => {
 		history.push({
@@ -38,6 +38,7 @@ const UserProfileContainer = () => {
 		});
 	}, [history, currentUserInfo]);
 
+	// posts 가져오게 요청
 	useLayoutEffect(() => {
 		getInfoPosts();
 	}, [getInfoPosts]);
