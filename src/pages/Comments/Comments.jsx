@@ -27,13 +27,15 @@ const Comments = () => {
 									alt="postUser_image"
 								/>
 								<div className="post_info">
-									<Link
-										to={`/user/${post.userDisplayName}`}
-										className="user_name"
-									>
-										{post.userDisplayName}
-									</Link>
-									<span className="post_text">{post.postText}</span>
+									<span className="post_text">
+										<Link
+											to={`/user/${post.userDisplayName}`}
+											className="user_name"
+										>
+											{post.userDisplayName}
+										</Link>
+										{post.postText}
+									</span>
 								</div>
 							</li>
 							{comments.map((commentObj) => (
