@@ -1,5 +1,3 @@
-import { useRef } from 'react';
-import { useEffect } from 'react';
 import { useCallback } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useHistory, useLocation } from 'react-router-dom';
@@ -12,17 +10,24 @@ import {
 	getUserPostsThunk,
 } from '../../redux/modules/post';
 import Post from './Post';
-import { CircularProgress } from '@material-ui/core';
+import UseInfiniteScroll from '../common/UseInfiniteScroll';
 
 const PostContainer = ({ posts }) => {
 	const history = useHistory();
 	const dispatch = useDispatch();
 	const { pathname } = useLocation();
-	const target = useRef(null);
 
 	// state
 	const currentUserId = useSelector((state) => state.profile.currentUser.uid);
-	const { getError, loading } = useSelector((state) => state.post.getMorePosts);
+	// const { getError, loading } = useSelector((state) => state.post.getMorePosts);
+	const { isNone } = useSelector((state) => state.post.getMorePosts);
+
+	// 최초에 게시글 가져왔는지 감지 (이후에 getMorePost 수행하기 위함)
+	const isGetUserPosts = useSelector((state) => state.post.getUserPosts.isGet);
+	const isGetCurrentUserPosts = useSelector(
+		(state) => state.post.getCurrentUserPosts.isGet
+	);
+	const isGetAllPosts = useSelector((state) => state.post.getAllPosts.isGet);
 
 	// request function
 	const deletePost = useCallback(
@@ -68,37 +73,6 @@ const PostContainer = ({ posts }) => {
 		}
 	}, [dispatch, pathname, posts]);
 
-	const _onIntersect = useCallback(
-		([{ isIntersecting }]) => {
-			if (getError.message) {
-				return;
-			}
-			if (isIntersecting) {
-				getMorePosts();
-			}
-		},
-		[getMorePosts, getError]
-	);
-
-	useEffect(() => {
-		let observer;
-		// 더이상 불러올 자료가 없는 경우
-		if (getError.message) {
-			observer && observer.disconnect();
-
-			// target이 있고,
-		} else if (target && posts.length) {
-			observer = new IntersectionObserver(_onIntersect, {
-				rootMargin: `1px`,
-				threshold: 0.5,
-			});
-			observer.observe(target.current);
-		}
-		return () => {
-			observer && observer.disconnect();
-		};
-	}, [getError, _onIntersect, posts]);
-
 	return (
 		<>
 			{posts.map((post) => (
@@ -110,11 +84,13 @@ const PostContainer = ({ posts }) => {
 					currentUserId={currentUserId}
 				/>
 			))}
-			<div ref={target}></div>
-			{loading && <CircularProgress />}
-			{getError?.message && '가져올 데이터가 업습니다.'}
+			{!isNone &&
+				(isGetAllPosts || isGetCurrentUserPosts || isGetUserPosts) && (
+					<UseInfiniteScroll execute={getMorePosts} />
+				)}
+			{isNone && '더 이상 글이 없습니다.'}
 		</>
 	);
 };
 
-export default React.memo(PostContainer);
+export default PostContainer;
