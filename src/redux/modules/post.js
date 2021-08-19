@@ -33,6 +33,7 @@ const initialState = {
 		isGet: false,
 		loading: false,
 		getError: '',
+		isNone: false,
 	},
 	getUserPosts: {
 		isGet: false,
@@ -124,7 +125,7 @@ export const updatePostThunk = createAsyncThunk(
 						...(postText && { postText }),
 					});
 				thunkAPI.dispatch(getAllPostsThunk());
-				await thunkAPI.dispatch(resetImage());
+				thunkAPI.dispatch(resetImage());
 			} else {
 				throw new Error('Invalid user access!');
 			}
@@ -209,10 +210,9 @@ export const getMorePostsThunk = createAsyncThunk(
 			} else if (type === 'currentUserPosts') {
 				query = query.where('userId', '==', currentUser.uid);
 			}
-
 			const { docs } = await query.startAfter(postDate).limit(5).get();
-			if (docs.length === 0) {
-				throw new Error(`none of data to take`);
+			if (!docs.length) {
+				return { type: 'none' };
 			}
 			const posts = docs.map((doc) => ({
 				postId: doc.id,
@@ -305,6 +305,14 @@ const post = createSlice({
 		setPrevScrollY: (state, { payload }) => ({
 			...state,
 			prevScrollY: payload,
+		}),
+		resetGetUserPosts: (state) => ({
+			...state,
+			getUserPosts: { ...initialState.getUserPosts },
+		}),
+		resetGetCurrentUserPosts: (state) => ({
+			...state,
+			getCurrentUserPosts: { ...initialState.getCurrentUserPosts },
 		}),
 	},
 	extraReducers: {
@@ -402,6 +410,16 @@ const post = createSlice({
 						...state.getMorePosts,
 						loading: false,
 						isGet: true,
+					},
+				};
+			} else if (payload.type === 'none') {
+				return {
+					...state,
+					getMorePosts: {
+						...state.getMorePosts,
+						loading: false,
+						isGet: true,
+						isNone: true,
 					},
 				};
 			}
@@ -503,4 +521,6 @@ export const {
 	setPostFormError,
 	resetGetMorePosts,
 	setPrevScrollY,
+	resetGetUserPosts,
+	resetGetCurrentUserPosts,
 } = post.actions;
