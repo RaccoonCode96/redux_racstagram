@@ -1,4 +1,4 @@
-import { useCallback } from 'react';
+import { useCallback, useMemo } from 'react';
 import { useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import AuthForm from './AuthForm';
@@ -9,6 +9,7 @@ import {
 } from '../../redux/modules/auth';
 import { checkDisplayNameThunk } from '../../redux/modules/users';
 import { useEffect } from 'react';
+import { debounce } from 'lodash';
 
 const AuthFormContainer = ({ newAccount }) => {
 	const dispatch = useDispatch();
@@ -34,6 +35,22 @@ const AuthFormContainer = ({ newAccount }) => {
 			});
 		};
 	}, [newAccount]);
+
+	const check = useCallback(
+		(displayName) => {
+			dispatch(checkDisplayNameThunk(displayName));
+		},
+		[dispatch]
+	);
+
+	const debounceCheck = useMemo(
+		() =>
+			debounce((displayName) => {
+				check(displayName);
+			}, 900),
+		[check]
+	);
+
 	const onChange = useCallback(
 		(event) => {
 			const { name, value } = event.target;
@@ -52,9 +69,10 @@ const AuthFormContainer = ({ newAccount }) => {
 					...inputs,
 					displayName: value,
 				});
+				debounceCheck(value);
 			}
 		},
-		[inputs]
+		[inputs, debounceCheck]
 	);
 
 	const onSubmit = useCallback(
@@ -89,14 +107,6 @@ const AuthFormContainer = ({ newAccount }) => {
 			return;
 		},
 		[inputs, dispatch, newAccount, exist]
-	);
-
-	const check = useCallback(
-		(displayName) => {
-			dispatch(checkDisplayNameThunk(displayName));
-			return;
-		},
-		[dispatch]
 	);
 
 	return (
