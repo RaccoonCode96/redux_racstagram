@@ -1,22 +1,32 @@
-import { CircularProgress } from '@material-ui/core';
-import { useCallback, useEffect, useRef } from 'react';
+import { useCallback, useLayoutEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useHistory, useLocation, useParams } from 'react-router-dom';
-import { getMorePostsThunk } from '../../redux/modules/post';
+import {
+	getMorePostsThunk,
+	resetGetCurrentUserPosts,
+	resetGetMorePosts,
+	resetGetUserPosts,
+} from '../../redux/modules/post';
 import './ProfilePostImages.scss';
+import UseInfiniteScroll from './UseInfiniteScroll';
+
 const ProfilePostImages = ({ posts }) => {
 	const { userName } = useParams();
 	const { pathname } = useLocation();
 	const history = useHistory();
 	const dispatch = useDispatch();
-	const target = useRef(null);
-	const { getError, loading } = useSelector((state) => state.post.getMorePosts);
+	const { isNone } = useSelector((state) => state.post.getMorePosts);
+
+	const isGetUserPosts = useSelector((state) => state.post.getUserPosts.isGet);
+	const isGetCurrentUserPosts = useSelector(
+		(state) => state.post.getCurrentUserPosts.isGet
+	);
 
 	const getMorePosts = useCallback(() => {
 		const postDate = posts[posts.length - 1]?.postDate;
-		if (pathname === '/profile' && posts.length) {
+		if (pathname === '/profile') {
 			dispatch(getMorePostsThunk({ postDate, type: 'currentUserPosts' }));
-		} else if (pathname === `/user/${userName}` && posts.length) {
+		} else if (pathname === `/user/${userName}`) {
 			dispatch(getMorePostsThunk({ postDate, type: 'userPosts', userName }));
 		}
 	}, [dispatch, pathname, posts, userName]);
@@ -46,37 +56,14 @@ const ProfilePostImages = ({ posts }) => {
 		}
 		return tmp;
 	};
-
-	const _onIntersect = useCallback(
-		([{ isIntersecting }]) => {
-			if (getError.message) {
-				return;
-			}
-			if (isIntersecting && posts.length) {
-				getMorePosts();
-			}
-		},
-		[getMorePosts, getError, posts]
-	);
-
-	useEffect(() => {
-		let observer;
-		// 더이상 불러올 자료가 없는 경우
-		if (getError.message) {
-			observer && observer.disconnect();
-
-			// target이 있고,
-		} else if (target && posts.length) {
-			observer = new IntersectionObserver(_onIntersect, {
-				rootMargin: `10px`,
-				threshold: 0.5,
-			});
-			observer.observe(target.current);
-		}
-		return () => {
-			observer && observer.disconnect();
+	// unmount 되기 전에 모두 reset
+	useLayoutEffect(() => {
+		return async () => {
+			dispatch(resetGetMorePosts());
+			dispatch(resetGetUserPosts());
+			dispatch(resetGetCurrentUserPosts());
 		};
-	}, [getError, _onIntersect, posts]);
+	}, [dispatch]);
 
 	return (
 		<>
@@ -106,8 +93,9 @@ const ProfilePostImages = ({ posts }) => {
 					</div>
 				))}
 			</div>
-			<div ref={target}></div>
-			{loading && <CircularProgress />}
+			{!isNone && (isGetCurrentUserPosts || isGetUserPosts) && (
+				<UseInfiniteScroll execute={getMorePosts} />
+			)}
 		</>
 	);
 };
