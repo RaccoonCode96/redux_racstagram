@@ -1,7 +1,7 @@
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
 import { deleteImageUrlThunk, resetImage } from './image';
 import { setCurrentUserInfoThunk } from './users';
-import { updatePostsUserInfoThunk } from './post';
+import { getAllPostsThunk, updatePostsUserInfoThunk } from './post';
 
 // Initial State
 const initialState = {
@@ -58,6 +58,7 @@ export const updateProfileThunk = createAsyncThunk(
 					),
 				]);
 				await thunkAPI.dispatch(resetImage());
+				thunkAPI.dispatch(getAllPostsThunk());
 			}
 			return true;
 		} catch ({ code, message }) {
