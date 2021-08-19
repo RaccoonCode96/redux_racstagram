@@ -93,6 +93,8 @@ input {
 		.post_info {
 			flex-grow: 1;
 			color: $text-color;
+			display: flex;
+			align-items: center;
 			.post_text {
 				white-space: pre-wrap;
 				word-break: break-all;
