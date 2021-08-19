@@ -1,4 +1,4 @@
-import { useCallback } from 'react';
+import { useCallback, useLayoutEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useHistory, useLocation } from 'react-router-dom';
 import React from 'react';
@@ -8,6 +8,7 @@ import {
 	getCurrentUserPostsThunk,
 	getMorePostsThunk,
 	getUserPostsThunk,
+	resetGetMorePosts,
 } from '../../redux/modules/post';
 import Post from './Post';
 import UseInfiniteScroll from '../common/UseInfiniteScroll';
@@ -72,6 +73,12 @@ const PostContainer = ({ posts }) => {
 			return;
 		}
 	}, [dispatch, pathname, posts]);
+
+	useLayoutEffect(() => {
+		return () => {
+			dispatch(resetGetMorePosts());
+		};
+	}, [dispatch]);
 
 	return (
 		<>
