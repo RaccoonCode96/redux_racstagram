@@ -13,21 +13,12 @@
 		margin-bottom: 15px;
 	}
 
-	& > .container {
-		width: 100%;
-		display: flex;
-		align-items: center;
-	}
-
 	.displayName_input {
-		margin-right: 10px;
-		width: 210px;
+		width: 100%;
 	}
 
-	.displayName_btn {
-		height: 40px;
-		font-family: $default_font_family;
-		font-weight: 600;
+	.loading {
+		margin: 20px 0 10px 0;
 	}
 
 	.check_message {
