@@ -40,32 +40,18 @@ const AuthForm = ({
 			/>
 			{newAccount ? (
 				<>
-					<div className="container">
-						<TextField
-							className="displayName_input"
-							variant="outlined"
-							name="displayName"
-							label="User Name"
-							type="text"
-							size="small"
-							value={displayName}
-							onChange={onChange}
-						/>
-						<Button
-							className="displayName_btn"
-							variant="outlined"
-							color="primary"
-							size="small"
-							onClick={(event) => {
-								event.preventDefault();
-								check(displayName);
-							}}
-						>
-							중복 검사
-						</Button>
-					</div>
+					<TextField
+						className="displayName_input"
+						variant="outlined"
+						name="displayName"
+						label="User Name"
+						type="text"
+						size="small"
+						value={displayName}
+						onChange={onChange}
+					/>
 					{checkDisplayName ? (
-						<CircularProgress />
+						<CircularProgress size={48} className="loading" />
 					) : !exist[1] || displayName !== exist[1] ? (
 						<Alert className="check_message" severity="warning">
 							중복 확인이 필요합니다.
@@ -76,7 +62,7 @@ const AuthForm = ({
 						</Alert>
 					) : (
 						<Alert className="check_message" severity="success">
-							OK!
+							OK! : {exist[1]}는 사용해도 좋습니다.
 						</Alert>
 					)}
 				</>
