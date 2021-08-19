@@ -16,17 +16,18 @@
 		display: flex;
 		align-items: center;
 		font-family: $default_font_family;
-		color: $text_color;
-
-		.comment_user_name {
-			font-weight: 500;
-			display: inline-flex;
-			margin-right: 5px;
-		}
 
 		.comment {
+			color: $text_color;
 			white-space: pre-wrap;
 			word-break: break-all;
+
+			.comment_user_name {
+				color: $text_color;
+				font-weight: 500;
+				display: inline-flex;
+				margin-right: 5px;
+			}
 		}
 	}
 
