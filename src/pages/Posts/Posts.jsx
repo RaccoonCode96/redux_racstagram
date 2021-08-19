@@ -1,5 +1,5 @@
-import { useCallback } from 'react';
-import { useEffect, useRef } from 'react';
+import { useCallback, useLayoutEffect } from 'react';
+import { useRef } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useLocation } from 'react-router-dom';
 import Navigation from '../../components/common/Navigation';
@@ -35,7 +35,7 @@ const Posts = () => {
 		}
 	}, [pathname, userPosts, currentUserPosts]);
 
-	useEffect(() => {
+	useLayoutEffect(() => {
 		scrollToPost(postNum);
 		return () => {
 			dispatch(resetGetMorePosts());

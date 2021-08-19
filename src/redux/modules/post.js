@@ -33,6 +33,7 @@ const initialState = {
 		isGet: false,
 		loading: false,
 		getError: '',
+		isNone: false,
 	},
 	getUserPosts: {
 		isGet: false,
@@ -123,7 +124,8 @@ export const updatePostThunk = createAsyncThunk(
 						...(postImageUrl && { postImageUrl }),
 						...(postText && { postText }),
 					});
-				await thunkAPI.dispatch(resetImage());
+				thunkAPI.dispatch(getAllPostsThunk());
+				thunkAPI.dispatch(resetImage());
 			} else {
 				throw new Error('Invalid user access!');
 			}
@@ -176,6 +178,7 @@ export const createPostThunk = createAsyncThunk(
 				userPhotoUrl: currentUserInfo.userPhotoUrl,
 				userDisplayName: currentUserInfo.displayName,
 				postImageUrl: imageUrl,
+				commentArray: [],
 			};
 			await dbService.collection('posts').add(post);
 			await thunkAPI.dispatch(resetImage());
@@ -193,28 +196,28 @@ export const getMorePostsThunk = createAsyncThunk(
 	'redux-racstagram/post/getMorePostsThunk',
 	async ({ postDate, type, userName }, thunkAPI) => {
 		try {
+			if (!postDate) {
+				throw new Error(`none of data to take`);
+			}
 			const {
 				profile: { currentUser },
 			} = await thunkAPI.getState();
-			let query = await dbService
-				.collection('posts')
-				.orderBy('postDate', 'desc');
+			let query = dbService.collection('posts').orderBy('postDate', 'desc');
 
 			if (type === 'allPosts') {
 			} else if (type === 'userPosts') {
-				query = await query.where('userDisplayName', '==', userName);
+				query = query.where('userDisplayName', '==', userName);
 			} else if (type === 'currentUserPosts') {
-				query = await query.where('userId', '==', currentUser.uid);
+				query = query.where('userId', '==', currentUser.uid);
 			}
-
 			const { docs } = await query.startAfter(postDate).limit(5).get();
+			if (!docs.length) {
+				return { type: 'none' };
+			}
 			const posts = docs.map((doc) => ({
 				postId: doc.id,
 				...doc.data(),
 			}));
-			if (!posts.length) {
-				throw new Error(`none of data to take`);
-			}
 			return { posts, type };
 		} catch ({ code, message }) {
 			return thunkAPI.rejectWithValue({ code, message });
@@ -302,6 +305,14 @@ const post = createSlice({
 		setPrevScrollY: (state, { payload }) => ({
 			...state,
 			prevScrollY: payload,
+		}),
+		resetGetUserPosts: (state) => ({
+			...state,
+			getUserPosts: { ...initialState.getUserPosts },
+		}),
+		resetGetCurrentUserPosts: (state) => ({
+			...state,
+			getCurrentUserPosts: { ...initialState.getCurrentUserPosts },
 		}),
 	},
 	extraReducers: {
@@ -399,6 +410,16 @@ const post = createSlice({
 						...state.getMorePosts,
 						loading: false,
 						isGet: true,
+					},
+				};
+			} else if (payload.type === 'none') {
+				return {
+					...state,
+					getMorePosts: {
+						...state.getMorePosts,
+						loading: false,
+						isGet: true,
+						isNone: true,
 					},
 				};
 			}
@@ -500,4 +521,6 @@ export const {
 	setPostFormError,
 	resetGetMorePosts,
 	setPrevScrollY,
+	resetGetUserPosts,
+	resetGetCurrentUserPosts,
 } = post.actions;

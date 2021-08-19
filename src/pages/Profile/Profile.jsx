@@ -1,17 +1,11 @@
 import UserProfileContainer from '../../components/UserProfile/UserProfileContainer';
 
 import Navigation from '../../components/common/Navigation';
-import { useEffect } from 'react';
-import { useDispatch } from 'react-redux';
-import { resetGetMorePosts } from '../../redux/modules/post';
+import { useLayoutEffect } from 'react';
 const Profile = () => {
-	const dispatch = useDispatch();
-	useEffect(() => {
+	useLayoutEffect(() => {
 		window.scrollTo(0, 0);
-		return () => {
-			dispatch(resetGetMorePosts());
-		};
-	}, [dispatch]);
+	}, []);
 	return (
 		<>
 			<Navigation />

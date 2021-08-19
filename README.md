@@ -104,7 +104,11 @@
 
 <br/>
 
-- [ ] `댓글 기능`
+- [x] `댓글 기능`
+
+<br/>
+
+- [x] `자동 중복 체크`
 
 <br/>
 <br/>
@@ -358,17 +362,51 @@
 
 <br/>
 
-## 다음에 필요한 사항
+### 2021.08.16사항
 
-- [ ] 댓글 좋아요 기능 -> 진행중
-  - [x] 기본적인 comments page, comment, commentForm 스타일링
-  - [x] comment read, create 요청 함수 컴포넌트에 연결 하기
-  - [ ] post의 comments view 구현과 이에 맞게 comment create, read, delete 수정하기
-  - [ ] comment update 구현하기
+- 최신 댓글 최대 2개 보이기 구현
+- 댓글 총 개수 보이기 구현
+- useRandom hook 유지 보수
+- 신규 유저 가입시 count 넘버링 버그 해결
+- 로직 수정에 따른 React devServer 반영 문제
+
+  - https://goforit.tistory.com/209
+
+### 2021.08.17 사항
+
+- 댓글 작성 요청 개선
+- 댓글 지우기 요청 기능 구현
+- 댓글 창에서 해당 게시글의 text 보기 추가
+- 축약된 PostText 더 보기 구현
+  - https://goforit.tistory.com/210
 
 <br/>
 
-- [ ] 자동 input 체크 (이름 중복 확인시)
+### 2021.08.18 사항
+
+- 자동 중복 체크 구현(debounce)
+- React 에서 debounce 사용시 주의점
+- 무한스크롤 데이터 끝 처리 버그 발생
+  - https://goforit.tistory.com/212
+
+<br/>
+
+### 2021.08.19 사항
+
+- 무한 스크롤 개선
+- Intersection Observer API 활용
+- 무한 스크롤 더 이상 데이터가 없는 경우 처리(버그 해결)
+  - https://goforit.tistory.com/213
+
+<br/>
+
+# 다음에 필요한 것들
+
+- [ ] resize throttle 적용하기
+
+<br/>
+
+- [ ] profile post 복제 버그 고치기
 
 <br/>
 
@@ -379,10 +417,14 @@
 - [ ] validation 구현 필요함
   - input 같은 경우, display none 적용시 browser에서 제공하는 validation 말풍선이 뜨지 않기 때문에 따로 구현 필요함
   - required를 사용하지 말고, submit 함수 단에서 input값이 들어 왔는지 체크하여 validation error 구현 필요
-  - [x] post 관련한 input의 check 대략적인 (PostUpdateContainer, postFormContainer)
-  - [x] auth 관련한 input의 check 대략적인 조건 구현
   - [ ] 각 input 별로 데이터 형태에 따른 구체적인 조건 설정이 필요함
     - [ ] 이메일, 패스워드, 유저 네임, 글 내용의 형식(조건, 제한) 지정 필요
+
+<br/>
+
+- [ ] profile의 웹사이트 정규표현식 match 정교화
+  - 사용자는 http를 안넣을 수도 있음, 그리고 그외에도 예외 사항을 더 생각해 보자
+  - 아니면, 사용자가 올바른 형식을 넣을 수 있도록 알림 만들기, 결국엔 validation 임
 
 <br/>
 
@@ -420,7 +462,6 @@
 
 <br/>
 
-- [ ] 댓글 기능 -> 구현중
 - [ ] 좋아요 기능
 - [ ] 유저 이름 검색을 통한 프로필 보기 (이름 검색)
 - [ ] 게시글 장소 태그로 장소 지도 보기 (지도 API)

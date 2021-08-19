@@ -1,22 +1,13 @@
-import { useEffect } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
+import { useSelector } from 'react-redux';
 import Navigation from '../../components/common/Navigation';
 import Side from '../../components/common/Side';
 import PostContainer from '../../components/Post/PostContainer';
 import useScroll from '../../hooks/useScroll';
-import { resetGetMorePosts } from '../../redux/modules/post';
 
 const Home = () => {
 	const allPosts = useSelector((state) => state.post.allPosts);
-	const dispatch = useDispatch();
 
 	useScroll();
-
-	useEffect(() => {
-		return () => {
-			dispatch(resetGetMorePosts());
-		};
-	}, [dispatch]);
 
 	return (
 		<>

@@ -8,7 +8,6 @@ import Home from '../pages/Home/Home';
 import Posts from '../pages/Posts/Posts';
 import Profile from '../pages/Profile/Profile';
 import Update from '../pages/Update/Update';
-// import User from '../pages/User/User';
 import Write from '../pages/Write/Write';
 import { getAllPostsThunk } from '../redux/modules/post';
 import {

@@ -15,7 +15,8 @@
 		display: flex;
 		justify-content: space-between;
 		align-items: center;
-		padding: 0 10px;
+		padding: 0 16px;
+		border-bottom: solid 1px $default_border_color;
 
 		.user_info {
 			display: flex;
@@ -28,7 +29,7 @@
 
 			.user_name {
 				font-weight: 500;
-				font-size: 0.9rem;
+				font-size: $default_font_size;
 				font-family: $default_font_family;
 				color: $text-color;
 			}
@@ -49,21 +50,42 @@
 		}
 	}
 
-	.post_text_container {
-		height: $post_content_height;
-		padding: 5px 16px 16px 16px;
+	.post_content_container {
+		padding: 5px 16px 30px 16px;
 		font-family: $default_font_family;
-		font-size: 0.8rem;
+		display: flex;
+		flex-direction: column;
+		gap: 10px;
+		font-size: $default_font_size;
 
-		.post_text {
-			height: 100%;
-			font-weight: 300;
-			color: $text-color;
+		.post_text_container {
+			.post_text {
+				height: fit-content;
+				font-weight: 400;
+				color: $text-color;
+				white-space: pre-wrap;
+				word-break: break-all;
+				overflow: hidden;
+				line-height: 1.2rem;
+			}
+
+			.more_text_btn {
+				border: none;
+				background-color: transparent;
+				cursor: pointer;
+				font-weight: 400;
+				color: $text-light-color;
+			}
 		}
 
-		.post_text_userName {
-			margin-right: 7px;
-			font-weight: 500;
+		.post_comments {
+			.comments_count {
+				background-color: transparent;
+				border: none;
+				padding: 0;
+				cursor: pointer;
+				color: $text-light-color;
+			}
 		}
 	}
 }

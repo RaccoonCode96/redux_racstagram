@@ -57,15 +57,6 @@ const ProfileUpdate = ({ onChange, inputs, onSubmit, check, exist }) => {
 								onChange={onChange}
 								className="input_display_name text_input"
 							/>
-							<button
-								className="check_display_name"
-								onClick={(event) => {
-									event.preventDefault();
-									check(displayName);
-								}}
-							>
-								중복 검사
-							</button>
 						</div>
 					</div>
 					<div className="check_display_name_container">

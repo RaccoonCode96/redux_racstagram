@@ -1,0 +1,14 @@
+@import '../../styles/_variables';
+
+.post_comment_container {
+	margin-top: 10px;
+	color: $text_color;
+	.user_name {
+		font-weight: 500;
+		margin-right: 5px;
+	}
+
+	.comment_text {
+		font-weight: 400;
+	}
+}

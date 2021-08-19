@@ -6,6 +6,7 @@ import { resetPost } from './post';
 import { resetProfile } from './profile';
 import {
 	getCurrentUserInfoThunk,
+	getRandomUserInfoThunk,
 	getUserMaxCountThunk,
 	resetUsers,
 	setCurrentUserInfoThunk,
@@ -92,9 +93,11 @@ export const emailSignInThunk = createAsyncThunk(
 					setCurrentUserInfoThunk({
 						displayName,
 						userPhotoUrl: DEFAULT_USER_IMAGE,
-						count: userMaxCount + 1,
+						count: userMaxCount === -1 ? 1 : userMaxCount + 1,
 					})
 				);
+				await thunkAPI.dispatch(getCurrentUserInfoThunk());
+				thunkAPI.dispatch(getRandomUserInfoThunk());
 			}
 			return true;
 		} catch ({ code, message }) {
@@ -146,9 +149,11 @@ export const socialSignInThunk = createAsyncThunk(
 					setCurrentUserInfoThunk({
 						userPhotoUrl: photoURL || DEFAULT_USER_IMAGE,
 						displayName: displayName || DEFAULT_USER_DISPLAYNAME,
-						count: userMaxCount + 1,
+						count: userMaxCount === -1 ? 1 : userMaxCount + 1,
 					})
 				);
+				await thunkAPI.dispatch(getCurrentUserInfoThunk());
+				thunkAPI.dispatch(getRandomUserInfoThunk());
 			}
 			return true;
 		} catch ({ code, message }) {
