@@ -73,10 +73,13 @@ const Post = ({ post, deletePost, updatePost, currentUserId }) => {
 					<PostControlContainer post={post} />
 					<div className="post_content_container">
 						<div className="post_text_container">
-							<Link to={`/user/${post.userDisplayName}`} className="user_name">
-								{post.userDisplayName}
-							</Link>
 							<span className="post_text">
+								<Link
+									to={`/user/${post.userDisplayName}`}
+									className="user_name"
+								>
+									{post.userDisplayName}
+								</Link>
 								{isMore ? post.postText : shortText}
 							</span>
 							{moreBtnCheck() && !isMore && (
