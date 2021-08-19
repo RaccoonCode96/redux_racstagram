@@ -1,4 +1,4 @@
-import { useCallback } from 'react';
+import { useCallback, useMemo } from 'react';
 import { useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useHistory } from 'react-router-dom';
@@ -7,6 +7,7 @@ import resize from '../../hooks/resize';
 import { getImageUrlThunk } from '../../redux/modules/image';
 import { updateProfileThunk } from '../../redux/modules/profile';
 import { checkDisplayNameThunk } from '../../redux/modules/users';
+import { debounce } from 'lodash';
 
 const ProfileUpdateContainer = ({ profileInfo }) => {
 	const history = useHistory();
@@ -30,6 +31,24 @@ const ProfileUpdateContainer = ({ profileInfo }) => {
 		preventSubmit: false,
 		prevWebsite: website,
 	});
+
+	const check = useCallback(
+		(displayName) => {
+			if (inputs.prevDisplayName !== displayName) {
+				dispatch(checkDisplayNameThunk(displayName));
+			}
+			return;
+		},
+		[dispatch, inputs]
+	);
+
+	const debounceCheck = useMemo(
+		() =>
+			debounce((displayName) => {
+				check(displayName);
+			}, 700),
+		[check]
+	);
 
 	const onChange = useCallback(
 		(event) => {
@@ -67,6 +86,7 @@ const ProfileUpdateContainer = ({ profileInfo }) => {
 					...inputs,
 					displayName: value,
 				});
+				debounceCheck(value);
 			} else if (name === 'subDisplayName') {
 				setInputs({
 					...inputs,
@@ -79,7 +99,7 @@ const ProfileUpdateContainer = ({ profileInfo }) => {
 				});
 			}
 		},
-		[inputs]
+		[inputs, debounceCheck]
 	);
 
 	const onSubmit = useCallback(
@@ -131,16 +151,6 @@ const ProfileUpdateContainer = ({ profileInfo }) => {
 			}
 		},
 		[dispatch, history, inputs, exist]
-	);
-
-	const check = useCallback(
-		(displayName) => {
-			if (inputs.prevDisplayName !== displayName) {
-				dispatch(checkDisplayNameThunk(displayName));
-			}
-			return;
-		},
-		[dispatch, inputs]
 	);
 
 	return (
