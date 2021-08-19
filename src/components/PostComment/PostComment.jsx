@@ -5,10 +5,12 @@ const PostComment = ({ commentEl }) => {
 	const { commentDisplayName, comment } = commentEl;
 	return (
 		<div className="post_comment_container">
-			<Link className="user_name" to={`/user/${commentDisplayName}`}>
-				{commentDisplayName}
-			</Link>
-			<span className="comment_text">{comment}</span>
+			<span className="comment_text">
+				<Link className="user_name" to={`/user/${commentDisplayName}`}>
+					{commentDisplayName}
+				</Link>
+				{comment}
+			</span>
 		</div>
 	);
 };
