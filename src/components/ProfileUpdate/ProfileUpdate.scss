@@ -56,7 +56,7 @@
 		width: 100%;
 		display: flex;
 		flex-direction: column;
-		gap: 20px;
+		gap: 15px;
 		align-items: center;
 
 		.label {
@@ -96,6 +96,7 @@
 			}
 			.alert {
 				flex-grow: 1;
+				font-weight: 600;
 			}
 		}
 
@@ -113,7 +114,6 @@
 				flex-grow: 1;
 				.input_display_name {
 					flex-grow: 1;
-					margin-right: 10px;
 				}
 
 				.check_display_name {
