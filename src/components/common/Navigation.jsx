@@ -12,6 +12,7 @@ import AddBoxOutlinedIcon from '@material-ui/icons/AddBoxOutlined';
 import { AccountCircleOutlined, LockOutlined } from '@material-ui/icons';
 import { getAllPostsThunk } from '../../redux/modules/post';
 import { getRandomUserInfoThunk } from '../../redux/modules/users';
+import { useCallback } from 'react';
 
 const Navigation = () => {
 	const [isOn, setisOn] = useState(false);
@@ -24,11 +25,11 @@ const Navigation = () => {
 	};
 	const dispatch = useDispatch();
 
-	const refresh = () => {
+	const refresh = useCallback(async () => {
 		dispatch(getAllPostsThunk());
 		dispatch(getRandomUserInfoThunk());
-		// window.scrollTo(0, 0);
-	};
+		window.scrollTo(0, 0);
+	}, [dispatch]);
 
 	return (
 		<>
