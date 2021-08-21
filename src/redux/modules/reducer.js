@@ -7,7 +7,7 @@ import profile from './profile';
 import users from './users';
 import image from './image';
 import comment from './comment';
-// import modal from './modal';
+import like from './like';
 const reducer = combineReducers({
 	init,
 	auth,
@@ -16,7 +16,7 @@ const reducer = combineReducers({
 	users,
 	image,
 	comment,
-	// modal,
+	like,
 });
 
 /* 
