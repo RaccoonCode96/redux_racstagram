@@ -68,7 +68,6 @@ input {
 }
 
 .comments {
-	margin-top: 10px;
 	@include container_bcg_border;
 	display: flex;
 	flex-grow: 1;
@@ -76,6 +75,7 @@ input {
 	overflow-y: scroll;
 	@media screen and (max-width: $media-width) {
 		margin: 0;
+		border-top: none;
 	}
 
 	.post_text_container {
