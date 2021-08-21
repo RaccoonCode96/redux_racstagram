@@ -12,6 +12,7 @@ import {
 } from '../../redux/modules/post';
 import Post from './Post';
 import UseInfiniteScroll from '../common/UseInfiniteScroll';
+import { getLikesThunk } from '../../redux/modules/like';
 
 const PostContainer = ({ posts }) => {
 	const history = useHistory();
@@ -75,6 +76,7 @@ const PostContainer = ({ posts }) => {
 	}, [dispatch, pathname, posts]);
 
 	useLayoutEffect(() => {
+		dispatch(getLikesThunk());
 		return () => {
 			dispatch(resetGetMorePosts());
 		};

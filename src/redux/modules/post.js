@@ -1,4 +1,5 @@
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
+import { v4 as uuidV4 } from 'uuid';
 import { dbService } from '../../fBase';
 import { deleteCommentsThunk } from './comment';
 import { deleteImageUrlThunk, resetImage } from './image';
@@ -8,12 +9,15 @@ posts
  [
   {
     postId,
+    postDate,
+    postImageUrl,
+    postText,
     userDisplayName,
     userId,
-    postDate,
     userPhotoUrl,
-    postImageUrl,
-    postText
+    commentArray,
+    likeCount,
+    isLike
   }
 ] 
 */
@@ -76,11 +80,11 @@ export const updatePostsUserInfoThunk = createAsyncThunk(
 			const {
 				profile: { currentUser },
 			} = thunkAPI.getState();
-			const col = await dbService
+			const { docs } = await dbService
 				.collection('posts')
 				.where('userId', '==', currentUser.uid)
 				.get();
-			const posts = [...col.docs];
+			const posts = [...docs];
 			for await (let post of posts) {
 				dbService
 					.collection('posts')
@@ -148,6 +152,7 @@ export const deletePostThunk = createAsyncThunk(
 			if (userId === currentUser.uid) {
 				await dbService.collection('posts').doc(postId).delete();
 				thunkAPI.dispatch(deleteCommentsThunk(postId));
+				dbService.collection('likes').doc(postId).delete();
 				if (postImageUrl !== '') {
 					await thunkAPI.dispatch(deleteImageUrlThunk(postImageUrl));
 				}
@@ -180,8 +185,16 @@ export const createPostThunk = createAsyncThunk(
 				postImageUrl: imageUrl,
 				commentArray: [],
 			};
-			await dbService.collection('posts').add(post);
+			const postId = uuidV4();
+			await Promise.all([
+				dbService.collection('posts').doc(postId).set(post),
+				dbService.collection('likes').doc(postId).set({
+					likeCount: 0,
+					likeUsers: [],
+				}),
+			]);
 			await thunkAPI.dispatch(resetImage());
+
 			return true;
 		} catch ({ code, message }) {
 			return thunkAPI.rejectWithValue({
@@ -196,9 +209,6 @@ export const getMorePostsThunk = createAsyncThunk(
 	'redux-racstagram/post/getMorePostsThunk',
 	async ({ postDate, type, userName }, thunkAPI) => {
 		try {
-			if (!postDate) {
-				throw new Error(`none of data to take`);
-			}
 			const {
 				profile: { currentUser },
 			} = await thunkAPI.getState();
@@ -218,6 +228,7 @@ export const getMorePostsThunk = createAsyncThunk(
 				postId: doc.id,
 				...doc.data(),
 			}));
+
 			return { posts, type };
 		} catch ({ code, message }) {
 			return thunkAPI.rejectWithValue({ code, message });
@@ -238,6 +249,7 @@ export const getAllPostsThunk = createAsyncThunk(
 				postId: doc.id,
 				...doc.data(),
 			}));
+
 			return posts;
 		} catch ({ code, message }) {
 			return thunkAPI.rejectWithValue({ code, message });
@@ -338,20 +350,20 @@ const post = createSlice({
 		}),
 		[createPostThunk.pending]: (state) => ({
 			...state,
-			setPostObj: { ...state.setPostObj, loading: true },
+			createPost: { ...state.createPost, loading: true },
 		}),
 		[createPostThunk.fulfilled]: (state, { payload }) => ({
 			...state,
-			setPostObj: {
-				...state.setPostObj,
+			createPost: {
+				...state.createPost,
 				loading: false,
 				isSet: payload,
 			},
 		}),
 		[createPostThunk.rejected]: (state, { payload }) => ({
 			...state,
-			setPostObj: {
-				...state.setPostObj,
+			createPost: {
+				...state.createPost,
 				loading: false,
 				setError: payload,
 			},

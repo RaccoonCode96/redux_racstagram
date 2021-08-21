@@ -1,6 +1,7 @@
 @import '../../styles/_variables';
 
 .comment_form {
+	margin-top: 10px;
 	@include container_bcg_border;
 	// position: sticky;
 	// top: 0;
@@ -9,6 +10,7 @@
 	padding: 10px;
 	@media screen and (max-width: $media-width) {
 		border: none;
+		margin-top: 0;
 	}
 
 	.comment_input {
