@@ -110,7 +110,7 @@ const ProfileUpdate = ({ onChange, inputs, onSubmit, check, exist }) => {
 						<input
 							type="text"
 							name="website"
-							placeholder="웹사이트"
+							placeholder="https:// 또는 http://를 포함시켜 주세요"
 							value={website}
 							onChange={onChange}
 							className="input_website text_input"
