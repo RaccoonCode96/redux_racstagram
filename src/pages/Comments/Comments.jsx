@@ -18,7 +18,6 @@ const Comments = () => {
 			<div className="page">
 				<div className="inner">
 					<main className="main comments_main">
-						<CommentFormContainer postId={post.postId} />
 						<ul className="comments">
 							<li className="post_text_container">
 								<img
@@ -46,6 +45,7 @@ const Comments = () => {
 								/>
 							))}
 						</ul>
+						<CommentFormContainer postId={post.postId} />
 					</main>
 					<Side />
 				</div>
