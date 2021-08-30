@@ -3,7 +3,9 @@ import { Link } from 'react-router-dom';
 import './Side.scss';
 import React from 'react';
 
+// Footer와 유저 추천 Component (화면 side 영역에 표시)
 const Side = () => {
+	// redux state
 	const randomUsers = useSelector((state) => state.users.randomUserInfo);
 
 	return (

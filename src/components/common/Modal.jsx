@@ -12,6 +12,8 @@ const Modal = ({ children, toggle, isOn, rowNum }) => {
 	if (!hasMounted) {
 		return <></>;
 	}
+
+	// mount 이후에 querySelector를 사용할 수 있음 (그 전에는 진짜로 만들어 지지 않았기 때문)
 	const modal = document.querySelector('.modal_root');
 	return ReactDOM.createPortal(
 		isOn ? (

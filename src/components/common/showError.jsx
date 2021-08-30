@@ -2,8 +2,12 @@ import { Alert } from '@material-ui/lab';
 import { useSelector } from 'react-redux';
 import './ShowError.scss';
 
+// Auth 전용 Error 표시 Component
 const ShowError = () => {
+	// redux state
 	const errorSelector = useSelector((state) => state.auth.errorSelector);
+
+	// redux state로 불러온 error code를 지정한 message로 변환
 	const check = () => {
 		if (
 			errorSelector === 'auth/user-not-found' ||
@@ -16,6 +20,7 @@ const ShowError = () => {
 			return errorSelector;
 		}
 	};
+
 	return (
 		<div className="show_error">
 			{errorSelector ? (
@@ -27,7 +32,6 @@ const ShowError = () => {
 			)}
 		</div>
 	);
-	// <h4 className="auth_error">{errorSelector}</h4>;
 };
 
 export default ShowError;
