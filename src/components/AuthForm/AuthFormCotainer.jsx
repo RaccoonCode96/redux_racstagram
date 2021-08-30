@@ -2,31 +2,28 @@ import { useCallback, useMemo } from 'react';
 import { useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import AuthForm from './AuthForm';
-import {
-	emailSignInThunk,
-	emailSignUpThunk,
-	selectError,
-} from '../../redux/modules/auth';
+import { emailSignInThunk, emailSignUpThunk } from '../../redux/modules/auth';
 import { checkDisplayNameThunk } from '../../redux/modules/users';
 import { useEffect } from 'react';
 import { debounce } from 'lodash';
 
 const AuthFormContainer = ({ newAccount }) => {
 	const dispatch = useDispatch();
-	const { exist, loading } = useSelector(
-		(state) => state.users.checkDisplayName
-	);
+
+	// redux state (회원가입, 로그인 loading 상태 표시를 위함)
 	const { emailSignUp, emailSignIn, socialSignIn } = useSelector(
 		(state) => state.auth
 	);
 
+	// state
 	const [inputs, setInputs] = useState({
 		email: '',
 		password: '',
 		displayName: '',
 	});
+
+	// 로그인 창 또는 회원 가입 창으로 변경시 (Account 변경) input 초기화
 	useEffect(() => {
-		// 로그인 창 또는 회원 가입 창 변경시 (Account 변경) input 초기화
 		return () => {
 			setInputs({
 				email: '',
@@ -36,6 +33,7 @@ const AuthFormContainer = ({ newAccount }) => {
 		};
 	}, [newAccount]);
 
+	// 유저 이름 중복 체크 요청 함수
 	const check = useCallback(
 		(displayName) => {
 			dispatch(checkDisplayNameThunk(displayName));
@@ -47,10 +45,11 @@ const AuthFormContainer = ({ newAccount }) => {
 		() =>
 			debounce((displayName) => {
 				check(displayName);
-			}, 900),
+			}, 500),
 		[check]
 	);
 
+	// onChange event Handler (email, password, displayName)
 	const onChange = useCallback(
 		(event) => {
 			const { name, value } = event.target;
@@ -75,38 +74,17 @@ const AuthFormContainer = ({ newAccount }) => {
 		[inputs, debounceCheck]
 	);
 
+	// onSubmit event Handler
 	const onSubmit = useCallback(
 		(event) => {
 			event.preventDefault();
-			const { email, password, displayName } = inputs;
-			// input check
-			if (!email) {
-				dispatch(selectError('Email를 입력해 주세요.'));
-				return;
-			} else if (!password) {
-				dispatch(selectError('Password를 입력해 주세요.'));
-				return;
-			} else if (newAccount && !displayName) {
-				dispatch(selectError('User Name을 입력해 주세요.'));
-				return;
-			}
-
 			if (newAccount === false) {
 				dispatch(emailSignInThunk(inputs));
 			} else {
-				if (!exist[1] || exist[1] !== inputs.displayName) {
-					dispatch(selectError('닉네임 중복 확인이 필요 합니다.'));
-					return;
-				}
-				if (exist[0]) {
-					dispatch(selectError(`${exist[1]}는 존재하는 닉네임 입니다.`));
-					return;
-				}
 				dispatch(emailSignUpThunk(inputs));
 			}
-			return;
 		},
-		[inputs, dispatch, newAccount, exist]
+		[inputs, dispatch, newAccount]
 	);
 
 	return (
@@ -115,12 +93,9 @@ const AuthFormContainer = ({ newAccount }) => {
 			inputs={inputs}
 			onSubmit={onSubmit}
 			newAccount={newAccount}
-			check={check}
-			exist={exist}
 			emailSignIn={emailSignIn.loading}
 			emailSignUp={emailSignUp.loading}
 			socialSignIn={socialSignIn.loading}
-			checkDisplayName={loading}
 		/>
 	);
 };
