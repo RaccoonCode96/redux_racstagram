@@ -80,14 +80,7 @@
 			}
 		}
 
-		.text_input {
-			@include default_input_style;
-			height: 35px;
-		}
-
 		.check_display_name_container {
-			width: 100%;
-			display: flex;
 			.block {
 				width: 150px;
 				@media screen and (max-width: $media_width) {
@@ -102,27 +95,12 @@
 
 		.user_intro {
 			.input_user_intro {
-				flex-grow: 1;
-				height: 100px;
 				resize: none;
 			}
 		}
 
-		.display_name {
-			.display_name_container {
-				display: flex;
-				flex-grow: 1;
-				.input_display_name {
-					flex-grow: 1;
-				}
-
-				.check_display_name {
-					@include black_outlined_btn;
-					width: 100px;
-				}
-			}
-		}
-
+		.input_display_name,
+		.input_user_intro,
 		.input_website,
 		.input_sub_name {
 			flex-grow: 1;
@@ -134,6 +112,9 @@
 			height: 30px;
 			@media screen and (max-width: 410px) {
 				width: 100%;
+			}
+			&:disabled {
+				background-color: $oc-gray-4;
 			}
 		}
 	}
