@@ -46,7 +46,7 @@ const ProfileUpdateContainer = ({ profileInfo }) => {
 		() =>
 			debounce((displayName) => {
 				check(displayName);
-			}, 700),
+			}, 500),
 		[check]
 	);
 
@@ -154,13 +154,7 @@ const ProfileUpdateContainer = ({ profileInfo }) => {
 	);
 
 	return (
-		<ProfileUpdate
-			onChange={onChange}
-			inputs={inputs}
-			onSubmit={onSubmit}
-			check={check}
-			exist={exist}
-		/>
+		<ProfileUpdate onChange={onChange} inputs={inputs} onSubmit={onSubmit} />
 	);
 };
 
