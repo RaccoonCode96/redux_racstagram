@@ -27,10 +27,10 @@ const PostControlContainer = ({ post }) => {
 				if (initIsLike !== checked) {
 					if (checked) {
 						dispatch(setLikeOnThunk(post.postId));
-						console.log('setLike : On');
+						// console.log('setLike : On');
 					} else {
 						dispatch(setLikeOffThunk(post.postId));
-						console.log('setLike : Off');
+						// console.log('setLike : Off');
 					}
 				}
 			}, 900),
@@ -48,7 +48,7 @@ const PostControlContainer = ({ post }) => {
 		[toggleDebounce]
 	);
 
-	const goComments = useCallback(async () => {
+	const toComments = useCallback(async () => {
 		await dispatch(getCommentsThunk(post.postId));
 		history.push({ pathname: `/${post.postId}/comments`, state: { post } });
 	}, [dispatch, history, post]);
@@ -56,7 +56,7 @@ const PostControlContainer = ({ post }) => {
 	return (
 		<PostControl
 			postId={post.postId}
-			goComments={goComments}
+			toComments={toComments}
 			isLike={isLike}
 			onChange={onChange}
 		/>
