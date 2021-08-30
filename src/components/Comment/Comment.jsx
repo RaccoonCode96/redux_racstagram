@@ -8,15 +8,21 @@ import './Comment.scss';
 import DeleteForeverIcon from '@material-ui/icons/DeleteForever';
 
 const Comment = ({ commentObj, postId }) => {
+	// commentObj prop
 	const { commentId, comment, userDisplayName, userPhotoUrl, userId } =
 		commentObj;
+
+	// redux state
 	const currentUserId = useSelector((state) => state.profile.currentUser.uid);
 	const dispatch = useDispatch();
+
+	// delete comment 확인 창 state 와 toggle 함수
 	const [confirmIsOn, setConfirmIsOn] = useState(false);
 	const confirmToggle = () => {
 		setConfirmIsOn(!confirmIsOn);
 	};
 
+	// delete 요청 함수 (redux에 요청)
 	const deleteComment = useCallback(() => {
 		dispatch(deleteCommentThunk({ commentId, postId }));
 	}, [dispatch, commentId, postId]);
