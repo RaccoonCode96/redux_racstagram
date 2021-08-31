@@ -139,7 +139,7 @@ const ProfileUpdateContainer = ({ profileInfo }) => {
 					subDispalyName === prevSubDisplayName &&
 					website === prevWebsite)
 			) {
-				history.replace('/profile');
+				history.replace(`/user/${prevDisplayName}`);
 				return;
 			} else {
 				setInputs({ ...inputs, preventSubmit: true });
@@ -147,7 +147,7 @@ const ProfileUpdateContainer = ({ profileInfo }) => {
 					await dispatch(getImageUrlThunk(imageBase64));
 				}
 				await dispatch(updateProfileThunk(inputs));
-				history.replace('/profile');
+				history.replace(`/user/${displayName}`);
 			}
 		},
 		[dispatch, history, inputs, exist]
