@@ -5,7 +5,8 @@ import ProfileUpdateContainer from '../../components/ProfileUpdate/ProfileUpdate
 
 const Update = () => {
 	const {
-		state: { profileInfo, post, type },
+		pathname,
+		state: { profileInfo, post },
 	} = useLocation();
 
 	return (
@@ -13,7 +14,7 @@ const Update = () => {
 			<Navigation />
 			<div className="page">
 				<div className="inner">
-					{type === 'profile' ? (
+					{pathname === '/update/profile' ? (
 						<ProfileUpdateContainer profileInfo={profileInfo} />
 					) : (
 						<PostUpdateContainer post={post} />
