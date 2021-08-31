@@ -6,7 +6,6 @@
 	z-index: 5;
 	position: fixed;
 	text-align: center;
-	background-color: $load_background_color;
 	display: flex;
 	align-items: center;
 	justify-content: center;
@@ -14,12 +13,12 @@
 
 	.title {
 		font-size: 4rem;
-		color: $light_color;
+		color: $default_color;
 		font-family: $logo_font;
 		margin-bottom: 30px;
 	}
 
 	.icon {
-		color: $light_color;
+		color: $default_color;
 	}
 }
