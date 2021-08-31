@@ -3,7 +3,7 @@ import { faHeart as farHeart } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import './PostControl.scss';
 
-const PostControl = ({ postId, goComments, isLike, onChange }) => {
+const PostControl = ({ postId, toComments, isLike, onChange }) => {
 	return (
 		<div className="post_control_container">
 			<input
@@ -20,7 +20,7 @@ const PostControl = ({ postId, goComments, isLike, onChange }) => {
 					<FontAwesomeIcon icon={faHeart} className="icon" />
 				)}
 			</label>
-			<button className="post_control_btn" onClick={goComments}>
+			<button className="post_control_btn" onClick={toComments}>
 				<FontAwesomeIcon icon={faComment} className="icon" />
 			</button>
 		</div>

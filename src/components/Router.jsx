@@ -18,6 +18,7 @@ import {
 const AppRouter = () => {
 	const isLoggedIn = useSelector((state) => state.profile.currentUser.isSignIn);
 	const dispatch = useDispatch();
+
 	const getInitInfo = useCallback(async () => {
 		if (isLoggedIn) {
 			await Promise.all([
@@ -27,9 +28,11 @@ const AppRouter = () => {
 			dispatch(getRandomUserInfoThunk());
 		}
 	}, [dispatch, isLoggedIn]);
+
 	useEffect(() => {
 		getInitInfo();
 	}, [getInitInfo]);
+
 	return (
 		<BrowserRouter>
 			<Switch>
@@ -37,9 +40,8 @@ const AppRouter = () => {
 					<>
 						<Route path="/" exact component={Home} />
 						<Route path="/write" exact component={Write} />
-						<Route path="/update" exact component={Update} />
-						<Route path="/profile" exact component={Profile} />
-						<Route path="/profile/posts" exact component={Posts} />
+						<Route path="/update/profile" exact component={Update} />
+						<Route path="/update/post" exact component={Update} />
 						<Route path="/user/:userName" exact component={Profile} />
 						<Route path="/user/:userName/posts" exact component={Posts} />
 						<Route path="/:postId/comments" exact component={Comments} />

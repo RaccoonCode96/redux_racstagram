@@ -157,9 +157,9 @@ export const setCurrentUserInfoThunk = createAsyncThunk(
 					{
 						...(userPhotoUrl && { userPhotoUrl }),
 						...(displayName && { displayName }),
-						...(userIntro && { userIntro }),
-						...(subDisplayName && { subDisplayName }),
-						...(website && { website }),
+						...(subDisplayName ? { subDisplayName } : { subDisplayName: '' }),
+						...(userIntro ? { userIntro } : { userIntro: '' }),
+						...(website ? { website } : { website: '' }),
 						...(count && { count }),
 					},
 					{ merge: true }
@@ -196,6 +196,10 @@ const users = createSlice({
 	initialState,
 	reducers: {
 		resetUsers: () => ({ ...initialState }),
+		resetUserInfo: (state) => ({
+			...state,
+			userInfo: initialState.userInfo,
+		}),
 	},
 	extraReducers: {
 		[checkDisplayNameThunk.pending]: (state) => ({
@@ -330,4 +334,4 @@ const users = createSlice({
 export default users.reducer;
 
 // actionCreator
-export const { resetUsers } = users.actions;
+export const { resetUsers, resetUserInfo } = users.actions;

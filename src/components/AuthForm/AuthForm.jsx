@@ -1,20 +1,37 @@
 import { Button, CircularProgress, TextField } from '@material-ui/core';
 import './AuthForm.scss';
-import Alert from '@material-ui/lab/Alert';
+import {
+	checkEmail,
+	checkPassword,
+	useCheckDisplayName,
+} from '../../hooks/useChecks';
 
 const AuthForm = ({
 	onChange,
 	inputs,
 	onSubmit,
 	newAccount,
-	check,
-	exist,
 	emailSignIn,
 	emailSignUp,
 	socialSignIn,
-	checkDisplayName,
 }) => {
 	const { email, password, displayName } = inputs;
+
+	// 이름 중복 검사에 따른 안내 color, message, code Ref 반환
+	const checkDisplayName = useCheckDisplayName(null, displayName);
+
+	// submit button 비활성화가 필요한 경우 true 반환
+	const checkDisable = () => {
+		if (newAccount) {
+			return !(
+				checkDisplayName.code === 'success' &&
+				checkEmail(email) &&
+				checkPassword(password)
+			);
+		} else {
+			return !(checkEmail(email) && checkPassword(password));
+		}
+	};
 
 	return (
 		<form onSubmit={onSubmit} className="auth_form">
@@ -49,22 +66,14 @@ const AuthForm = ({
 						size="small"
 						value={displayName}
 						onChange={onChange}
+						helperText={checkDisplayName.helperTextMessage}
+						InputProps={{
+							className: checkDisplayName.input,
+						}}
+						FormHelperTextProps={{
+							className: checkDisplayName.helperText,
+						}}
 					/>
-					{checkDisplayName ? (
-						<CircularProgress size={48} className="loading" />
-					) : !exist[1] || displayName !== exist[1] ? (
-						<Alert className="check_message" severity="warning">
-							중복 확인이 필요합니다.
-						</Alert>
-					) : exist[0] ? (
-						<Alert className="check_message" severity="error">
-							{exist[1]}는 이미 존재하는 이름 입니다!
-						</Alert>
-					) : (
-						<Alert className="check_message" severity="success">
-							OK! : {exist[1]}는 사용해도 좋습니다.
-						</Alert>
-					)}
 				</>
 			) : (
 				<></>
@@ -78,6 +87,7 @@ const AuthForm = ({
 					className="auth_btn"
 					type="submit"
 					disableElevation
+					disabled={checkDisable()}
 				>
 					{newAccount ? '가입하기' : '로그인'}
 				</Button>

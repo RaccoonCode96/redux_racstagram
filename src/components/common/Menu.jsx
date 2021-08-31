@@ -1,5 +1,6 @@
 import './Menu.scss';
 
+// menu 창 UI Component
 const Menu = ({ children, toggle, isOn, location }) => {
 	return isOn ? (
 		<div className="menu">

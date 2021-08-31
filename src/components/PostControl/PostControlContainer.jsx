@@ -2,7 +2,7 @@ import { debounce } from 'lodash';
 import { useMemo, useState } from 'react';
 import { useCallback } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { useHistory } from 'react-router-dom';
+import { useHistory, useLocation } from 'react-router-dom';
 import { getCommentsThunk } from '../../redux/modules/comment';
 import { setLikeOffThunk, setLikeOnThunk } from '../../redux/modules/like';
 import PostControl from './PostControl';
@@ -10,15 +10,18 @@ import PostControl from './PostControl';
 const PostControlContainer = ({ post }) => {
 	const history = useHistory();
 	const dispatch = useDispatch();
-	const likes = useSelector((state) => state.like.likes);
+	const { pathname } = useLocation();
+	const type = useMemo(
+		() => (pathname === '/' ? 'allLikes' : 'userLikes'),
+		[pathname]
+	);
+	const likes = useSelector((state) => state.like[type]);
 
 	const findLike = useCallback(() => {
-		const like = likes.find((like) => like.postId === post.postId);
-		return like;
+		return likes.find((like) => like.postId === post.postId)?.isLike;
 	}, [likes, post]);
 
-	const initIsLike = useMemo(() => findLike()?.isLike, [findLike]);
-
+	const initIsLike = useMemo(() => findLike(), [findLike]);
 	const [isLike, setLike] = useState(initIsLike);
 
 	const toggleDebounce = useMemo(
@@ -26,15 +29,15 @@ const PostControlContainer = ({ post }) => {
 			debounce((checked) => {
 				if (initIsLike !== checked) {
 					if (checked) {
-						dispatch(setLikeOnThunk(post.postId));
-						console.log('setLike : On');
+						dispatch(setLikeOnThunk({ postId: post.postId, type }));
+						// console.log('setLike : On');
 					} else {
-						dispatch(setLikeOffThunk(post.postId));
-						console.log('setLike : Off');
+						dispatch(setLikeOffThunk({ postId: post.postId, type }));
+						// console.log('setLike : Off');
 					}
 				}
 			}, 900),
-		[initIsLike, dispatch, post]
+		[initIsLike, dispatch, post, type]
 	);
 
 	const onChange = useCallback(
@@ -48,7 +51,7 @@ const PostControlContainer = ({ post }) => {
 		[toggleDebounce]
 	);
 
-	const goComments = useCallback(async () => {
+	const toComments = useCallback(async () => {
 		await dispatch(getCommentsThunk(post.postId));
 		history.push({ pathname: `/${post.postId}/comments`, state: { post } });
 	}, [dispatch, history, post]);
@@ -56,7 +59,7 @@ const PostControlContainer = ({ post }) => {
 	return (
 		<PostControl
 			postId={post.postId}
-			goComments={goComments}
+			toComments={toComments}
 			isLike={isLike}
 			onChange={onChange}
 		/>

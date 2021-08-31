@@ -3,6 +3,7 @@ import { v4 as uuidV4 } from 'uuid';
 import { dbService } from '../../fBase';
 import { deleteCommentsThunk } from './comment';
 import { deleteImageUrlThunk, resetImage } from './image';
+import { getAllLikesThunk, getMoreLikesThunk, getUserLikesThunk } from './like';
 
 /* 
 posts
@@ -26,48 +27,42 @@ posts
 const initialState = {
 	allPosts: [],
 	userPosts: [],
-	currentUserPosts: [],
 	prevScrollY: 0,
-	getAllPosts: {
-		isGet: false,
-		loading: false,
-		getError: '',
-	},
 	getMorePosts: {
 		isGet: false,
 		loading: false,
-		getError: '',
+		getError: {},
 		isNone: false,
+	},
+	getAllPosts: {
+		isGet: false,
+		loading: false,
+		getError: {},
 	},
 	getUserPosts: {
 		isGet: false,
 		loading: false,
-		getError: '',
-	},
-	getCurrentUserPosts: {
-		isGet: false,
-		loading: false,
-		getError: '',
+		getError: {},
 	},
 	createPost: {
 		isSet: false,
 		loading: false,
-		setError: '',
+		setError: {},
 	},
 	updatePost: {
 		isUpdate: false,
 		loading: false,
-		updateError: '',
+		updateError: {},
 	},
 	deletePost: {
 		isDelete: false,
 		loading: false,
-		deleteError: '',
+		deleteError: {},
 	},
 	updatePostsUserInfo: {
 		isUpdate: false,
 		loading: false,
-		updateError: '',
+		updateError: {},
 	},
 };
 
@@ -176,9 +171,10 @@ export const createPostThunk = createAsyncThunk(
 				image: { imageUrl },
 				users: { currentUserInfo },
 			} = await thunkAPI.getState();
+			const postDate = Date.now();
 			const post = {
 				postText: text,
-				postDate: Date.now(),
+				postDate,
 				userId: currentUser.uid,
 				userPhotoUrl: currentUserInfo.userPhotoUrl,
 				userDisplayName: currentUserInfo.displayName,
@@ -189,6 +185,9 @@ export const createPostThunk = createAsyncThunk(
 			await Promise.all([
 				dbService.collection('posts').doc(postId).set(post),
 				dbService.collection('likes').doc(postId).set({
+					postId,
+					userDisplayName: currentUserInfo.displayName,
+					postDate,
 					likeCount: 0,
 					likeUsers: [],
 				}),
@@ -209,21 +208,19 @@ export const getMorePostsThunk = createAsyncThunk(
 	'redux-racstagram/post/getMorePostsThunk',
 	async ({ postDate, type, userName }, thunkAPI) => {
 		try {
-			const {
-				profile: { currentUser },
-			} = await thunkAPI.getState();
+			thunkAPI.dispatch(getMoreLikesThunk({ postDate, type, userName }));
 			let query = dbService.collection('posts').orderBy('postDate', 'desc');
 
 			if (type === 'allPosts') {
 			} else if (type === 'userPosts') {
 				query = query.where('userDisplayName', '==', userName);
-			} else if (type === 'currentUserPosts') {
-				query = query.where('userId', '==', currentUser.uid);
 			}
-			const { docs } = await query.startAfter(postDate).limit(5).get();
+			const { docs } = await query.startAfter(postDate).limit(6).get();
+
 			if (!docs.length) {
 				return { type: 'none' };
 			}
+
 			const posts = docs.map((doc) => ({
 				postId: doc.id,
 				...doc.data(),
@@ -240,11 +237,13 @@ export const getAllPostsThunk = createAsyncThunk(
 	'redux-racstagram/post/getAllPostsThunk',
 	async (_, thunkAPI) => {
 		try {
+			thunkAPI.dispatch(getAllLikesThunk());
 			const { docs } = await dbService
 				.collection('posts')
 				.orderBy('postDate', 'desc')
 				.limit(6)
 				.get();
+
 			const posts = docs.map((doc) => ({
 				postId: doc.id,
 				...doc.data(),
@@ -261,36 +260,14 @@ export const getUserPostsThunk = createAsyncThunk(
 	'redux-racstagram/post/getUserPostsThunk',
 	async (userName, thunkAPI) => {
 		try {
+			thunkAPI.dispatch(getUserLikesThunk(userName));
 			const { docs } = await dbService
 				.collection('posts')
 				.where('userDisplayName', '==', userName)
 				.orderBy('postDate', 'desc')
-				.limit(9)
+				.limit(6)
 				.get();
-			const posts = docs.map((doc) => ({
-				postId: doc.id,
-				...doc.data(),
-			}));
-			return posts;
-		} catch ({ code, message }) {
-			return thunkAPI.rejectWithValue({ code, message });
-		}
-	}
-);
 
-export const getCurrentUserPostsThunk = createAsyncThunk(
-	'redux-racstagram/post/getCurrentUserPostsThunk',
-	async (_, thunkAPI) => {
-		try {
-			const {
-				profile: { currentUser },
-			} = thunkAPI.getState();
-			const { docs } = await dbService
-				.collection('posts')
-				.where('userId', '==', currentUser.uid)
-				.orderBy('postDate', 'desc')
-				.limit(9)
-				.get();
 			const posts = docs.map((doc) => ({
 				postId: doc.id,
 				...doc.data(),
@@ -307,8 +284,9 @@ const post = createSlice({
 	name: 'redux-racstagram/post',
 	initialState,
 	reducers: {
-		resetPost: (state) => ({
-			...initialState,
+		resetUserPosts: (state) => ({
+			...state,
+			userPosts: initialState.userPosts,
 		}),
 		resetGetMorePosts: (state) => ({
 			...state,
@@ -321,10 +299,6 @@ const post = createSlice({
 		resetGetUserPosts: (state) => ({
 			...state,
 			getUserPosts: { ...initialState.getUserPosts },
-		}),
-		resetGetCurrentUserPosts: (state) => ({
-			...state,
-			getCurrentUserPosts: { ...initialState.getCurrentUserPosts },
 		}),
 	},
 	extraReducers: {
@@ -375,11 +349,7 @@ const post = createSlice({
 		[getAllPostsThunk.fulfilled]: (state, { payload }) => ({
 			...state,
 			allPosts: payload,
-			getAllPosts: {
-				...state.getAllPosts,
-				loading: false,
-				isGet: true,
-			},
+			getAllPosts: { ...state.getAllPosts, loading: false, isGet: true },
 		}),
 		[getAllPostsThunk.rejected]: (state, { payload }) => ({
 			...state,
@@ -398,16 +368,6 @@ const post = createSlice({
 				return {
 					...state,
 					allPosts: [...state.allPosts, ...payload.posts],
-					getMorePosts: {
-						...state.getMorePosts,
-						loading: false,
-						isGet: true,
-					},
-				};
-			} else if (payload.type === 'currentUserPosts') {
-				return {
-					...state,
-					currentUserPosts: [...state.currentUserPosts, ...payload.posts],
 					getMorePosts: {
 						...state.getMorePosts,
 						loading: false,
@@ -465,27 +425,6 @@ const post = createSlice({
 				getError: payload,
 			},
 		}),
-		[getCurrentUserPostsThunk.pending]: (state) => ({
-			...state,
-			getCurrentUserPosts: { ...state.getCurrentUserPosts, loading: true },
-		}),
-		[getCurrentUserPostsThunk.fulfilled]: (state, { payload }) => ({
-			...state,
-			currentUserPosts: payload,
-			getCurrentUserPosts: {
-				...state.getCurrentUserPosts,
-				loading: false,
-				isGet: true,
-			},
-		}),
-		[getCurrentUserPostsThunk.rejected]: (state, { payload }) => ({
-			...state,
-			getCurrentUserPosts: {
-				...state.getCurrentUserPosts,
-				loading: false,
-				getError: payload,
-			},
-		}),
 		[deletePostThunk.pending]: (state) => ({
 			...state,
 			deletePost: { ...state.deletePost, loading: true },
@@ -534,5 +473,5 @@ export const {
 	resetGetMorePosts,
 	setPrevScrollY,
 	resetGetUserPosts,
-	resetGetCurrentUserPosts,
+	resetUserPosts,
 } = post.actions;

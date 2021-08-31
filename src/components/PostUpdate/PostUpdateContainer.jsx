@@ -94,7 +94,6 @@ const PostUpdateContainer = ({ post }) => {
 			errorToggle={errorToggle}
 		/>
 	);
-	// <PostUpdate onChange={onChange} inputs={inputs} onSubmit={onSubmit} />;
 };
 
 export default PostUpdateContainer;

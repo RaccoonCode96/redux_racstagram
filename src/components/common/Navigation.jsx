@@ -10,24 +10,30 @@ import HomeIcon from '@material-ui/icons/Home';
 import AddBoxIcon from '@material-ui/icons/AddBox';
 import AddBoxOutlinedIcon from '@material-ui/icons/AddBoxOutlined';
 import { AccountCircleOutlined, LockOutlined } from '@material-ui/icons';
-import { getAllPostsThunk } from '../../redux/modules/post';
+import { getAllPostsThunk, setPrevScrollY } from '../../redux/modules/post';
 import { getRandomUserInfoThunk } from '../../redux/modules/users';
 import { useCallback } from 'react';
 
 const Navigation = () => {
-	const [isOn, setisOn] = useState(false);
-	const userPhotoUrl = useSelector(
-		(state) => state.users.currentUserInfo.userPhotoUrl
-	);
 	const { pathname } = useLocation();
+	const dispatch = useDispatch();
+
+	// menu 창 상태 및 menu toggle
+	const [isOn, setisOn] = useState(false);
 	const toggle = (event) => {
 		setisOn(!isOn);
 	};
-	const dispatch = useDispatch();
 
+	// redux state
+	const { userPhotoUrl, displayName } = useSelector(
+		(state) => state.users.currentUserInfo
+	);
+
+	// racstagram 로고 클릭시 home으로 이동 후 새롭게 글을 update (스크롤 0으로 이동)
 	const refresh = useCallback(async () => {
 		dispatch(getAllPostsThunk());
 		dispatch(getRandomUserInfoThunk());
+		await dispatch(setPrevScrollY(0));
 		window.scrollTo(0, 0);
 	}, [dispatch]);
 
@@ -67,14 +73,14 @@ const Navigation = () => {
 									alt="user_image"
 									className="nav_profile_image"
 									style={
-										pathname === '/profile' || isOn
+										pathname === `/user/${displayName}` || isOn
 											? { border: '' }
 											: { border: 'none' }
 									}
 								/>
 							)}
 							<Menu toggle={toggle} isOn={isOn} location={'nav_menu_location'}>
-								<Link to="/profile" className="menu_item">
+								<Link to={`/user/${displayName}`} className="menu_item">
 									<AccountCircleOutlined />
 									프로필
 								</Link>

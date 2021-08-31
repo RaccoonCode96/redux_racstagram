@@ -8,26 +8,33 @@ import './Post.scss';
 import React from 'react';
 import PostControlContainer from '../PostControl/PostControlContainer';
 import PostComment from '../PostComment/PostComment';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { getCommentsThunk } from '../../redux/modules/comment';
 
-const Post = ({ post, deletePost, updatePost, currentUserId }) => {
+const Post = ({ post, deletePost, updatePost }) => {
+	const history = useHistory();
+	const dispatch = useDispatch();
+	const currentUserId = useSelector((state) => state.profile.currentUser.uid);
+
+	// Post 메뉴 ON & OFF
 	const [isOn, setIsOn] = useState(false);
 	const toggle = () => {
 		setIsOn(!isOn);
 	};
+
+	// Post 메뉴의 삭제 확인
 	const [confirmIsOn, setConfirmIsOn] = useState(false);
 	const confirmToggle = () => {
 		setConfirmIsOn(!confirmIsOn);
 	};
 
-	const history = useHistory();
-	const dispatch = useDispatch();
-	const goComments = useCallback(async () => {
+	// comments 보기 이동
+	const toComments = useCallback(async () => {
 		await dispatch(getCommentsThunk(post.postId));
 		history.push({ pathname: `/${post.postId}/comments`, state: { post } });
 	}, [dispatch, post, history]);
 
+	// Post 글 축약 및 더보기
 	const shortText = post.postText.slice(0, 35).split(/(\r\n|\n|\r)/gm)[0];
 	const moreBtnCheck = () => {
 		// 35자 넘거나, 개행이 있는 경우 더보기 버튼 표시
@@ -40,14 +47,7 @@ const Post = ({ post, deletePost, updatePost, currentUserId }) => {
 			<div className="post">
 				<>
 					<div className="writer">
-						<Link
-							to={
-								currentUserId === post.userId
-									? `/profile`
-									: `/user/${post.userDisplayName}`
-							}
-							className="user_info"
-						>
+						<Link to={`/user/${post.userDisplayName}`} className="user_info">
 							<img
 								alt="user_img"
 								className="user_img"
@@ -95,7 +95,7 @@ const Post = ({ post, deletePost, updatePost, currentUserId }) => {
 						</div>
 						<div className="post_comments">
 							{post.commentArray[0] && (
-								<button className="comments_count" onClick={goComments}>
+								<button className="comments_count" onClick={toComments}>
 									댓글 {post.commentArray[0].count}개 모두 보기
 								</button>
 							)}
