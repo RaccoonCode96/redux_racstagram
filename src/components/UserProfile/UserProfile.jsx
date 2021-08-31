@@ -1,9 +1,13 @@
-import { useLocation } from 'react-router-dom';
+import { useSelector } from 'react-redux';
+import { useParams } from 'react-router-dom';
 import useWindowSize from '../../hooks/useWindowSize';
 import './UserProfile.scss';
 
 const UserProfile = ({ profileInfo, updateProfile, postCount }) => {
-	const { pathname } = useLocation();
+	const { userName } = useParams();
+	const currentUserDisplayName = useSelector(
+		(state) => state.users.currentUserInfo.displayName
+	);
 	const { userPhotoUrl, displayName, userIntro, subDisplayName, website } =
 		profileInfo;
 	const { width } = useWindowSize();
@@ -34,7 +38,7 @@ const UserProfile = ({ profileInfo, updateProfile, postCount }) => {
 				<div className="profile_info">
 					<div className="profile_info_top">
 						<div className="profile_name">{displayName}</div>
-						{pathname === '/profile' && (
+						{userName === currentUserDisplayName && (
 							<button className="profile_edit_btn" onClick={updateProfile}>
 								프로필 편집
 							</button>
