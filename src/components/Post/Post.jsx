@@ -8,12 +8,13 @@ import './Post.scss';
 import React from 'react';
 import PostControlContainer from '../PostControl/PostControlContainer';
 import PostComment from '../PostComment/PostComment';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { getCommentsThunk } from '../../redux/modules/comment';
 
-const Post = ({ post, deletePost, updatePost, currentUserId }) => {
+const Post = ({ post, deletePost, updatePost }) => {
 	const history = useHistory();
 	const dispatch = useDispatch();
+	const currentUserId = useSelector((state) => state.profile.currentUser.uid);
 
 	// Post 메뉴 ON & OFF
 	const [isOn, setIsOn] = useState(false);
@@ -46,14 +47,7 @@ const Post = ({ post, deletePost, updatePost, currentUserId }) => {
 			<div className="post">
 				<>
 					<div className="writer">
-						<Link
-							to={
-								currentUserId === post.userId
-									? `/profile`
-									: `/user/${post.userDisplayName}`
-							}
-							className="user_info"
-						>
+						<Link to={`/user/${post.userDisplayName}`} className="user_info">
 							<img
 								alt="user_img"
 								className="user_img"
