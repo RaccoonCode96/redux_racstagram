@@ -6,7 +6,7 @@ import { getImageUrlThunk } from '../../redux/modules/image';
 import {
 	createPostThunk,
 	getAllPostsThunk,
-	getCurrentUserPostsThunk,
+	getUserPostsThunk,
 } from '../../redux/modules/post';
 import { useHistory } from 'react-router-dom';
 
@@ -71,11 +71,11 @@ const PostFormContainer = () => {
 				await dispatch(getImageUrlThunk(imageBase64));
 				await dispatch(createPostThunk(text));
 				await dispatch(getAllPostsThunk());
-				await dispatch(getCurrentUserPostsThunk());
+				await dispatch(getUserPostsThunk(currentUserInfo.displayName));
 				history.replace('/');
 			}
 		},
-		[dispatch, inputs, history]
+		[dispatch, inputs, history, currentUserInfo]
 	);
 
 	return (
