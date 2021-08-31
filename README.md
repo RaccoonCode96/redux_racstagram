@@ -412,6 +412,25 @@
 
 <br/>
 
+### 2021.08.23, 24 사항
+
+- 유효성 검사 및 피드백, Material UI TextField 커스텀 스타일 적용하기
+- 유효성 검사에 따른 submit 버튼 disabled 처리
+  - https://goforit.tistory.com/215
+
+<br/>
+
+### 2021.08.25 ~ 30
+
+- 아버지 사과 과수원 수확 도와드림으로 인해 이슈 고찰 정도만 함
+- 현재 프로젝트에서의 좋아요 기능 구현의 딜레마
+  - https://goforit.tistory.com/216
+
+### 2021.08.31 사항
+
+- 좋아요 기능의 딜레마에서 빠져나오고자, getMoreLikes의 구현을 없애고 각 페이지에 getAllLikes, getCurrentUserLikes, getUserLikes가 getMoreLikes 기능을 각각 가지고 있게 구현하였습니다.
+- 하지만, 이런식으로 getMoreLikes 기능도 하나의 함수에 포함시키는 경우 해당 함수에서 분류 해야할 조건이 많아져서 해당 경우의 수를 고려한 구현시 오히려 식이 복잡해 지고 화면에 연결할 때도 복잡한 조건으로 연결하게 되는 경우가 생기게 되었습니다.
+
 # 다음에 필요한 것들
 
 - [ ] resize throttle 적용하기 (resize observer API 적용 할 생각도 있음)
@@ -430,7 +449,7 @@
 
 <br/>
 
-- [ ] profile의 웹사이트 정규표현식 match 정교화
+- [x] profile의 웹사이트 정규표현식 match 정교화
   - 사용자는 http를 안넣을 수도 있음, 그리고 그외에도 예외 사항을 더 생각해 보자
   - 아니면, 사용자가 올바른 형식을 넣을 수 있도록 알림 만들기, 결국엔 validation 임
 
@@ -448,21 +467,16 @@
 
 <br/>
 
-- [ ] 효과적인 렌더링 제한을 위해서 container에 있는 함수들을 hook으로 만들어 구현하기
-
-<br/>
-
 - [ ] route '/profile' pathName을 '/user/:userName' pathName 사용하게 통합하여 pathname에 대한 조건을 줄여 보자
-
-<br/>
-
-- [ ] profileUpdateContainer과 postFormContainer 통합 시도
 
 <br/>
 
 - [ ] 글 작성 시간 (클라이언트 단에서 뿌리는 경우 로컬 시간 변경으로 조작 가능한지 테스트 필요함)
 
 <br/>
+
+- image lazy loading 처리 및 초반 로딩에 필요하지 않은 컴포넌트들 lazy 처리 필요
+
 <br/>
 <br/>
 
