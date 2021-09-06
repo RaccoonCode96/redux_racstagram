@@ -34,7 +34,7 @@ const AppRouter = () => {
 	}, [getInitInfo]);
 
 	return (
-		<BrowserRouter>
+		<BrowserRouter basename="/redux_racstagram">
 			<Switch>
 				{isLoggedIn ? (
 					<>
