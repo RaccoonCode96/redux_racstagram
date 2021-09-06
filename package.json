@@ -18,6 +18,7 @@
 		"@testing-library/react": "^11.2.7",
 		"@testing-library/user-event": "^12.8.3",
 		"firebase": "^8.6.8",
+		"gh-pages": "^3.2.3",
 		"lodash": "^4.17.21",
 		"open-color": "^1.8.0",
 		"react": "^17.0.2",
@@ -33,8 +34,9 @@
 	"scripts": {
 		"start": "react-scripts start",
 		"build": "react-scripts build",
-		"test": "react-scripts test",
-		"eject": "react-scripts eject"
+		"predeploy": "npm run build",
+		"eject": "react-scripts eject",
+		"deploy": "gh-pages -d build"
 	},
 	"eslintConfig": {
 		"extends": [
