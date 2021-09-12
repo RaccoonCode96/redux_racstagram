@@ -1,4 +1,4 @@
-# 리팩토링 Instagram 클론 프로젝트 by Redux-toolkit
+# Racstagram_V2 (Redux-toolkit)
 
 <br/>
 
@@ -10,7 +10,7 @@
 
 <br/>
 
-이 프로젝트는 기존에 React & firebase를 통해서 만든 인스타그램 클론 프로젝트 리팩토링 프로젝트 입니다. (해당 프로젝트는 프로젝트 카테고리에서 확인 가능합니다.)
+이 프로젝트는 기존에 React & firebase를 통해서 만든 인스타그램 클론 프로젝트(Racstagram Version1) 리팩토링 프로젝트 입니다. Racstagram_v1에 비해서 더 많은 기능과 디테일을 갖추었습니다.
 
 <br/>
 
@@ -33,86 +33,98 @@
 <br/>
 <br/>
 
-## 💻 화면 개요
+## 💻 화면
+
+### Auth (로그인, 회원가입)
+
+![auth](https://user-images.githubusercontent.com/76491635/132431708-7c9036cd-94dc-43dd-9c46-0467b57d353b.gif)
+
+- 이메일 로그인
+- 이메일 회원가입
+  - 회원가입: 이메일, 비밀번호 형식에 맞아야 하고 사용자 이름의 자동 중복체크가 통과되어야 가입하기 버튼이 활성화 됩니다.
+- 소셜 로그인
+  - 구글 로그인
+  - 깃헙 로그인
 
 <br/>
 
-체크는 현재 기능적으로 구현된 상황을 의미합니다.
+### Profile (유저 프로필)
+
+![profile_cu](https://user-images.githubusercontent.com/76491635/132432083-a1bee863-ad7c-4989-84d9-0e0d7ed87f3a.gif)
+
+- 현재 유저와 다른 유저의 프로필을 담당하는 화면으로, 현재 유저만 자신의 프로필의 수정 버튼에 접근 가능합니다.
+- 프로필 Update 또한 사용자 이름 중복 체크와 프로필 사진이 무조건 존재해야 합니다.
+- 선택사항으로 SubName, Webstie, Intro를 넣을 수 있습니다.
+
+![profile_r_web](https://user-images.githubusercontent.com/76491635/132432374-9c4a9af3-e4f7-449f-b97e-9c485bd46884.gif)
+
+- 완성된 프로필 화면에서 게시글 숫자를 확인 할 수 있으며, 등록된 Website 클릭시 해당 페이지를 새탭으로 띄웁니다.
+
+![user_read](https://user-images.githubusercontent.com/76491635/132432380-c00f73d4-e55f-440e-a13a-30fea9ec7b44.gif)
+
+- 게시글의 작성자 이름, 댓글 작성자 이름을 클릭 하거나 유저 추천 영역에서 특정 사용자 보기를 클릭하면 특정 사용자의 프로필을 볼 수 있습니다. 
 
 <br/>
 
-- [x] `로딩 화면 또는 Component` : 앱 실행 초기화 작업시 로딩 또는 다른 작업시 사용할 로딩 화면 및 Component
-  - [x] 스타일링 완료
+### Post (게시글)
+
+![post_cr](https://user-images.githubusercontent.com/76491635/132432593-d5c70acd-352e-473e-aaaa-8e38dd2fa027.gif)
+![post_ud](https://user-images.githubusercontent.com/76491635/132432604-85291b84-e740-4843-98ad-c5429f2563ec.gif)
+
+- 게시글의 경우 CRUD가 가능합니다.
+- 게시글은 항상 게시글 사진과 내용이 의무적으로 필요합니다.
+- 게시글 수정은 해당 게시글 좌측 상단 메뉴를 클릭하여 모달창에서 클릭시 수정 또는 삭제가 가능합니다.
 
 <br/>
 
-- [x] `로그인 화면` : 기본 Email 로그인, Social 로그인, 로그인 에러
-  - [x] `Email 로그인` : Email, Password input, 로그인 버튼
-  - [x] `Social 로그인` : google로그인 버튼, github로그인 버튼
-  - [x] `로그인 에러` : Email로그인, google로그인, github 로그인 에러 발생시 사용자에게 출력
+### Infinite Scroll (무한 스크롤)
+
+![infinite](https://user-images.githubusercontent.com/76491635/132433019-01b3464f-20d1-4427-b262-2e6fd8cd4935.gif)
+
+- home 또는 user post 화면에서 게시글을 6개를 먼저 들고오고 무한스크롤을 통해 추가적으로 6개씩 들고 옵니다.
+- user profile의 이미지 테이블의 경우에도 무한 스크롤이 적용되어 있습니다.
 
 <br/>
 
-- [x] `회원가입 화면` : Email 로그인을 위한 계정을 만드는 화면, 회원가입 에러
-  - [x] `Email 형식 가입` : Email, Password input, 회원가입 버튼
-    - [x] 가입시 사용자 Nickname 지정 input (추가 사항)
+### Recommend (유저 추천)
+
+![recommend](https://user-images.githubusercontent.com/76491635/132432810-6dda3bd3-0d3e-445a-81f1-77f86e68d99d.gif)
+
+- 유저 추천의 경우 본인을 제외한 유저 2명을 랜덤으로 가져와 추천합니다.
+- 보기 클릭시 해당 유저의 프로필을 확인 할 수 있습니다.
+- racstagram 로고 클릭시 update 되어 다른 유저를 볼 수 있습니다.
 
 <br/>
 
-- [x] `피드 화면` : 사용 유저의 모든 게시글을 표시하는 화면
-  - [x] `게시글 박스` :
-    - [x] `타이틀 영역` : 최상단의 작성자 사진 + 이름, 게시글 수정 탭
-      - [x] `편집버튼` : 글 수정하기, 삭제하기 모달 -> 해당 버튼 누르면 삭제 또는 수정 페이지로 이동(아니면 모달이 수정하는 모달로 변경)
-        - [x] `삭제하기`
-        - [x] `수정하기`
-    - [x] `사진 영역` : 기존에는 1개만 가능했음 (욕심내면, 여러개 슬라이드 형식으로 가능하게 하고 싶음)
-    - [x] `내용 영역` : 게시글 내용
+### Comment (댓글)
+
+![comments](https://user-images.githubusercontent.com/76491635/132433263-cfbd8ea7-bfff-4168-b9e6-baeff0f59667.gif)
+
+- 댓글의 경우 CREATE와 DELTE 만 가능합니다.
+- 해당 게시글의 '댓글 0개 모두 보기' 또는 중앙에 있는 말풍선을 클릭하면 댓글을 모두 볼수 있습니다.
+- 최근 2개의 댓글은 게시글에서 바로 확인할 수 있습니다.
+- 댓글은 내용이 입력이 되어야 작성 버튼이 활성화 되고, 현재 유저만 자신의 댓글 오른쪽에 휴지통 모양의 삭제 버튼이 나타나며 접근 가능합니다.
 
 <br/>
 
-- [x] `글 작성 화면` : 글을 작성하는 화면
-  - [x] `이미지 리사이징`
+### Like, MorePostContent (좋아요, 게시글 내용 더 보기)
+
+![like_more](https://user-images.githubusercontent.com/76491635/132433670-3bd0c5c8-209b-4981-9631-0fb96d67fc5d.gif)
+
+- 좋아요는 모든 게시물에 좋아요를 ON/OFF 할 수 있습니다.
+- 모든 게시글의 내용은 35자 또는 개행 포함시 그 부분까지로 짧게 나타나며, 게시글 내용 더보기 버튼이 활성화 되어 클릭시 모든 내용을 볼 수 있습니다. 
+
 
 <br/>
 
-- [x] `현재 유저 프로필 화면` : 로그인한 현재 유저의 게시물과 대략적인 프로필를 표시하는 화면
-  - [x] `유저 프로필 수정하기` : 유저 프로필을 수정하는 화면 (userImage, userDisplayname, userIntro)
-  - [x] `작성 글` : 유저가 작성한 작성 글의 image 표 -> 클릭시 post detail
-    - [x] `작성 글 detail view` : image 표에서 해당 이미지 클릭시 해당 글 detail view 화면
-  - [x] `로그아웃`
+## 아쉬운 부분
 
-<br/>
-
-- [x] `다른 유저 프로필 화면` : 다른 유저가 작성한 글의 유저 이름을 클릭하여 해당 유저의 프로필 화면 구현
-  - [x] `프로필 보기` : userImage, userDisplayname, userIntro
-  - [x] `작성 글` : 유저가 작성한 작성 글의 image 표 -> 클릭시 post detail
-    - [x] `작성 글 detail view` : image 표에서 해당 이미지 클릭시 해당 글 detail view 화면
-
-<br/>
-
-- [x] `네비게이션 바` : 앱로고 - 피드(Home)탭 - 글 작성탭 - 현재 유저 프로필(프로필 수정, 프로필 이동, 로그아웃) 탭
-  - [x] Navigation-profile 눌렀을 때 로그아웃, 프로필 수정, 프로필 이동 드롭 다운 필요
-
-<br/>
-
-- [x] `무한 스크롤`
-  - [x] 유저 스크롤 위치 기억 (뒤로가기가 아닌 페이지 변해도 기억 함)
-
-<br/>
-
-- [x] `랜덤 유저 추천`
-
-<br/>
-
-- [x] `댓글 기능`
-
-<br/>
-
-- [x] `자동 중복 체크`
-
-<br/>
-
-- [x] `좋아요 기능`
+- propTypes나 TypeScript를 사용하지 않아서, 다른 개발자가 보기에 어떤 타입이 오는지 이해하기 어렵습니다.
+- 전체적으로 프로젝트 컴포넌트 구성에 대한 지도를 제작해보지 못해서 아쉽습니다. (어떻게 연결되어 있는지를 다른 개발자가 잘 이해할 수 있도록 시각적인 그림을 제시하고 싶었습니다.)
+- 다른 브라우저에서의 검증이 되지 않았습니다.
+- 테스트 코드를 작성하지 않았기 때문에 지속 가능한 테스트 환경이 없습니다.
+- Firebase말고 Nodejs, express 등과 같은 백엔드와의 연결 구조로 만들지 않은 것이 아쉽습니다.
+- 깔끔하고, 알아보기 쉬운 코드를 작성하지 못한 점이 아쉽습니다. 
 
 <br/>
 <br/>
@@ -431,58 +443,11 @@
 - 좋아요 기능의 딜레마에서 빠져나오고자, getMoreLikes의 구현을 없애고 각 페이지에 getAllLikes, getCurrentUserLikes, getUserLikes가 getMoreLikes 기능을 각각 가지고 있게 구현하였습니다.
 - 하지만, 이런식으로 getMoreLikes 기능도 하나의 함수에 포함시키는 경우 해당 함수에서 분류 해야할 조건이 많아져서 해당 경우의 수를 고려한 구현시 오히려 식이 복잡해 지고 화면에 연결할 때도 복잡한 조건으로 연결하게 되는 경우가 생기게 되었습니다.
 
-# 다음에 필요한 것들
-
-- [ ] resize throttle 적용하기 (resize observer API 적용 할 생각도 있음)
-
-<br/>
-
-- [ ] 새 게시글 보기 버튼 또는 로고 클릭시 데이터 진입점 갱신 기능 구현하기
-
-<br/>
-
-- [ ] validation 구현 필요함
-  - input 같은 경우, display none 적용시 browser에서 제공하는 validation 말풍선이 뜨지 않기 때문에 따로 구현 필요함
-  - required를 사용하지 말고, submit 함수 단에서 input값이 들어 왔는지 체크하여 validation error 구현 필요
-  - [ ] 각 input 별로 데이터 형태에 따른 구체적인 조건 설정이 필요함
-    - [ ] 이메일, 패스워드, 유저 네임, 글 내용의 형식(조건, 제한) 지정 필요
-
-<br/>
-
-- [x] profile의 웹사이트 정규표현식 match 정교화
-  - 사용자는 http를 안넣을 수도 있음, 그리고 그외에도 예외 사항을 더 생각해 보자
-  - 아니면, 사용자가 올바른 형식을 넣을 수 있도록 알림 만들기, 결국엔 validation 임
-
-<br/>
-
-- [ ] 스켈레톤 UI 필요
-
-<br/>
-
-- [ ] propType으로 type 지정 또는 typeScript 도입
-
-<br/>
-
-- [ ] sementic tag 적절한 태그로 수정하기 (검토)
-
-<br/>
-
-- [ ] route '/profile' pathName을 '/user/:userName' pathName 사용하게 통합하여 pathname에 대한 조건을 줄여 보자
-
-<br/>
-
-- [ ] 글 작성 시간 (클라이언트 단에서 뿌리는 경우 로컬 시간 변경으로 조작 가능한지 테스트 필요함)
-
-<br/>
-
-- image lazy loading 처리 및 초반 로딩에 필요하지 않은 컴포넌트들 lazy 처리 필요
-
-<br/>
-<br/>
 
 # 나중에 구현하고 싶은 기술
 
 <br/>
 
 - [ ] 유저 이름 검색을 통한 프로필 보기 (이름 검색)
+- [ ] 익스플로어 화면 (탐색 페이지)
 - [ ] 게시글 장소 태그로 장소 지도 보기 (지도 API)
