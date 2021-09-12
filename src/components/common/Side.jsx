@@ -29,7 +29,7 @@ const Side = () => {
 				))}
 			<div className="footer">
 				<div className="copy">
-					© {new Date().getFullYear()} RACSTAGRAM FROM TAEYOUNG (RACCOONCODE)
+					© 2021 RACSTAGRAM FROM TAEYOUNG (RACCOONCODE)
 				</div>
 				<a className="link" href="https://goforit.tistory.com/">
 					Blog
