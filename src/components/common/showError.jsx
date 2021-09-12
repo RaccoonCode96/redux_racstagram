@@ -4,7 +4,7 @@ import './ShowError.scss';
 
 // Auth 전용 Error 표시 Component
 const ShowError = () => {
-	// redux state
+	// redux state (firebase 로그인 error 상태를 받아옴)
 	const errorSelector = useSelector((state) => state.auth.errorSelector);
 
 	// redux state로 불러온 error code를 지정한 message로 변환
