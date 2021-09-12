@@ -1,6 +1,7 @@
 import { TextField } from '@material-ui/core';
 import './CommentForm.scss';
 
+// 댓글 입력 Form
 const CommentForm = ({ onChange, comment, onSubmit }) => {
 	return (
 		<form className="comment_form" onSubmit={onSubmit}>
