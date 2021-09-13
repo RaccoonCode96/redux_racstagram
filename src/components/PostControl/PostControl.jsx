@@ -3,6 +3,7 @@ import { faHeart as farHeart } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import './PostControl.scss';
 
+// 좋아요와 댓글 보기로 이동 역할을 하는 영역
 const PostControl = ({ postId, toComments, isLike, onChange }) => {
 	return (
 		<div className="post_control_container">

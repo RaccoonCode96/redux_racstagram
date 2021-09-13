@@ -18,6 +18,7 @@ const initialState = {
 	},
 };
 // Async
+// firebase storage에 image 저장 및 url 요청 비동기 함수
 export const getImageUrlThunk = createAsyncThunk(
 	'redux-racstagram/images/getImageUrlThunk',
 	async (imageBase64, thunkAPI) => {
@@ -44,6 +45,7 @@ export const getImageUrlThunk = createAsyncThunk(
 	}
 );
 
+// 특정 img url를 통해서 storage에서 img를 없애는 비동기 함수
 export const deleteImageUrlThunk = createAsyncThunk(
 	'redux-racstagram/images/deleteImageUrlThunk',
 	async (imageUrl, thunkAPI) => {
@@ -59,7 +61,6 @@ export const deleteImageUrlThunk = createAsyncThunk(
 );
 
 // Slice
-// updateSelector : profile, post Update를 구분 해주는 역할
 const image = createSlice({
 	name: 'redux-racstagram/images',
 	initialState,

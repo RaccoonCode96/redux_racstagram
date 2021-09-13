@@ -34,6 +34,8 @@ const initialState = {
 };
 
 // Async
+// likes 정보 더 가져오기 (무한 스크롤)
+// post와 직접적으로 연관성이 높기 때문에 post의 type에 따라서 실행이 달라짐
 export const getMoreLikesThunk = createAsyncThunk(
 	'redux-racstagram/like/getMoreLikesThunk',
 	async ({ postDate, type, userName }, thunkAPI) => {
@@ -69,6 +71,7 @@ export const getMoreLikesThunk = createAsyncThunk(
 	}
 );
 
+// 6개의 likes 정보 가져오기 (유저 상관 없이)
 export const getAllLikesThunk = createAsyncThunk(
 	'redux-racstagram/like/getAllLikesThunk',
 	async (_, thunkAPI) => {
@@ -98,6 +101,7 @@ export const getAllLikesThunk = createAsyncThunk(
 	}
 );
 
+// 특정 유저의 likes 6개 가져오기
 export const getUserLikesThunk = createAsyncThunk(
 	'redux-racstagram/like/getUserLikesThunk',
 	async (userName, thunkAPI) => {
@@ -128,6 +132,7 @@ export const getUserLikesThunk = createAsyncThunk(
 	}
 );
 
+// Like On 설정 하기
 export const setLikeOnThunk = createAsyncThunk(
 	'redux-racstagram/like/setLikeOnThunk',
 	async ({ postId, type }, thunkAPI) => {
@@ -169,6 +174,7 @@ export const setLikeOnThunk = createAsyncThunk(
 	}
 );
 
+// Like Off 설정하기
 export const setLikeOffThunk = createAsyncThunk(
 	'redux-racstagram/like/setLikeOffThunk',
 	async ({ postId, type }, thunkAPI) => {

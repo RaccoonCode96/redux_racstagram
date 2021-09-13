@@ -8,6 +8,8 @@ import users from './users';
 import image from './image';
 import comment from './comment';
 import like from './like';
+
+// combineReducers
 const reducer = combineReducers({
 	init,
 	auth,
@@ -18,96 +20,5 @@ const reducer = combineReducers({
 	comment,
 	like,
 });
-
-/* 
-state = {
-  init :{
-    isInit: false,
-  },
-  auth :{
-    newAccount: false,
-	  errorSelector: '',
-    emailSignUp: {
-      isSignUp: false,
-      loading: false,
-      signUpError: '',
-    },
-    emailSignIn: {
-      isSignIn: false,
-      loading: false,
-      signInError: '',
-    },
-    socialSignIn: {
-      isSignIn: false,
-      loading: false,
-      signInError: '',
-    },
-  },
-  post :{
-    postList: [],
-    postSelector: '',
-    updatePost: {
-      isUpdate: false,
-      loading: false,
-      updateError: '',
-    },
-    deletePost: {
-      isDelete: false,
-      loading: false,
-      deleteError: '',
-    },
-    getPostList: {
-      isGet: false,
-      loading: false,
-      getError: '',
-    },
-    setPostObj: {
-      isSet: false,
-      loading: false,
-      setError: '',
-    },
-  },
-  profile :{
-    updateProfile: {
-		  loading: false,
-		  isUpdate: false,
-		  updateError: '',
-	  },
-    currentUser: {
-      isSignIn: false,
-      photoURL: '',
-      displayName: '',
-      uid: '',
-    },
-    updateDisplayName: {
-      isUpdate: false,
-      loading: false,
-      updateError: '',
-    },
-    updatePhotoUrl: {
-      isUpdate: false,
-      loading: false,
-      updateError: '',
-    },
-  },
-  common :{
-    updateSelector: '',
-    getImageUrl: {
-      isGet: false,
-      loading: false,
-      getError: '',
-      imageUrl: '',
-    },
-    deleteImageUrl: {
-      loading: false,
-      isDelete: false,
-      deleteError: '',
-    },
-  },
-  users :{
-    
-  }
-}
- */
 
 export default reducer;

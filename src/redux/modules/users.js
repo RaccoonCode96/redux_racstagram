@@ -54,6 +54,7 @@ const initialState = {
 };
 
 // async
+// 제일 최근의 유저 숫자를 가져옴 (가입 순으로 붙여지는 숫자, 랜덤 유저 추천시 필요)
 export const getUserMaxCountThunk = createAsyncThunk(
 	'redux-racstagram/users/getUserMaxCountThunk',
 	async (_, thunkAPI) => {
@@ -70,6 +71,8 @@ export const getUserMaxCountThunk = createAsyncThunk(
 		}
 	}
 );
+
+// 랜덤으로 유저 정보 가져오기
 export const getRandomUserInfoThunk = createAsyncThunk(
 	'redux-racstagram/users/getRandomUserInfoThunk',
 	async (_, thunkAPI) => {
@@ -102,6 +105,7 @@ export const getRandomUserInfoThunk = createAsyncThunk(
 	}
 );
 
+// 이름 중복 확인 요청
 export const checkDisplayNameThunk = createAsyncThunk(
 	'redux-racstagram/users/checkDisplayNameThunk',
 	async (userName, thunkAPI) => {
@@ -118,6 +122,7 @@ export const checkDisplayNameThunk = createAsyncThunk(
 	}
 );
 
+// 특정 유저 정보 가져오기
 export const getUserInfoThunk = createAsyncThunk(
 	'redux-racstagram/users/getUserInfoThunk',
 	async (userName, thunkAPI) => {
@@ -134,7 +139,7 @@ export const getUserInfoThunk = createAsyncThunk(
 	}
 );
 
-// userId, userPhotoUrl, userDisplayName, userIntro
+// 현재 유저 정보 설정 하기 (유저 정보 update시에 사용 됨)
 export const setCurrentUserInfoThunk = createAsyncThunk(
 	'redux-racstagram/users/setCurrentUserInfoThunk',
 	async (payload, thunkAPI) => {
@@ -172,6 +177,7 @@ export const setCurrentUserInfoThunk = createAsyncThunk(
 	}
 );
 
+// 현재 유저 정보 가져오기 (로그인시 필요함)
 export const getCurrentUserInfoThunk = createAsyncThunk(
 	'redux-racstagram/users/getCurrentUserInfoThunk',
 	async (_, thunkAPI) => {

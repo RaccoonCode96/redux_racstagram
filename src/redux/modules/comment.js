@@ -33,6 +33,7 @@ const initialState = {
 };
 
 // async
+// 댓글 작성 요청 비동기 함수
 export const setCommentThunk = createAsyncThunk(
 	'redux-racstagram/comment/setCommentThunk',
 	async ({ comment, postId }, thunkAPI) => {
@@ -83,6 +84,7 @@ export const setCommentThunk = createAsyncThunk(
 	}
 );
 
+// 댓글 정보 요청 비동기 함수
 export const getCommentsThunk = createAsyncThunk(
 	'redux-racstagram/comment/getCommentsThunk',
 	async (postId, thunkAPI) => {
@@ -103,6 +105,7 @@ export const getCommentsThunk = createAsyncThunk(
 	}
 );
 
+// 특정 게시글의 댓글들 모두 삭제 비동기 함수
 export const deleteCommentsThunk = createAsyncThunk(
 	'redux-racstagram/comment/deleteCommentsThunk',
 	async (postId, thunkAPI) => {
@@ -122,6 +125,7 @@ export const deleteCommentsThunk = createAsyncThunk(
 	}
 );
 
+// 특정 게시글의 특정 댓글 삭제 비동기 함수
 export const deleteCommentThunk = createAsyncThunk(
 	'redux-racstagram/comment/deleteCommentThunk',
 	async ({ commentId, postId }, thunkAPI) => {
@@ -157,7 +161,6 @@ export const deleteCommentThunk = createAsyncThunk(
 );
 
 // slice
-
 const comment = createSlice({
 	name: 'redux-racstagram/comment',
 	initialState,

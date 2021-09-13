@@ -37,9 +37,12 @@ const initialState = {
 	},
 };
 
+// user profile img가 없는 경우 사용하는 img url
 export const DEFAULT_USER_IMAGE =
 	'https://firebasestorage.googleapis.com/v0/b/rwitter-914af.appspot.com/o/user_icon.png?alt=media&token=f4e74544-2aff-4657-aa59-117adb4aad65';
+
 // async
+// 로그아웃 요청 비동기 함수
 export const signOutThunk = createAsyncThunk(
 	'redux-racstagram/auth/signOutThunk',
 	async (_, thunkAPI) => {
@@ -60,6 +63,8 @@ export const signOutThunk = createAsyncThunk(
 		}
 	}
 );
+
+// 이메일 가입 요청 비동기 함수
 export const emailSignUpThunk = createAsyncThunk(
 	'redux-racstagram/auth/emailSignUpThunk',
 	async (data, thunkAPI) => {
@@ -78,6 +83,7 @@ export const emailSignUpThunk = createAsyncThunk(
 	}
 );
 
+// 이메일 로그인 요청 비동기 함수
 export const emailSignInThunk = createAsyncThunk(
 	'redux-racstagram/auth/emailSignInThunk',
 	async (data, thunkAPI) => {
@@ -107,6 +113,7 @@ export const emailSignInThunk = createAsyncThunk(
 	}
 );
 
+// 소셜 로그인 요청 비동기 함수
 export const socialSignInThunk = createAsyncThunk(
 	'redux-racstagram/auth/SocialSignInThunk',
 	async (name, thunkAPI) => {

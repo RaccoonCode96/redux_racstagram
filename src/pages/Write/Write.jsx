@@ -1,6 +1,7 @@
 import Navigation from '../../components/common/Navigation';
 import PostFormContainer from '../../components/PostForm/PostFormContainer';
 
+// 게시글 작성 page
 const Write = () => {
 	return (
 		<>

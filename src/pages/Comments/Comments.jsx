@@ -6,10 +6,14 @@ import Navigation from '../../components/common/Navigation';
 import Side from '../../components/common/Side';
 import { Link } from 'react-router-dom';
 
+// 댓글 페이지
 const Comments = () => {
+	// 해당 글 정보를 가져옴
 	const {
 		state: { post },
 	} = useLocation();
+
+	// 선택한 post에 해당하는 댓글들 Redux state (요청으로 인해 가져온 댓글들)
 	const comments = useSelector((state) => state.comment.comments);
 
 	return (

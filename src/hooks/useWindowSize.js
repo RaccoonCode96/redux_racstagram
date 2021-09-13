@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react';
 
+// 브라우저 창 크기가 변하는 경우 크기 값을 반환하는 hook
 const useWindowSize = () => {
 	const [windowSize, setWindowSize] = useState({
 		width: undefined,

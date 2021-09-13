@@ -67,6 +67,7 @@ const initialState = {
 };
 
 // Async
+// Post db의 userInfo update 요청 (작성자 이름, 작성자 이미지)
 export const updatePostsUserInfoThunk = createAsyncThunk(
 	'redux-racstagram/post/updatePostsUserInfoThunk',
 	async (info, thunkAPI) => {
@@ -96,6 +97,7 @@ export const updatePostsUserInfoThunk = createAsyncThunk(
 	}
 );
 
+// 게시글의 내용을 update 요청
 export const updatePostThunk = createAsyncThunk(
 	'redux-racstagram/post/updatePostThunk',
 	async (inputs, thunkAPI) => {
@@ -135,6 +137,7 @@ export const updatePostThunk = createAsyncThunk(
 	}
 );
 
+// 게시글 삭제 요청 (동시에 관련된 likes, comments도 모두 삭제)
 export const deletePostThunk = createAsyncThunk(
 	'redux-racstagram/post/deletePostThunk',
 	async (post, thunkAPI) => {
@@ -162,6 +165,7 @@ export const deletePostThunk = createAsyncThunk(
 	}
 );
 
+// 게시글 작성 요청
 export const createPostThunk = createAsyncThunk(
 	'redux-racstagram/post/createPostThunk',
 	async (text, thunkAPI) => {
@@ -204,6 +208,7 @@ export const createPostThunk = createAsyncThunk(
 	}
 );
 
+// 더 많은 게시글 요청 (무한 스크롤)
 export const getMorePostsThunk = createAsyncThunk(
 	'redux-racstagram/post/getMorePostsThunk',
 	async ({ postDate, type, userName }, thunkAPI) => {
@@ -233,6 +238,7 @@ export const getMorePostsThunk = createAsyncThunk(
 	}
 );
 
+// 6개의 글을 가져오기 요청 (유저 상관 없이, 날짜 순)
 export const getAllPostsThunk = createAsyncThunk(
 	'redux-racstagram/post/getAllPostsThunk',
 	async (_, thunkAPI) => {
@@ -256,6 +262,7 @@ export const getAllPostsThunk = createAsyncThunk(
 	}
 );
 
+// 특정 유저 게시글 6개 가져오기 요청
 export const getUserPostsThunk = createAsyncThunk(
 	'redux-racstagram/post/getUserPostsThunk',
 	async (userName, thunkAPI) => {

@@ -50,7 +50,7 @@ export const checkEmail = (email) => {
 	return res;
 };
 
-//
+// website 형식 확인 및 결과 메세지, 색상 반환
 export const useCheckWebsite = (website) => {
 	let color = '';
 	let message = '';
@@ -84,6 +84,7 @@ export const useCheckWebsite = (website) => {
 	};
 };
 
+// 이름 중복 확인 및 결과 메세지 반환
 export const useCheckDisplayName = (prevDisplayName, displayName) => {
 	const exist = useSelector((state) => state.users.checkDisplayName.exist);
 

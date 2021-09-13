@@ -13,20 +13,30 @@ import { useHistory } from 'react-router-dom';
 const PostFormContainer = () => {
 	const dispatch = useDispatch();
 	const history = useHistory();
+
+	// 현재 유저 정보 가져오기
 	const currentUserInfo = useSelector((state) => state.users.currentUserInfo);
+
+	// 게시글 수정을 위한 input state
 	const [inputs, setInputs] = useState({
 		imageBase64: '',
 		text: '',
 		preventSubmit: false,
 	});
+
+	// 게시글 수정에서 발생하는 오류 state
 	const [postFormError, setPostFormError] = useState('');
+
+	// error confirm 창 (외부 또는 확인 클릭 시 false로 변경)
 	const errorToggle = useCallback(() => {
 		setPostFormError(!postFormError);
 	}, [postFormError]);
 
+	// 게시글 input 항목 onChange event Handler
 	const onChange = useCallback(
 		(event) => {
 			const { name, value, files } = event.target;
+			// input type file인 경우
 			if (name === 'file') {
 				if (files[0]) {
 					const theFile = files[0];
@@ -48,6 +58,7 @@ const PostFormContainer = () => {
 					// 이미지 선택이 취소 되어 없는 경우
 					setInputs({ ...inputs, imageBase64: '' });
 				}
+				// input type text인 경우
 			} else if (name === 'text') {
 				setInputs({ ...inputs, text: value });
 			}
@@ -55,6 +66,7 @@ const PostFormContainer = () => {
 		[inputs]
 	);
 
+	// onSubmit event Handler (게시글 작성 요청)
 	const onSubmit = useCallback(
 		async (event) => {
 			event.preventDefault();

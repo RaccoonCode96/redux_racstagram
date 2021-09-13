@@ -2,6 +2,7 @@ import { faGithub, faGoogle } from '@fortawesome/free-brands-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import './SocialSignIn.scss';
 
+// 소셜 로그인 컴포넌트
 const SocialSignIn = ({ onSocialClick }) => {
 	return (
 		<>

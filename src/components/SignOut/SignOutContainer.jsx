@@ -7,6 +7,8 @@ import { signOutThunk } from '../../redux/modules/auth';
 const SignOutContainer = () => {
 	const history = useHistory();
 	const dispatch = useDispatch();
+
+	// 로그아웃 실행 함수
 	const onSignOutClick = useCallback(async () => {
 		await dispatch(signOutThunk());
 		history.push('/');

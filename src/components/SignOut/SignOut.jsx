@@ -1,11 +1,14 @@
 import { useState } from 'react';
 import Confirm from '../common/Confirm';
 
+// 로그아웃 컴포넌트
 const SignOut = ({ onSignOutClick }) => {
+	// 로그아웃 confirm On/Off
 	const [isOn, setIsOn] = useState(false);
 	const toggle = () => {
 		setIsOn(!isOn);
 	};
+
 	return (
 		<>
 			<span className="profile_btn" onClick={toggle}>

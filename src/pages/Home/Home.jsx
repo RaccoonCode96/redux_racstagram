@@ -10,6 +10,7 @@ import {
 	getMorePostsThunk,
 } from '../../redux/modules/post';
 
+// 모든 게시글을 보여주는 Home Page
 const Home = () => {
 	const dispatch = useDispatch();
 

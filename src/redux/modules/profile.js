@@ -17,7 +17,7 @@ const initialState = {
 };
 
 // Async
-
+// 프로필 내용 수정 요청
 export const updateProfileThunk = createAsyncThunk(
 	'redux-racstagram/profile/updateProfileThunk',
 	async (inputs, thunkAPI) => {
@@ -72,7 +72,9 @@ const profile = createSlice({
 	name: 'redux-racstagram/profile',
 	initialState,
 	reducers: {
+		// profile 관련 상태 reset (로그아웃시 필요)
 		resetProfile: () => ({ ...initialState }),
+		// 로그인 된 현재 유저 정보 설정
 		setCurrentUser: {
 			reducer: (state, { payload }) => ({
 				...state,

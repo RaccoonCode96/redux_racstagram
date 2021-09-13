@@ -1,3 +1,5 @@
+// 겹치지 않는 랜덤 숫자 배열 생성기
+
 const useRandom = (count, range, except) => {
 	if (count > range - 1 || except === undefined) {
 		return [];

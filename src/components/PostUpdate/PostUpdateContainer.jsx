@@ -6,11 +6,14 @@ import { getImageUrlThunk } from '../../redux/modules/image';
 import { updatePostThunk } from '../../redux/modules/post';
 import PostForm from '../PostForm/PostForm';
 
+// 게시글 수정 컴포넌트의 컨테이너
 const PostUpdateContainer = ({ post }) => {
 	const history = useHistory();
 	const dispatch = useDispatch();
 	const currentUserInfo = useSelector((state) => state.users.currentUserInfo);
+
 	const { postImageUrl, postText, postId, userId } = post;
+
 	const [inputs, setInputs] = useState({
 		imageBase64: postImageUrl,
 		prevImageUrl: postImageUrl,
@@ -20,14 +23,20 @@ const PostUpdateContainer = ({ post }) => {
 		userId,
 		preventSubmit: false,
 	});
+
+	// 수정 error confirm 메세지 state
 	const [postFormError, setPostFormError] = useState('');
+
+	// 수정 error confirm 상태 변경 함수
 	const errorToggle = useCallback(() => {
 		setPostFormError(!postFormError);
 	}, [postFormError]);
 
+	// 게시글 수정 onChange event Handler
 	const onChange = useCallback(
 		(event) => {
 			const { name, value, files } = event.target;
+			// input type이 file인 경우
 			if (name === 'file') {
 				if (files[0]) {
 					const theFile = files[0];
@@ -47,6 +56,7 @@ const PostUpdateContainer = ({ post }) => {
 				} else {
 					setInputs({ ...inputs, imageBase64: inputs.prevImageUrl });
 				}
+				// input type이 text인 경우
 			} else if (name === 'text') {
 				setInputs({ ...inputs, text: value });
 			}
@@ -54,6 +64,7 @@ const PostUpdateContainer = ({ post }) => {
 		[inputs]
 	);
 
+	// 게시글 수정 요청 onSubmit Event Handler
 	const onSubmit = useCallback(
 		async (event) => {
 			event.preventDefault();

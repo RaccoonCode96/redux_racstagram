@@ -7,15 +7,19 @@ import { useEffect } from 'react';
 import './Auth.scss';
 import { useState } from 'react';
 
+// 로그인 또는 가입 page
 const Auth = () => {
 	const dispatch = useDispatch();
+	// 로그인 페이지인지 가입 페이지인기 구분하는 state (false: isn't newAccount -> 로그인)
 	const [newAccount, setNewAccount] = useState(false);
 
+	// 로그인, 가입페이지 구분 state 변경 함수
 	const toggleAccount = () => {
 		setNewAccount(!newAccount);
 		dispatch(selectError(''));
 	};
 
+	// Auth 페이지 unmount시 Auth와 관련된 redux state reset
 	useEffect(() => {
 		return () => {
 			dispatch(resetAuth());

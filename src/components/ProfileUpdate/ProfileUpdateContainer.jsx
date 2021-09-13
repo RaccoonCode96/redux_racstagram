@@ -16,8 +16,10 @@ const ProfileUpdateContainer = ({ profileInfo }) => {
 	const { userPhotoUrl, displayName, userIntro, subDisplayName, website } =
 		profileInfo;
 
+	// 유저 이름이 db에 존재하는지를 나타내는 state (0번 index: 검사한 이름, 1번 index: 검사한 이름의 중복 검사 결과)
 	const exist = useSelector((state) => state.users.checkDisplayName.exist);
 
+	// 수정할 Profile input 값 관리하는 state
 	const [inputs, setInputs] = useState({
 		userIntro,
 		displayName,
@@ -32,6 +34,7 @@ const ProfileUpdateContainer = ({ profileInfo }) => {
 		prevWebsite: website,
 	});
 
+	// 이름 중복 검사를 요청하는 함수
 	const check = useCallback(
 		(displayName) => {
 			if (inputs.prevDisplayName !== displayName) {
@@ -42,6 +45,7 @@ const ProfileUpdateContainer = ({ profileInfo }) => {
 		[dispatch, inputs]
 	);
 
+	// 이름 중복 검사 요청함수를 가진 debounce 함수
 	const debounceCheck = useMemo(
 		() =>
 			debounce((displayName) => {
@@ -50,14 +54,17 @@ const ProfileUpdateContainer = ({ profileInfo }) => {
 		[check]
 	);
 
+	// Profile 관련 input의 onChange Event Handler
 	const onChange = useCallback(
 		(event) => {
 			const { name, value, files } = event.target;
+			// input name이 userIntro 인 경우
 			if (name === 'userIntro') {
 				setInputs({
 					...inputs,
 					userIntro: value,
 				});
+				// input name이 file 인 경우 (type: file)
 			} else if (name === 'file') {
 				if (files[0]) {
 					const theFile = files[0];
@@ -81,17 +88,22 @@ const ProfileUpdateContainer = ({ profileInfo }) => {
 					// 이미지 선택이 취소되어 없는 경우
 					setInputs({ ...inputs, imageBase64: inputs.prevImageUrl });
 				}
+				// input name이 displayName인 경우
 			} else if (name === 'displayName') {
 				setInputs({
 					...inputs,
 					displayName: value,
 				});
 				debounceCheck(value);
+
+				// input name이 SubDisplayName인 경우
 			} else if (name === 'subDisplayName') {
 				setInputs({
 					...inputs,
 					subDisplayName: value,
 				});
+
+				// input name이 website인 경우
 			} else if (name === 'website') {
 				setInputs({
 					...inputs,
@@ -102,6 +114,7 @@ const ProfileUpdateContainer = ({ profileInfo }) => {
 		[inputs, debounceCheck]
 	);
 
+	// 최종 Profile 수정 요청 onSubmit event handler
 	const onSubmit = useCallback(
 		async (event) => {
 			event.preventDefault();
@@ -141,6 +154,8 @@ const ProfileUpdateContainer = ({ profileInfo }) => {
 			) {
 				history.replace(`/user/${prevDisplayName}`);
 				return;
+
+				// 변경이 하나라도 있는 경우
 			} else {
 				setInputs({ ...inputs, preventSubmit: true });
 				if (imageBase64) {

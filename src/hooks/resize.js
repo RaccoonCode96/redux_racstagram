@@ -1,3 +1,4 @@
+// img 비율에 맞게 파일 크기를 resize 시켜주는 함수
 const resize = (img, maxSize) => {
 	let canvas = document.createElement('canvas'),
 		max_size = maxSize,
