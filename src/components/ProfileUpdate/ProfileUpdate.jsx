@@ -108,7 +108,6 @@ const ProfileUpdate = ({ onChange, inputs, onSubmit }) => {
 							minRows={3}
 							maxRows={4}
 							onChange={onChange}
-							required
 							placeholder="소개를 작성해 주세요. (최대 4줄 및 64자)"
 							className="input_user_intro"
 							multiline
