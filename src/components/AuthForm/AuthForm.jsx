@@ -44,6 +44,7 @@ const AuthForm = ({
 				className="input"
 				label="Email"
 				size="small"
+				placeholder="이메일 형식"
 			/>
 			<TextField
 				className="input"
@@ -52,6 +53,7 @@ const AuthForm = ({
 				type="password"
 				label="Password"
 				size="small"
+				placeholder="숫자, 영어 포함 8글자 이상(특수 문자X)"
 				value={password}
 				onChange={onChange}
 			/>
