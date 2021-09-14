@@ -6,6 +6,7 @@
 
 <br/>
 
+
 ## 📄 프로젝트 설명
 
 <br/>
@@ -14,28 +15,63 @@
 
 <br/>
 
-## 상태 관리
+### 상태 관리
 
 해당 프로젝트에서는 `redux-toolkit(Slice 모델)`을 사용하여 상태관리를 구현하고 있습니다.
 
 <br/>
 
-## 스타일
+### 스타일
 
 현재 SCSS를 채택하여 css 작업을 진행중에 있으며, 부분적으로 Material UI를 사용하고 있습니다.
 대부분의 경우에는, Material UI와 React 호환성 문제로 대부분은 SCSS로 직접 구현하고 있습니다.
 
 <br/>
 
-- 여러가지 다른 활동을 자세히 보고 싶으시다면, [ '라쿤코드의 개발블로그'](https://goforit.tistory.com/)에서 확인 가능합니다.
+### Back End (Server, DB)
+
+Firebase의 Auth, firestore, storage 서비스를 활용하였습니다.  
+
+<br/>
+
+### 주요 기능
+
+- 이메일 로그인, 이메일 회원가입, 소셜 로그인
+- 게시글 CRUD
+- 좋아요 On/Off (Read , Update)
+- 댓글 (Create, Delete)
+- 유저 정보 CRUD
+    - 사용자 이름 (Display Name, 의무)
+    - 사용자 프로필 사진 (Profile Image, 의무)
+    - 사용자 소개 (선택)
+    - 사용자 Sub 이름 (선택)
+    - 사용자 Website (선택)
+- 무한 스크롤
+- 랜덤 유저 추천
+
+<br/>
+
+### 주요 사항
+
+- Redux의 많은 코드 작성 방식 때문에 Redux-Actions도 사용해 보았지만, 만족하지 못하여 **Redux-Toolkit을 활용하여 좀 더 효율적인 코드 양으로 개발을 진행하였습니다.**
+- **특히 사용자 관점에서 접근하여 "무한 스크롤의 스크롤 위치 기억" 과 "좋아요 기능만의 렌더링"을 위해서 상태 관리 코드를 구상하고 프로젝트로 완성했습니다.**
+- **Front-End 뿐만 아니라 Firebase의 DB를 통해 게시글(Posts), 댓글(Comments), 좋아요(Likes), User(사용자) Data를 어떻게 구축하고 관리할지 고민하고 프로젝트를 만들었습니다.**
 
 <br/>
 <br/>
+<br/>
+
+- 여러가지 다른 활동을 자세히 보고 싶으시다면, [ '라쿤코드의 개발블로그'](https://goforit.tistory.com/)에서 확인 가능합니다.
+
 <br/>
 
 ## 💻 화면
 
-### Auth (로그인, 회원가입)
+<br/>
+
+> ### Auth (로그인, 회원가입)
+
+<br/>
 
 ![auth](https://user-images.githubusercontent.com/76491635/132431708-7c9036cd-94dc-43dd-9c46-0467b57d353b.gif)
 
@@ -48,7 +84,9 @@
 
 <br/>
 
-### Profile (유저 프로필)
+> ### Profile (유저 프로필)
+
+<br/>
 
 ![profile_cu](https://user-images.githubusercontent.com/76491635/132432083-a1bee863-ad7c-4989-84d9-0e0d7ed87f3a.gif)
 
@@ -66,7 +104,9 @@
 
 <br/>
 
-### Post (게시글)
+> ### Post (게시글)
+
+<br/>
 
 ![post_cr](https://user-images.githubusercontent.com/76491635/132432593-d5c70acd-352e-473e-aaaa-8e38dd2fa027.gif)
 ![post_ud](https://user-images.githubusercontent.com/76491635/132432604-85291b84-e740-4843-98ad-c5429f2563ec.gif)
@@ -77,7 +117,9 @@
 
 <br/>
 
-### Infinite Scroll (무한 스크롤)
+> ### Infinite Scroll (무한 스크롤)
+
+<br/>
 
 ![infinite](https://user-images.githubusercontent.com/76491635/132433019-01b3464f-20d1-4427-b262-2e6fd8cd4935.gif)
 
@@ -86,7 +128,9 @@
 
 <br/>
 
-### Recommend (유저 추천)
+> ### Recommend (유저 추천)
+
+<br/>
 
 ![recommend](https://user-images.githubusercontent.com/76491635/132432810-6dda3bd3-0d3e-445a-81f1-77f86e68d99d.gif)
 
@@ -96,7 +140,9 @@
 
 <br/>
 
-### Comment (댓글)
+> ### Comment (댓글)
+
+<br/>
 
 ![comments](https://user-images.githubusercontent.com/76491635/132433263-cfbd8ea7-bfff-4168-b9e6-baeff0f59667.gif)
 
@@ -107,29 +153,21 @@
 
 <br/>
 
-### Like, MorePostContent (좋아요, 게시글 내용 더 보기)
+> ### Like, MorePostContent (좋아요, 게시글 내용 더 보기)
+
+<br/>
 
 ![like_more](https://user-images.githubusercontent.com/76491635/132433670-3bd0c5c8-209b-4981-9631-0fb96d67fc5d.gif)
 
 - 좋아요는 모든 게시물에 좋아요를 ON/OFF 할 수 있습니다.
 - 모든 게시글의 내용은 35자 또는 개행 포함시 그 부분까지로 짧게 나타나며, 게시글 내용 더보기 버튼이 활성화 되어 클릭시 모든 내용을 볼 수 있습니다.
 
-<br/>
-
-## 아쉬운 부분
-
-- propTypes나 TypeScript를 사용하지 않아서, 다른 개발자가 보기에 어떤 타입이 오는지 이해하기 어렵습니다.
-- 전체적으로 프로젝트 컴포넌트 구성에 대한 지도를 제작해보지 못해서 아쉽습니다. (어떻게 연결되어 있는지를 다른 개발자가 잘 이해할 수 있도록 시각적인 그림을 제시하고 싶었습니다.)
-- 다른 브라우저에서의 검증이 되지 않았습니다.
-- 테스트 코드를 작성하지 않았기 때문에 지속 가능한 테스트 환경이 없습니다.
-- Firebase말고 Nodejs, express 등과 같은 백엔드와의 연결 구조로 만들지 않은 것이 아쉽습니다.
-- 깔끔하고, 알아보기 쉬운 코드를 작성하지 못한 점이 아쉽습니다.
 
 <br/>
 <br/>
 <br/>
 
-# 📅 TIL (Today I Learned, 오늘 깨달은 것들)
+# 📅 개발일지 TIL (Today I Learned, 오늘 깨달은 것들)
 
 <br/>
 
